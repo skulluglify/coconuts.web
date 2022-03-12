@@ -1,0 +1,6 @@
+SQLITE | MYSQL
+
+features:
+
+	- auto_int
+	- auto_switch

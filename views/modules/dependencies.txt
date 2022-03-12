@@ -1,0 +1,5 @@
+https://github.com/twbs/bootstrap/releases/download/v5.0.2/bootstrap-5.0.2-dist.zip
+https://code.jquery.com/jquery-3.6.0.min.js
+https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css
+https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js
+https://github.com/twbs/icons/archive/v1.8.1.zip
