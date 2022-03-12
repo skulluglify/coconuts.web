@@ -5,16 +5,48 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
+
     <!-- modules includes -->
     <link rel="stylesheet" href="../modules/style.css">
-    <script src="../modules/easymde/easymde.min.js"></script>
-    <script src="../modules/bootstrap/js/bootstrap.min.js"></script>
-    <script src="../modules/jquery.min.js"></script>
+    <script src="../modules/jquery/jquery.slim.min.js"></script>
+    <script src="../modules/bootstrap/bootstrap.min.js"></script>
+    <script src="../modules/marked/marked.min.js"></script>
+    <!-- modules includes -->
+
+    <!-- local scripts -->
     <link rel="stylesheet" href="./style.css">
     <script src="./script.js"></script>
-    <!-- modules includes -->
+    <!-- local scripts -->
 </head>
 <body>
+    <nav class="navbar navbar-expand-lg navbar-light shadow-sm">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <img src="../assets/coconuts.svg" alt="" width="120" class="d-inline-block align-text-top">
+              </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="search-box" style="flex-wrap: nowrap; flex-direction: row; display: flex; align-items: start;">
+              <input  type="text" class="search-txt" style="width: auto; height: 36px; margin: 0 12px 0 0" name="" placeholder="Search">
+              <div style="width: 36px; height: 36px; background-color: #f4f4f4; border-radius: 10px; box-sizing: border-box; box-shadow: 0px 1px 5px #dedede; display: flex; flex-direction: column; align-items: center; justify-content: center">
+                  <a class="search-btn">
+                      <i class="bi-search"></i>
+                  </a>
+              </div>
+          </div>
+          <div class="d-flex">
+              <h4>Account</h4>
+          </div>
+        </div>
+    </nav>
 
+    <div id="markdown_previewer"></div>
+    <script>
+
+    $("#markdown_previewer").html(
+        marked.parse("# **Header**\n# Header")
+    )
+</script>
 </body>
 </html>

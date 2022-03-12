@@ -1,6 +1,8 @@
-@import url("bootstrap/css/bootstrap.min.css");
-@import url("bootstrap-icons/font/bootstrap-icons.css");
-@import url("easymde/easymde.min.css");
+@import url("./bootstrap-icons/bootstrap-icons.css");
+@import url("./animate/animate.min.css");
+@import url("./easymde/easymde.min.css");
+@import url("./bootstrap/bootstrap.min.css");
+@import url("./sweetalert2/sweetalert2.min.css");
 
 .icons {
     display: grid;

@@ -1,18 +1,14 @@
 #!/usr/bin/env python3
-import json
 
 from backends.DBs.Core \
     import DBConnect, \
     DBTable, \
     DBVar, \
     DBShowTables, \
-    DBTextTypeNotNull, \
     DBLink, \
-    DBDropTable, \
     DBCreateTable, \
-    DBValue, \
     DBVarType, \
-    DBEnum, DBRaw
+    DBEnum, DBInsertTable, DBValue, DBColumnTable, DBUpdateTable
 
 if str(__name__).upper() in ("__MAIN__",):
     db = DBConnect(
@@ -50,8 +46,95 @@ if str(__name__).upper() in ("__MAIN__",):
     # print(
     #     value_id.to_str()
     # )
-
     print(DBShowTables(db).to_list())
+
+    users = DBTable("users")
+
+    user_id = DBVar(
+        "user_id",
+        DBVarType.INT(11),
+        DBEnum.DB_PRIMARY_KEY,
+        DBEnum.DB_AUTO_INCREMENT,
+        DBEnum.DB_NOT_NULL
+    )
+
+    user_uniq_name = DBVar(
+        "user_uniq_name"
+    )
+
+    # DBLink(
+    #     db,
+    #     DBDropTable(
+    #         users,
+    #         ignore_table_created=True
+    #     )
+    # ).exec()
+
+    try:
+
+        DBLink(
+            db,
+            DBCreateTable(
+                users,
+                user_id
+            )
+        ).exec()
+
+    except Exception as err:
+
+        pass
+
+    try:
+        DBLink(
+            db,
+            DBColumnTable(
+                users,
+                DBColumnTable.New,
+                user_uniq_name
+            )
+        ).exec()
+    except Exception as err:
+
+        pass
+
+    insert = DBInsertTable(
+        users,
+        DBValue(
+            user_uniq_name,
+            "asy_0x0"
+        ),
+        DBValue(
+            user_id,
+            6
+        ),
+        # IGNORE_CHECKER=True
+    )
+
+    DBUpdateTable(
+        users,
+        DBValue(
+            user_uniq_name,
+            "asy_1_1"
+        ),
+        WHERES=[
+            DBValue(
+                user_uniq_name,
+                "asy_0x0"
+            )
+        ]
+    )
+
+    print(insert.to_str())
+    print(insert.PARAMS)
+
+    DBLink(
+        db,
+        insert
+    )#.exec()
+
+    print(
+        db.fetch("SELECT * FROM `users`")
+    )
 
     # DBLink(
     #     db,

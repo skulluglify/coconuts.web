@@ -92,13 +92,31 @@ class DBConnect(object):
 
             print(err)
 
-    def fetch(self, executes: str, *params):
+    def fetch(self, executes: str, params: typing.Tuple[typing.Any] = tuple()):
 
-        self.DB_CURSOR.execute(executes, *params)
-        data: typing.Any = self.DB_CURSOR.fetchall()
+        # params = params or tuple()
+        if not self.DB_SQLITE:
+            executes = executes.replace("?", "%s")
+
+        if params:
+            # print(executes, params, "EXECUTES")
+            self.DB_CURSOR.execute(executes, params)
+        else:
+            self.DB_CURSOR.execute(executes)
+
+        try:
+
+            data: typing.Any = self.DB_CURSOR.fetchall()
+
+        except Exception as err:
+
+            data: typing.Any = self.DB_CURSOR.fetchone()
+
         if data:
             return [
-                *data
+                *(
+                        data or []
+                )
             ]
         return None
 
@@ -138,6 +156,7 @@ class DBVarTypeEnum(object):
     VARCHAR: int = 3
     TEXT: int = 4
     BLOB: int = 5
+
     # BINARY: int = 6
     # VARBINARY: int = 7
     # TINYTEXT: int = 8
@@ -235,6 +254,7 @@ class DBVarTypeStruct(object):
 
 class DBVarType(object):
     CHAR: DBVarTypeStruct = DBVarTypeStruct(DBVarTypeEnum.CHAR)
+
     # TINYTEXT: DBVarTypeStruct = DBVarTypeStruct(DBVarTypeEnum.TINYTEXT)
     # TINYBLOB: DBVarTypeStruct = DBVarTypeStruct(DBVarTypeEnum.TINYBLOB)
     # MEDIUMTEXT: DBVarTypeStruct = DBVarTypeStruct(DBVarTypeEnum.MEDIUMTEXT)
@@ -345,6 +365,7 @@ class DBVar(DBObject):
 class DBTable(DBObject):
     TABLE_NAME: str
     TABLE_CREATED: bool
+    TABLE_VARS: typing.List[DBVar]
 
     def __init__(self, table_name: str):
         super().__init__()
@@ -370,6 +391,11 @@ class DBCreateTable(DBProgram):
                     TABLE_NAME=table.to_str()
                 )
                 table.TABLE_CREATED = True
+                table.TABLE_VARS = [
+                    *(
+                            var_objs or []
+                    )
+                ]
             else:
                 raise Exception("TABLE has been created!")
         else:
@@ -439,6 +465,7 @@ class DBDropTable(DBProgram):
 
                     TABLE_NAME=table.TABLE_NAME
                 )
+                table.TABLE_CREATED = False
             else:
                 raise Exception("TABLE not created anymore!")
         else:
@@ -475,6 +502,7 @@ class DBColumnTable(DBProgram):
     New: int = 1
     TABLE_NAME: str
     OPERATION: int
+    VAR_RULES: typing.List[DBVar]
 
     def __init__(self, table: DBTable, op: int, *var_objs: DBVar):
         super().__init__()
@@ -482,14 +510,20 @@ class DBColumnTable(DBProgram):
             if table.TABLE_CREATED:
                 self.TABLE_NAME = table.TABLE_NAME
                 self.OPERATION = op
+                self.VAR_RULES = [
+                    *(
+                            var_objs or []
+                    )
+                ]
 
-                context: str | None = self.getContext(self.OPERATION)
+                context: str | None = self.getContext(table, self.OPERATION)
+
                 if context:
                     self.CONTEXT = context.format(
                         TABLE_NAME=self.TABLE_NAME,
-                        VARS=", ".join(map(
+                        VAR_RULES=", ".join(map(
                             lambda x: self.ignorePrimaryKey(x).to_str(),
-                            var_objs
+                            var_objs or []
                         ))
                     )
             else:
@@ -497,16 +531,24 @@ class DBColumnTable(DBProgram):
         else:
             raise Exception("Undefined TABLE!")
 
-    @classmethod
-    def getContext(cls, op: int) -> str | None:
+    def getContext(self, table: DBTable, op: int) -> str | None:
 
         match op:
 
-            case (cls.New):
-                return "ALTER TABLE `{TABLE_NAME}` ADD COLUMN ({VARS})"
+            case (self.New):
+                for var_obj in self.VAR_RULES:
+                    if var_obj in table.TABLE_VARS:
+                        raise Exception("VAR is already included!")
+                return "ALTER TABLE `{TABLE_NAME}` ADD COLUMN ({VAR_RULES})"
 
-            case (cls.Del):
-                return "ALTER TABLE IF EXISTS `{TABLE_NAME}` DROP COLUMN ({VARS})"
+            case (self.Del):
+                if len(self.VAR_RULES) > 0:
+                    for var_obj in self.VAR_RULES:
+                        if not (var_obj in table.TABLE_VARS):
+                            raise Exception("VAR not already included!")
+                else:
+                    raise Exception("TABLE not contains this VAR anymore!")
+                return "ALTER TABLE IF EXISTS `{TABLE_NAME}` DROP COLUMN ({VAR_RULES})"
 
         return None
 
@@ -537,10 +579,29 @@ class DBLink(object):
     def exec(self):
         return [
             self.DB_CONNECT.fetch(
-                program.to_str()
+                program.to_str(),
+                getattr(program, "PARAMS", None)
             )
             for program in self.DB_PROGRAMS
         ]
+        # rows: typing.List[typing.Any] = []
+        # for program in self.DB_PROGRAMS:
+        #
+        #     params = getattr(program, "PARAMS", None)
+        #     if params:
+        #         rows.append(
+        #             self.DB_CONNECT.fetch(
+        #                 program.to_str(),
+        #                 params
+        #             )
+        #         )
+        #     else:
+        #         rows.append(
+        #             self.DB_CONNECT.fetch(
+        #                 program.to_str()
+        #             )
+        #         )
+        # return rows
 
 
 class DBShowTables(object):
@@ -570,7 +631,7 @@ class DBShowTables(object):
                     lambda x: [
                         d for d in x
                     ],
-                    data
+                    data or []
                 )
             ]
 
@@ -591,39 +652,22 @@ class DBShowTables(object):
                     lambda x: [
                         d for d in x
                     ],
-                    data
+                    data or []
                 )
             ]
 
 
-class DBValue(DBObject):
-    VAR_TYPE: int
-    VAR_NAME: str
-    VAR_VALUE: typing.Any
+class DBValueTypeStruct(DBObject):
+    VAR_STRUCTURE: DBVarTypeStruct
 
-    def __init__(self, var_obj: DBVar, value: typing.Any):
+    def __init__(self, var_structure: DBVarTypeStruct):
         super().__init__()
-        self.VAR_TYPE = var_obj.VAR_STRUCTURE.VAR_TYPE
-        self.VAR_NAME = var_obj.VAR_NAME
-        if type(value) is self.defineTypeVar():
-
-            if self.VAR_TYPE == DBVarTypeEnum.CHAR:
-                if len(value) > 1:
-                    raise Exception("CHAR contains only 8 bit values!")
-
-            self.VAR_VALUE = value
-            self.CONTEXT = "{VAR_NAME} = {VAR_VALUE}".format(
-                VAR_NAME=self.VAR_NAME,
-                VAR_VALUE=self.VAR_VALUE
-            )
-        else:
-
-            raise Exception("Wrong type for Value!")
+        self.VAR_STRUCTURE = var_structure
 
     def defineTypeVar(self) -> type:
 
-        if type(self.VAR_TYPE) is int:
-            match self.VAR_TYPE:
+        if type(self.VAR_STRUCTURE.VAR_TYPE) is int:
+            match self.VAR_STRUCTURE.VAR_TYPE:
                 case (DBVarTypeEnum.INT):
                     return int
                 case (DBVarTypeEnum.REAL):
@@ -655,8 +699,154 @@ class DBValue(DBObject):
         return str
 
 
-class DBRaw(object):
+class DBValue(DBValueTypeStruct):
+    VAR_NAME: str
+    VAR_VALUE: typing.Any
 
+    def __init__(self, var_obj: DBVar, value: typing.Any):
+        super().__init__(var_obj.VAR_STRUCTURE)
+        self.VAR_NAME = var_obj.VAR_NAME
+        if not var_obj.VAR_NULLABLE:
+            if isinstance(value, types.NoneType):
+                raise Exception("VAR not Nullable!")
+            else:
+                self.init(value)
+        else:
+            if isinstance(value, types.NoneType):
+                self.VAR_NAME = var_obj.VAR_NAME
+                self.VAR_VALUE = None
+            else:
+                self.init(value)
+
+    def init(self, value: typing.Any):
+        if type(value) is self.defineTypeVar():
+            if self.VAR_STRUCTURE.VAR_TYPE in (DBVarTypeEnum.CHAR,):
+                if len(value) > 1:
+                    raise Exception("CHAR contains only 8 bit values!")
+            self.VAR_VALUE = value
+            self.CONTEXT = "{VAR_NAME} = '{VAR_VALUE}'".format(
+                VAR_NAME=self.VAR_NAME,
+                VAR_VALUE=self.VAR_VALUE
+            )
+        else:
+            raise Exception("Wrong type for Value!")
+
+
+class DBInsertTable(DBProgram):
+    DB_TABLE: DBTable
+    DB_VALUES: typing.List[DBValue]
+    PARAMS: typing.List[typing.Any]
+    # Typing typing.List[DBValue, ...]
+    IGNORE_CHECKER: bool = False
+
+    def __init__(self, table: DBTable, *value: DBValue, **kwargs):
+        super().__init__()
+        self.__dict__.update(kwargs)
+        self.DB_TABLE = table
+        self.DB_VALUES = [*value]
+        if table:
+            if table.TABLE_CREATED:
+
+                if not self.IGNORE_CHECKER:
+                    self.checker()
+
+                self.CONTEXT = "INSERT INTO `{TABLE_NAME}`{VAR_RULES} VALUES {VAR_VALUES}".format(
+                    TABLE_NAME=table.TABLE_NAME,
+                    VAR_RULES=self.getRules(),
+                    VAR_VALUES=self.getValues()
+                )
+                self.PARAMS = [
+                    *map(
+                        lambda x: getattr(x, "VAR_VALUE", None),
+                        self.DB_VALUES or []
+                        # if sorted rules, params must be sorted too
+                    )
+                ]
+            else:
+                raise Exception("TABLE not created anymore!")
+        else:
+            raise Exception("Undefined TABLE!")
+
+    def checker(self):
+
+        for var_obj in self.DB_TABLE.TABLE_VARS:
+            included: bool = False
+            for val_obj in self.DB_VALUES:
+                if val_obj.VAR_NAME in (var_obj.VAR_NAME,):
+                    included = True
+            if not included:
+                raise Exception("TABLE not contains this VAR anymore!")
+
+    def getRules(self):
+
+        i: int = 0
+        n: int = len(self.DB_VALUES)
+        context: str = "( "
+        # # sorted like TABLE_VARS
+        # # but conflict with params, and make slow
+        # for var_obj in self.DB_TABLE.TABLE_VARS:
+        #     for val_obj in self.DB_VALUES:
+        #         if val_obj.VAR_NAME in (var_obj.VAR_NAME,):
+        #             # DBValueTypeStruct(val_obj.VAR_STRUCTURE).defineTypeVar()
+        #             if not n <= i + 1:
+        #                 context += "`{VAR_NAME}`, ".format(
+        #                     VAR_NAME=val_obj.VAR_NAME
+        #                 )
+        #             else:
+        #                 context += "`{VAR_NAME}`".format(
+        #                     VAR_NAME=val_obj.VAR_NAME
+        #                 )
+        #             i += 1
+        for val_obj in self.DB_VALUES:
+            if not n <= i + 1:
+                context += "`{VAR_NAME}`, ".format(
+                    VAR_NAME=val_obj.VAR_NAME
+                )
+            else:
+                context += "`{VAR_NAME}`".format(
+                    VAR_NAME=val_obj.VAR_NAME
+                )
+            i += 1
+        context += " )"
+        return context
+
+    def getValues(self):
+
+        i: int = 0
+        n: int = len(self.DB_VALUES)
+        context: str = "( "
+        for _ in self.DB_VALUES:
+            if not (n <= i + 1):
+                context += "?, "
+            else:
+                context += "?"
+            i += 1
+        context += " )"
+        return context
+
+
+class DBUpdateTable(DBProgram):
+    WHERES: typing.List[DBValue] | typing.Tuple[DBValue]
+
+    """
+        WHERE (columnN) LIKE (valueN)
+    """
+
+    def __init__(self, table: DBTable, *values: DBValue, **kwargs):
+        super().__init__()
+        self.__dict__.update(kwargs)
+
+
+class DBDeleteFromTable(DBProgram): pass
+
+
+class DBDeleteTable(DBProgram): pass
+
+
+class DBFindFromTable(DBProgram): pass
+
+
+class DBRaw(object):
     pass
 
 
