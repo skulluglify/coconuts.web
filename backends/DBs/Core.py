@@ -115,7 +115,7 @@ class DBConnect(object):
         if data:
             return [
                 *(
-                    data or []
+                        data or []
                 )
             ]
         return None
@@ -365,6 +365,7 @@ class DBVar(DBObject):
 class DBTable(DBObject):
     TABLE_NAME: str
     TABLE_CREATED: bool
+    TABLE_VARS: typing.List[DBVar]
 
     def __init__(self, table_name: str):
         super().__init__()
@@ -390,6 +391,11 @@ class DBCreateTable(DBProgram):
                     TABLE_NAME=table.to_str()
                 )
                 table.TABLE_CREATED = True
+                table.TABLE_VARS = [
+                    *(
+                            var_objs or []
+                    )
+                ]
             else:
                 raise Exception("TABLE has been created!")
         else:
@@ -496,6 +502,7 @@ class DBColumnTable(DBProgram):
     New: int = 1
     TABLE_NAME: str
     OPERATION: int
+    VAR_RULES: typing.List[DBVar]
 
     def __init__(self, table: DBTable, op: int, *var_objs: DBVar):
         super().__init__()
@@ -503,14 +510,20 @@ class DBColumnTable(DBProgram):
             if table.TABLE_CREATED:
                 self.TABLE_NAME = table.TABLE_NAME
                 self.OPERATION = op
+                self.VAR_RULES = [
+                    *(
+                            var_objs or []
+                    )
+                ]
 
-                context: str | None = self.getContext(self.OPERATION)
+                context: str | None = self.getContext(table, self.OPERATION)
+
                 if context:
                     self.CONTEXT = context.format(
                         TABLE_NAME=self.TABLE_NAME,
                         VAR_RULES=", ".join(map(
                             lambda x: self.ignorePrimaryKey(x).to_str(),
-                            var_objs
+                            var_objs or []
                         ))
                     )
             else:
@@ -518,15 +531,23 @@ class DBColumnTable(DBProgram):
         else:
             raise Exception("Undefined TABLE!")
 
-    @classmethod
-    def getContext(cls, op: int) -> str | None:
+    def getContext(self, table: DBTable, op: int) -> str | None:
 
         match op:
 
-            case (cls.New):
+            case (self.New):
+                for var_obj in self.VAR_RULES:
+                    if var_obj in table.TABLE_VARS:
+                        raise Exception("VAR is already included!")
                 return "ALTER TABLE `{TABLE_NAME}` ADD COLUMN ({VAR_RULES})"
 
-            case (cls.Del):
+            case (self.Del):
+                if len(self.VAR_RULES) > 0:
+                    for var_obj in self.VAR_RULES:
+                        if not (var_obj in table.TABLE_VARS):
+                            raise Exception("VAR not already included!")
+                else:
+                    raise Exception("TABLE not contains this VAR anymore!")
                 return "ALTER TABLE IF EXISTS `{TABLE_NAME}` DROP COLUMN ({VAR_RULES})"
 
         return None
@@ -716,36 +737,67 @@ class DBInsertTable(DBProgram):
     DB_VALUES: typing.List[DBValue]
     PARAMS: typing.List[typing.Any]
     # Typing typing.List[DBValue, ...]
+    IGNORE_CHECKER: bool = False
 
-    def __init__(self, table: DBTable, *value: DBValue):
+    def __init__(self, table: DBTable, *value: DBValue, **kwargs):
         super().__init__()
+        self.__dict__.update(kwargs)
         self.DB_TABLE = table
         self.DB_VALUES = [*value]
         if table:
             if table.TABLE_CREATED:
+
+                if not self.IGNORE_CHECKER:
+                    self.checker()
+
                 self.CONTEXT = "INSERT INTO `{TABLE_NAME}`{VAR_RULES} VALUES {VAR_VALUES}".format(
                     TABLE_NAME=table.TABLE_NAME,
                     VAR_RULES=self.getRules(),
                     VAR_VALUES=self.getValues()
                 )
-                self.PARAMS = tuple(
-                    map(
+                self.PARAMS = [
+                    *map(
                         lambda x: getattr(x, "VAR_VALUE", None),
-                        self.DB_VALUES
+                        self.DB_VALUES or []
+                        # if sorted rules, params must be sorted too
                     )
-                )
+                ]
             else:
                 raise Exception("TABLE not created anymore!")
         else:
             raise Exception("Undefined TABLE!")
+
+    def checker(self):
+
+        for var_obj in self.DB_TABLE.TABLE_VARS:
+            included: bool = False
+            for val_obj in self.DB_VALUES:
+                if val_obj.VAR_NAME in (var_obj.VAR_NAME,):
+                    included = True
+            if not included:
+                raise Exception("TABLE not contains this VAR anymore!")
 
     def getRules(self):
 
         i: int = 0
         n: int = len(self.DB_VALUES)
         context: str = "( "
+        # # sorted like TABLE_VARS
+        # # but conflict with params, and make slow
+        # for var_obj in self.DB_TABLE.TABLE_VARS:
+        #     for val_obj in self.DB_VALUES:
+        #         if val_obj.VAR_NAME in (var_obj.VAR_NAME,):
+        #             # DBValueTypeStruct(val_obj.VAR_STRUCTURE).defineTypeVar()
+        #             if not n <= i + 1:
+        #                 context += "`{VAR_NAME}`, ".format(
+        #                     VAR_NAME=val_obj.VAR_NAME
+        #                 )
+        #             else:
+        #                 context += "`{VAR_NAME}`".format(
+        #                     VAR_NAME=val_obj.VAR_NAME
+        #                 )
+        #             i += 1
         for val_obj in self.DB_VALUES:
-            # valueStruct = DBValueTypeStruct(val_obj.VAR_STRUCTURE).defineTypeVar()
             if not n <= i + 1:
                 context += "`{VAR_NAME}`, ".format(
                     VAR_NAME=val_obj.VAR_NAME
@@ -763,15 +815,26 @@ class DBInsertTable(DBProgram):
         i: int = 0
         n: int = len(self.DB_VALUES)
         context: str = "( "
-        for var_obj in self.DB_VALUES:
-            if not n <= i + 1:
+        for _ in self.DB_VALUES:
+            if not (n <= i + 1):
                 context += "?, "
             else:
                 context += "?"
+            i += 1
         context += " )"
         return context
 
-class DBUpdateTable(DBProgram): pass
+
+class DBUpdateTable(DBProgram):
+    WHERES: typing.List[DBValue] | typing.Tuple[DBValue]
+
+    """
+        WHERE (columnN) LIKE (valueN)
+    """
+
+    def __init__(self, table: DBTable, *values: DBValue, **kwargs):
+        super().__init__()
+        self.__dict__.update(kwargs)
 
 
 class DBDeleteFromTable(DBProgram): pass

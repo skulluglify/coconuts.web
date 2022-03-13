@@ -1,18 +1,14 @@
 #!/usr/bin/env python3
-import json
 
 from backends.DBs.Core \
     import DBConnect, \
     DBTable, \
     DBVar, \
     DBShowTables, \
-    DBTextTypeNotNull, \
     DBLink, \
-    DBDropTable, \
     DBCreateTable, \
-    DBValue, \
     DBVarType, \
-    DBEnum, DBRaw, DBInsertTable, DBValue
+    DBEnum, DBInsertTable, DBValue, DBColumnTable, DBUpdateTable
 
 if str(__name__).upper() in ("__MAIN__",):
     db = DBConnect(
@@ -62,6 +58,10 @@ if str(__name__).upper() in ("__MAIN__",):
         DBEnum.DB_NOT_NULL
     )
 
+    user_uniq_name = DBVar(
+        "user_uniq_name"
+    )
+
     # DBLink(
     #     db,
     #     DBDropTable(
@@ -84,31 +84,53 @@ if str(__name__).upper() in ("__MAIN__",):
 
         pass
 
+    try:
+        DBLink(
+            db,
+            DBColumnTable(
+                users,
+                DBColumnTable.New,
+                user_uniq_name
+            )
+        ).exec()
+    except Exception as err:
+
+        pass
+
     insert = DBInsertTable(
         users,
         DBValue(
-            user_id,
-            3
-        )
-    )
-
-    insert2 = DBInsertTable(
-        users,
+            user_uniq_name,
+            "asy_0x0"
+        ),
         DBValue(
             user_id,
-            4
-        )
+            6
+        ),
+        # IGNORE_CHECKER=True
     )
+
+    DBUpdateTable(
+        users,
+        DBValue(
+            user_uniq_name,
+            "asy_1_1"
+        ),
+        WHERES=[
+            DBValue(
+                user_uniq_name,
+                "asy_0x0"
+            )
+        ]
+    )
+
+    print(insert.to_str())
+    print(insert.PARAMS)
 
     DBLink(
         db,
         insert
-    ).exec()
-
-    DBLink(
-        db,
-        insert2
-    ).exec()
+    )#.exec()
 
     print(
         db.fetch("SELECT * FROM `users`")

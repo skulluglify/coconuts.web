@@ -17,8 +17,8 @@ function wload() {
     mkdir -p bootstrap
     wload https://unpkg.com/bootstrap@latest/dist/js/bootstrap.min.js bootstrap/bootstrap.min.js
     wload https://unpkg.com/bootstrap@latest/dist/js/bootstrap.min.js.map bootstrap/bootstrap.min.js.map
-    wload https://unpkg.com/bootstrap@5.1.3/dist/css/bootstrap.min.css bootstrap/bootstrap.min.css
-    wload https://unpkg.com/bootstrap@5.1.3/dist/css/bootstrap.min.css.map bootstrap/bootstrap.min.css.map
+    wload https://unpkg.com/bootstrap@latest/dist/css/bootstrap.min.css bootstrap/bootstrap.min.css
+    wload https://unpkg.com/bootstrap@latest/dist/css/bootstrap.min.css.map bootstrap/bootstrap.min.css.map
 }
 
 ## bootstrap-icons
