@@ -37,6 +37,30 @@ EOF
 echo $context
 }
 
+function normalize_text() {
+cat<<<$(echo -en ${@})
+}
+
+function wrap_by_brackets() {
+## normalize all context
+context=$(normalize_text ${@})
+context=$(cat<<<$(
+{
+  len=$(cat<<<$context | wc -l)
+  for i in `seq ${len}`; do
+    if [ $i -eq $len ]; then
+      cat<<<$context | head -n $i | tail -n 1
+    else
+      echo -en $(
+      	cat<<<$context | head -n $i | tail -n 1
+      )\, ""
+    fi
+  done
+}
+))
+echo $context
+}
+
 ## favicon
 {
   mkdir -p ${CDIR}/assets/icons
@@ -95,49 +119,11 @@ for scale in ${SCALES[@]}; do
   esac
 done
 
-META_TEMPLATE_ICONS=$(
-  cat<<<$(echo -en $META_TEMPLATE_ICONS)
-)
+## manifest.icons
+META_TEMPLATE_ICONS=$(wrap_by_brackets $META_TEMPLATE_ICONS)
 
-META_TEMPLATE_SHORTCUT_ICONS=$(
-  cat<<<$(echo -en $META_TEMPLATE_SHORTCUT_ICONS)
-)
-
-HTML_TEMPLATE_HEADER=$(
-  cat<<<$(echo -en $HTML_TEMPLATE_HEADER)
-)
-
-# manifest.icons
-META_TEMPLATE_ICONS=$(cat<<<$(
-{
-  len=$(cat<<<$META_TEMPLATE_ICONS | wc -l)
-  for i in `seq ${len}`; do
-    if [ $i -eq $len ]; then
-      cat<<<$META_TEMPLATE_ICONS | head -n $i | tail -n 1
-    else
-      echo -en $(
-      	cat<<<$META_TEMPLATE_ICONS | head -n $i | tail -n 1
-      )\, ""
-    fi
-  done
-}
-))
-
-# manifest.shortcut.icons
-META_TEMPLATE_SHORTCUT_ICONS=$(cat<<<$(
-{
-  len=$(cat<<<$META_TEMPLATE_SHORTCUT_ICONS | wc -l)
-  for i in `seq ${len}`; do
-    if [ $i -eq $len ]; then
-      cat<<<$META_TEMPLATE_SHORTCUT_ICONS | head -n $i | tail -n 1
-    else
-      echo -en $(
-      	cat<<<$META_TEMPLATE_SHORTCUT_ICONS | head -n $i | tail -n 1
-      )\, ""
-    fi
-  done
-}
-))
+## manifest.shortcut.icons
+META_TEMPLATE_SHORTCUT_ICONS=$(wrap_by_brackets $META_TEMPLATE_SHORTCUT_ICONS)
 
 cat<<EOF>.webmanifest
 {
@@ -164,6 +150,9 @@ cat<<EOF>.webmanifest
   ]
 }
 EOF
+
+## normalize HTML_TEMPLATE_HEADER context
+HTML_TEMPLATE_HEADER=$(normalize_text $HTML_TEMPLATE_HEADER)
 
 cat<<EOF>index.html
 <!DOCTYPE html PUBLIC>
