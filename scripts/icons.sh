@@ -9,7 +9,7 @@ META_TEMPLATE_SHORTCUT_ICONS=""
 HTML_TEMPLATE_HEADER=""
 
 ## check binary magick
-if [ ! -f `which magick` ]; then
+if [ ! -f "$(which magick | grep -iv 'not found')" ]; then
   echo -en "\x1b[1;31;40mmagick not found\x21\n" && exit 1
 fi
 
@@ -94,7 +94,7 @@ for scale in ${SCALES[@]}; do
   esac
   case $scale in
     144|152|180|196|256|384)
-      ## manifest.icons
+      ## manifest.shortcut.icons
       {
         META_TEMPLATE_SHORTCUT_ICONS+=$(
           gen_meta_icons $resolution \/$path

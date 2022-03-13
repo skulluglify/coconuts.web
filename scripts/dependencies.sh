@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 ## check binary wget
-if [ ! -f `which wget` ]; then
+if [ ! -f "$(which wget | grep -iv 'not found')" ]; then
   echo -en "\x1b[1;31;40mwget not found\x21\n" && exit 1
 fi
 
