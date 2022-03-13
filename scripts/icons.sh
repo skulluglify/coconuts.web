@@ -58,7 +58,7 @@ context=$(cat<<<$(
   done
 }
 ))
-echo $context
+echo [ $context ]
 }
 
 ## favicon
@@ -130,7 +130,7 @@ cat<<EOF>.webmanifest
   "short_name": "coconuts",
   "name": "coconuts app",
   "description": "coconuts discuss community forum",
-  "icons": [ $(cat<<<$META_TEMPLATE_ICONS) ],
+  "icons": $META_TEMPLATE_ICONS,
   "start_url": "/?viewport=desktop",
   "background_color": "#F4F4F4",
   "display_override": [
@@ -145,7 +145,7 @@ cat<<EOF>.webmanifest
       "name": "coconuts app",
       "description": "coconuts discuss community forum",
       "url": "/?viewport=desktop&install=true",
-      "icons": [ $(cat<<<$META_TEMPLATE_SHORTCUT_ICONS) ]
+      "icons": $META_TEMPLATE_SHORTCUT_ICONS
     }
   ]
 }
