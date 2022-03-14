@@ -1,9 +1,13 @@
 #!/usr/bin/env bash
 
-## check binary wget
-if [ ! -f "$(which wget | grep -iv 'not found')" ]; then
-  echo -en "\x1b[1;31;40mwget not found\x21\n" && exit 1
+## check binary
+function check_binary() {
+if [ ! -f "$(which $1 | grep -iv 'not found')" ]; then
+  echo -en "\x1b[1;31;40m$1 not found\x21\x1b[0m\n" && exit 1
 fi
+}
+
+check_binary wget
 
 function wload() {
 

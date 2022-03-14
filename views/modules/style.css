@@ -7,6 +7,8 @@
 :root {
     --var-green: #40d024;
     --var-white: #f4f4f4;
+    --var-grey: #a6a6a6;
+    --var-light-grey: #dedede;
 }
 
 * {

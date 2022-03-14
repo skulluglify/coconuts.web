@@ -1,21 +1,32 @@
 #!/usr/bin/env bash
 
+
 CDIR=$(dirname $0)
 
+
 SCALES=(16 32 48 64 72 96 128 144 152 180 196 256 384 480 512)
+
 
 META_TEMPLATE_ICONS=""
 META_TEMPLATE_SHORTCUT_ICONS=""
 HTML_TEMPLATE_HEADER=""
 
-## check binary magick
-if [ ! -f "$(which magick | grep -iv 'not found')" ]; then
-  echo -en "\x1b[1;31;40mmagick not found\x21\n" && exit 1
+
+## check binary
+function check_binary() {
+if [ ! -f "$(which $1 | grep -iv 'not found')" ]; then
+  echo -en "\x1b[1;31;40m$1 not found\x21\x1b[0m\n" && exit 1
 fi
+}
+
+
+check_binary magick
+
 
 function scale_img() {
   magick convert $1 -strip -resize $2 -units PixelsPerInch -density 96 -quality 4 -antialias -type TrueColorAlpha $3 
 }
+
 
 function gen_meta_icons() {
 context=$(cat<<EOF
@@ -29,6 +40,7 @@ EOF
 echo $context
 }
 
+
 function gen_link_html() {
 context=$(cat<<EOF
 <link rel="$2" href="$3" type="image/png" sizes="$1" crossorigin="anonymous"/>
@@ -37,9 +49,11 @@ EOF
 echo $context
 }
 
+
 function normalize_text() {
 cat<<<$(echo -en ${@})
 }
+
 
 function wrap_by_brackets() {
 ## normalize all context
@@ -47,19 +61,21 @@ context=$(normalize_text ${@})
 context=$(cat<<<$(
 {
   len=$(cat<<<$context | wc -l)
-  for i in `seq ${len}`; do
+  i=1
+  IFS=
+  while IFS= read -r line; do
     if [ $i -eq $len ]; then
-      cat<<<$context | head -n $i | tail -n 1
+      echo $line
     else
-      echo -en $(
-      	cat<<<$context | head -n $i | tail -n 1
-      )\, ""
+      echo ${line}\, ""
     fi
-  done
+    i=$(($i+1))
+  done <<<$context
 }
 ))
 echo [ $context ]
 }
+
 
 ## favicon
 {
@@ -69,6 +85,7 @@ echo [ $context ]
     scale_img ${CDIR}/cocos.png 256x256 $favout
   fi
 }
+
 
 for scale in ${SCALES[@]}; do
   resolution=${scale}x${scale}
@@ -119,11 +136,14 @@ for scale in ${SCALES[@]}; do
   esac
 done
 
+
 ## manifest.icons
 META_TEMPLATE_ICONS=$(wrap_by_brackets $META_TEMPLATE_ICONS)
 
+
 ## manifest.shortcut.icons
 META_TEMPLATE_SHORTCUT_ICONS=$(wrap_by_brackets $META_TEMPLATE_SHORTCUT_ICONS)
+
 
 cat<<EOF>.webmanifest
 {
@@ -151,8 +171,10 @@ cat<<EOF>.webmanifest
 }
 EOF
 
+
 ## normalize HTML_TEMPLATE_HEADER context
 HTML_TEMPLATE_HEADER=$(normalize_text $HTML_TEMPLATE_HEADER)
+
 
 cat<<EOF>index.html
 <!DOCTYPE html PUBLIC>
