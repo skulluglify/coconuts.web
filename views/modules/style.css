@@ -7,6 +7,7 @@
 :root {
     --var-green: #40d024;
     --var-white: #f4f4f4;
+    --var-yellow: #f4de00;
     --var-grey: #a6a6a6;
     --var-light-grey: #dedede;
 }
@@ -14,9 +15,9 @@
 * {
     margin: 0;
     padding: 0;
+    border: none;
     box-shadow: none;
     box-sizing: border-box;
-    user-focus: none;
     outline: none;
 }
 

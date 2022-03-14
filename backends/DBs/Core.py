@@ -21,6 +21,8 @@ class DBConnect(object):
     DB_USER: str
     DB_PASSWORD: str
     # url or path
+    DB_PREFIX: str = os.getcwd()
+    DB_SUFFIX: str = ".db"
     DB_NAME: str
     # mysql or sqlite
     DB_CONNECT: mysql.connector.connection.MySQLConnectionAbstract | sqlite3.Connection
@@ -76,9 +78,10 @@ class DBConnect(object):
 
             self.DB_CONNECT = sqlite3.connect(
                 database=os.path.join(
-                    os.getcwd(),
-                    "{DB_NAME}.db".format(
-                        DB_NAME=self.DB_NAME
+                    self.DB_PREFIX,
+                    "{DB_NAME}{DB_SUFFIX}".format(
+                        DB_NAME=self.DB_NAME,
+                        DB_SUFFIX=self.DB_SUFFIX
                     )
                 ),
                 timeout=5
