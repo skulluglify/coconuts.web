@@ -44,6 +44,6 @@ src: url(/assets/fonts/Poppins/poppins-bolditalic.woff2) format('woff2');
 @font-face {
 font-family: "Poppins Italic";
 font-weight: normal;
-font-style: italic, oblique;
+font-style: italic;
 src: url(/assets/fonts/Poppins/poppins-italic.woff2) format('woff2');
 }

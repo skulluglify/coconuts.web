@@ -22,6 +22,7 @@ function wload() {
 }
 
 
+# NOTE: italic, oblique
 function gen_font_style() {
 context=$(cat<<EOF
 @font-face {
@@ -49,7 +50,7 @@ echo "font-style: normal;"
 ;;
 italic)
 echo "font-weight: normal;"
-echo "font-style: italic, oblique;"
+echo "font-style: italic;"
 ;;
 bolditalic)
 echo "font-weight: bold;"
