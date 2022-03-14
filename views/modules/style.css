@@ -4,6 +4,19 @@
 @import url("./bootstrap/bootstrap.min.css");
 @import url("./sweetalert2/sweetalert2.min.css");
 
+:root {
+    --var-green: #40d024;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-shadow: none;
+    box-sizing: border-box;
+    user-focus: none;
+    outline: none;
+}
+
 .icons {
     display: grid;
     max-width: 100%;
