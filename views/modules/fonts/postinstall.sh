@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 
-echo >"fonts.css"
+echo -en >"fonts.css"
 
 
 ## check binary
@@ -64,6 +64,7 @@ echo "font-style: normal;"
 esac`
 src: url(`echo $3`) format('woff2');
 }
+
 EOF
 )
 echo $context
@@ -94,7 +95,7 @@ function gen_meta_fonts() {
     ## generated font style
     fontselected=$(echo $filename | grep -Ei '\-(light|regular|medium|bold|semibold|italic|bolditalic|thin)\.(ttf|otf)$')
     if [ -n "${fontselected}" ]; then
-      type=$(echo $fontselected | grep -Eio '(light|regular|medium|bold|semibold|italic|bolditalic|thin)')
+      type=$(echo $fontselected | grep -Eio '(light|regular|medium|bold|semibold|italic|bolditalic|thin)' | tr '[:upper:]' '[:lower:]')
       fontname=$(echo $cdirname $type | sed -e "s/\b\(.\)/\u\1/g")
       src=$(echo "/assets/fonts/${src}")
       cat<<<$(gen_font_style "$fontname" "$type" "$src")>>"fonts.css"
