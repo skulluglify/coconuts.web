@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+
 ## check binary
 function check_binary() {
 if [ ! -f "$(which $1 | grep -iv 'not found')" ]; then
@@ -7,18 +8,22 @@ if [ ! -f "$(which $1 | grep -iv 'not found')" ]; then
 fi
 }
 
+
 check_binary wget
+
 
 function wload() {
 
     wget -c $1 -O $2
 }
 
+
 ## jquery
 {
     mkdir -p jquery
     wload https://unpkg.com/jquery@latest/dist/jquery.slim.min.js jquery/jquery.slim.min.js
 }
+
 
 ## bootstrap
 {
@@ -29,6 +34,7 @@ function wload() {
     wload https://unpkg.com/bootstrap@latest/dist/css/bootstrap.min.css.map bootstrap/bootstrap.min.css.map
 }
 
+
 ## bootstrap-icons
 {
     mkdir -p bootstrap-icons/fonts
@@ -38,11 +44,14 @@ function wload() {
     wload https://unpkg.com/bootstrap-icons@latest/font/fonts/bootstrap-icons.woff2 bootstrap-icons/fonts/bootstrap-icons.woff2
 }
 
+
 ## popperjs
 {
     mkdir -p popperjs
     wload https://unpkg.com/@popperjs/core@latest/dist/umd/popper.min.js popperjs/popper.min.js
+    wload https://unpkg.com/@popperjs/core@latest/dist/umd/popper.min.js.map popperjs/popper.min.js.map
 }
+
 
 ## sweetalert2
 {
@@ -51,11 +60,13 @@ function wload() {
     wload https://unpkg.com/sweetalert2@latest/dist/sweetalert2.min.css sweetalert2/sweetalert2.min.css
 }
 
+
 ## animate
 {
     mkdir -p animate
     wload https://unpkg.com/animate.css@latest/animate.min.css animate/animate.min.css
 }
+
 
 ## easymde
 {
@@ -63,6 +74,7 @@ function wload() {
     wload https://unpkg.com/easymde@latest/dist/easymde.min.js easymde/easymde.min.js
     wload https://unpkg.com/easymde@latest/dist/easymde.min.css easymde/easymde.min.css
 }
+
 
 ## marked
 {
