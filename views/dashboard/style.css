@@ -89,3 +89,45 @@
   padding: 5px 60px 5px 60px;
   border-radius: 0px 0px 5px 5px;
 }
+
+.sidebar {
+    position: absolute;
+    margin-top: 80px;
+    padding-top: 10px;
+    padding-left: 10px;
+    height: 100%;
+    width: 300px;
+    display: block;
+}
+
+.sidebar h2 {
+    font-size: 29px;
+    color: rgb(66, 64, 64);
+    padding-bottom: 8px;
+}
+
+.sidebar li {
+    list-style: none;
+}
+
+.sidebar li a {
+    text-decoration: none;
+    padding-left: 10px;
+    color: rgb(66, 64, 64);
+    font-size: 19px;
+}
+
+.text-nav .bi-house-door-fill, .bi-currency-dollar, .bi-people-fill {
+    font-size: 28px;
+    padding-right: 10px;
+}
+
+.sidebar .text-nav {
+    display: block;
+    padding: 8px 8px;
+}
+
+.sidebar .text-nav:hover {
+    color: white;
+    background-color: rgb(66, 64, 64);
+}

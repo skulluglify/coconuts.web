@@ -49,6 +49,7 @@ function wload() {
 {
     mkdir -p popperjs
     wload https://unpkg.com/@popperjs/core@latest/dist/umd/popper.min.js popperjs/popper.min.js
+    wload https://unpkg.com/@popperjs/core@latest/dist/umd/popper.min.js.map popperjs/popper.min.js.map
 }
 
 

@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 
 
+if [ ! -f ".installed" ]; then
 echo -en >"fonts.css"
+fi
 
 
 ## check binary
@@ -96,8 +98,8 @@ function gen_meta_fonts() {
     fontselected=$(echo $filename | grep -Ei '\-(light|regular|medium|bold|semibold|italic|bolditalic|thin)\.(ttf|otf)$')
     if [ -n "${fontselected}" ]; then
       type=$(echo $fontselected | grep -Eio '(light|regular|medium|bold|semibold|italic|bolditalic|thin)' | tr '[:upper:]' '[:lower:]')
-      fontname=$(echo $cdirname $type | sed -e "s/\b\(.\)/\u\1/g")
-      src=$(echo "/assets/fonts/${src}")
+      fontname=$(echo $(echo $cdirname | cut -d\/ -f1) $type | sed -e "s/\b\(.\)/\u\1/g")
+      src=$(echo "/modules/fonts/${src}")
       cat<<<$(gen_font_style "$fontname" "$type" "$src")>>"fonts.css"
     else
       ## remove unused files
@@ -108,7 +110,6 @@ function gen_meta_fonts() {
 
 
 function wfont_install() {
-{
   if [ ! -d "$2" ]; then
     mkdir -p "$2"
     wload "$1" "$2".zip
@@ -117,7 +118,10 @@ function wfont_install() {
     rm "$2".zip
   fi
 }
-}
+
+
+## was installed
+touch ".installed"
 
 
 ## Poppins Font
@@ -129,4 +133,10 @@ function wfont_install() {
 ## Roboto Condensed Font
 {
   wfont_install https://fonts.google.com/download?family=Roboto%20Condensed Roboto_Condensed
+}
+
+
+## montserrat Font
+{
+  wfont_install https://fonts.google.com/download?family=Montserrat Montserrat
 }

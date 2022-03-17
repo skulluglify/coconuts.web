@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 
 
-echo >"fonts.css"
+if [ ! -f ".installed" ]; then
+echo -en >"fonts.css"
+fi
 
 
 ## check binary
@@ -14,6 +16,7 @@ fi
 
 check_binary wget
 check_binary unzip
+check_binary sha256sum
 check_binary woff2_compress
 
 
@@ -26,7 +29,7 @@ function wload() {
 function gen_font_style() {
 context=$(cat<<EOF
 @font-face {
-font-family: "$(echo $1 | sed -e 's/Bolditalic/Bold Italic/g')";
+font-family: "$(echo $1 | sed -e 's/Bolditalic/Bold Italic/g' -e 's/Semibold/Semi Bold/g')";
 `case $2 in
 light)
 echo "font-weight: lighter;"
@@ -61,8 +64,9 @@ echo "font-weight: normal;"
 echo "font-style: normal;"
 ;;
 esac`
-src: url(`echo $3 | sed -e 's/\.ttf$/\.woff2/g' -e 's/\.otf$/woff2/g'`) format('woff2');
+src: url(`echo $3`) format('woff2');
 }
+
 EOF
 )
 echo $context
@@ -75,34 +79,64 @@ function gen_meta_fonts() {
     pathname=$(echo "$line" | sed -e 's/ /\\ /g')
     filename=$(basename $pathname)
     cdirname=$(dirname $pathname)
-    filename=$(echo $filename | tr '[:upper:]' '[:lower:]')
+    # filename=$(echo $filename | tr '[:upper:]' '[:lower:]')
     outfile="${cdirname}/${filename}"
+    src=
     ## change, convert to woff2
     {
       echo "compress ${outfile} ..."
-      mv "$line" "${outfile}" &>/dev/null
+      # mv "$line" "${outfile}" &>/dev/null
       woff2_compress "${outfile}" &>/dev/null
       rm "${outfile}"
+      outfile=$(echo "${outfile}" | sed -e 's/\.ttf$/\.woff2/g' -e 's/\.otf$/woff2/g')
+      cryptname=$(sha256sum $outfile | awk '{print $1}')
+      cryptfile="${cryptname}.woff2"
+      src="${cdirname}/${cryptfile}"
+      mv "${outfile}" "${src}"
     }
     ## generated font style
     fontselected=$(echo $filename | grep -Ei '\-(light|regular|medium|bold|semibold|italic|bolditalic|thin)\.(ttf|otf)$')
     if [ -n "${fontselected}" ]; then
-      type=$(echo $fontselected | grep -Eio '(light|regular|medium|bold|semibold|italic|bolditalic|thin)')
-      fontname=$(echo $cdirname $type | sed -e "s/\b\(.\)/\u\1/g")
-      source=$(echo "/assets/fonts/${outfile}")
-      cat<<<$(gen_font_style "$fontname" "$type" "$source")>>"fonts.css"
+      type=$(echo $fontselected | grep -Eio '(light|regular|medium|bold|semibold|italic|bolditalic|thin)' | tr '[:upper:]' '[:lower:]')
+      fontname=$(echo $(echo $cdirname | cut -d\/ -f1) $type | sed -e "s/\b\(.\)/\u\1/g")
+      src=$(echo "/modules/fonts/${src}")
+      cat<<<$(gen_font_style "$fontname" "$type" "$src")>>"fonts.css"
+    else
+      ## remove unused files
+      rm "${src}"
     fi
   done <<<$(find $1 -type f | grep -Ei '\.(ttf|otf)$')    
 }
 
 
+function wfont_install() {
+  if [ ! -d "$2" ]; then
+    mkdir -p "$2"
+    wload "$1" "$2".zip
+    unzip "$2".zip -d "$2"
+    gen_meta_fonts "$2"
+    rm "$2".zip
+  fi
+}
+
+
+## was installed
+touch ".installed"
+
+
 ## Poppins Font
 {
-  if [ ! -d Poppins ]; then
-    mkdir -p Poppins
-    wload https://fonts.google.com/download?family=Poppins Poppins.zip
-    unzip Poppins.zip -d Poppins
-    gen_meta_fonts Poppins
-    rm Poppins.zip
-  fi
+  wfont_install https://fonts.google.com/download?family=Poppins Poppins
+}
+
+
+## Roboto Condensed Font
+{
+  wfont_install https://fonts.google.com/download?family=Roboto%20Condensed Roboto_Condensed
+}
+
+
+## montserrat Font
+{
+  wfont_install https://fonts.google.com/download?family=Montserrat Montserrat
 }
