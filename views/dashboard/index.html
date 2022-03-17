@@ -1,143 +1,212 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Dashboard</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard</title>
 
-        <!-- modules includes -->
-        <link rel="stylesheet" href="../modules/style.css">
-        <link rel="stylesheet" href="../modules/bootstrap-icons/bootstrap-icons.css">
-        <script src="../modules/jquery/jquery.slim.min.js"></script>
-        <script src="../modules/bootstrap/bootstrap.min.js"></script>
-        <script src="../modules/marked/marked.min.js"></script>
-        <!-- modules includes -->
+    <!-- modules includes -->
+    <link rel="stylesheet" href="../modules/style.css" />
+    <script src="../modules/jquery/jquery.slim.min.js"></script>
+    <script src="../modules/bootstrap/bootstrap.min.js"></script>
+    <script src="../modules/marked/marked.min.js"></script>
+    <!-- modules includes -->
 
-        <!-- local scripts -->
-        <link rel="stylesheet" href="./style.css">
-        <script src="./script.js"></script>
-        <!-- local scripts -->
-    </head>
-    <body>
-        <nav class="navbar navbar-expand-lg navbar-light shadow-sm">
-            <div class="container">
-                <div>
-                    <a class="navbar-brand" href="#">
-                        <img src="../assets/coconuts.svg" alt="" width="140px" class="d-inline-block">
-                    </a>
-                </div>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                        aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="d-none d-lg-flex flex-row align-items-center justify-content-center w-100">
-                    <div>
-                        <div class="search-box d-flex flex-nowrap flex-row align-items-center justify-content-start">
-                            <div class="search-image d-flex flex-column align-items-center justify-content-center">
-                                <i class="bi bi-search fs-5 text-grey ms-3"></i>
-                            </div>
-                            <input type="text" name="" autofocus class="search-input-lg text-grey" placeholder="Search">
-                        </div>
-                    </div>
-                </div>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <div class="d-block d-lg-none">
-                        <div class="search-box d-flex flex-nowrap flex-row align-items-center justify-content-start mt-3" style="width: 92%; margin: 0 0 0 12px">
-                            <div class="search-image d-flex flex-column align-items-center justify-content-center">
-                                <i class="bi bi-search fs-5 text-grey ms-3"></i>
-                            </div>
-                            <input type="text" name="" autofocus class="search-input-max text-grey"placeholder="Search">
-                        </div>
-                        <div class="mt-3">
-                            <a href="" class="outline-none text-decoration-none">
-                                <div class="d-flex flex-row flex-nowrap align-items-center justify-content-between" style="width: max-content; height: fit-content">
-                                    <div style="width: fit-content; height: fit-content; padding: 0 12px 0 0">
-                                        <img src="../assets/dummy/user-icon.png" alt="" width="40px" class="rounded-circle">
-                                    </div>
-                                    <span class="text-grey">Unknown User</span>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="d-none d-lg-flex flex-row align-items-center justify-content-start" style="width: max-content; height: 42px">
-                    <a href="" class="text-decoration-none">
-                        <div class="d-flex flex-column align-items-center justify-content-center" style="width: 36px; height: 36px">
-                            <div class="bell-notif"></div>
-                            <i class="bi-bell-fill bell"></i>
-                        </div>
-                    </a>
-                    <div style="width: 40px; height: 40px">
-                        <img src="../assets/dummy/user-icon.png" alt="" width="40px" class="rounded-circle">
-                    </div>
-                </div>
-            </div>
-        </nav>
-
-        <!-- Sidebar -->
-        <div class="sidebar">
-            <h2>Menu</h2>
-            <li>
-                <a href="#" class="text-nav"><span class="bi bi-house-door-fill"></span>Home</a>
-            </li>
-            <li>
-                <a href="#" class="text-nav"><span class="bi bi-currency-dollar"></span>Pricing</a>
-            </li>
-            <li>
-                <a href="#" class="text-nav"><span class="bi bi-people-fill"></span>Teams</a>
-            </li>
+    <!-- local scripts -->
+    <link rel="stylesheet" href="./style.css" />
+    <script src="./script.js"></script>
+    <!-- local scripts -->
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light shadow-sm">
+      <div class="container">
+        <div>
+          <a class="navbar-brand" href="#">
+            <img
+              src="../assets/coconuts.svg"
+              alt=""
+              width="140px"
+              class="d-inline-block"
+            />
+          </a>
         </div>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNavAltMarkup"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div
+          class="d-none d-lg-flex flex-row align-items-center justify-content-center w-100"
+        >
+          <div>
+            <div
+              class="search-box d-flex flex-nowrap flex-row align-items-center justify-content-start"
+            >
+              <div
+                class="search-image d-flex flex-column align-items-center justify-content-center"
+              >
+                <i class="bi bi-search fs-5 text-grey ms-3"></i>
+              </div>
+              <input
+                type="text"
+                name=""
+                autofocus
+                class="search-input-lg text-grey"
+                placeholder="Search"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <div class="d-block d-lg-none">
+            <div
+              class="search-box d-flex flex-nowrap flex-row align-items-center justify-content-start mt-3"
+              style="width: 92%; margin: 0 0 0 12px"
+            >
+              <div
+                class="search-image d-flex flex-column align-items-center justify-content-center"
+              >
+                <i class="bi bi-search fs-5 text-grey ms-3"></i>
+              </div>
+              <input
+                type="text"
+                name=""
+                autofocus
+                class="search-input-max text-grey"
+                placeholder="Search"
+              />
+            </div>
+            <div class="mt-3">
+              <a href="" class="outline-none text-decoration-none">
+                <div
+                  class="d-flex flex-row flex-nowrap align-items-center justify-content-between"
+                  style="width: max-content; height: fit-content"
+                >
+                  <div
+                    style="
+                      width: fit-content;
+                      height: fit-content;
+                      padding: 0 12px 0 0;
+                    "
+                  >
+                    <img
+                      src="../assets/dummy/user-icon.png"
+                      alt=""
+                      width="40px"
+                      class="rounded-circle"
+                    />
+                  </div>
+                  <span class="text-grey">Unknown User</span>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div
+          class="d-none d-lg-flex flex-row align-items-center justify-content-start"
+          style="width: max-content; height: 42px"
+        >
+          <a href="" class="text-decoration-none">
+            <div
+              class="d-flex flex-column align-items-center justify-content-center"
+              style="width: 36px; height: 36px"
+            >
+              <div class="bell-notif"></div>
+              <i class="bi-bell-fill bell"></i>
+            </div>
+          </a>
+          <div style="width: 40px; height: 40px">
+            <img
+              src="../assets/dummy/user-icon.png"
+              alt=""
+              width="40px"
+              class="rounded-circle"
+            />
+          </div>
+        </div>
+      </div>
+    </nav>
 
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
+    <div class="wrap-navbar-right">
+      <div class="navbar-right">
+        <div>
+          <ul>
+            <li><a href="#">Profile</a></li>
+            <li><a href="#">Notification</a></li>
+            <li><a href="#">Setting</a></li>
+          </ul>
+          <div class="logout">
+            <a href="#">Logout</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h2>Menu</h2>
+        <li>
+            <a href="#" class="text-nav"><span class="bi bi-house-door-fill"></span>Home</a>
+        </li>
+        <li>
+            <a href="#" class="text-nav"><span class="bi bi-currency-dollar"></span>Pricing</a>
+        </li>
+        <li>
+            <a href="#" class="text-nav"><span class="bi bi-people-fill"></span>Teams</a>
+        </li>
+    </div>
 
-        <div id="markdown_previewer"></div>
-        <script>
-
-            $("#markdown_previewer").html(
-                marked.parse("# **Header**\n# Header")
-            )
-        </script>
-    </body>
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <div id="markdown_previewer"></div>
+    <script>
+      $("#markdown_previewer").html(marked.parse("# **Header**\n# Header"));
+    </script>
+  </body>
 </html>
