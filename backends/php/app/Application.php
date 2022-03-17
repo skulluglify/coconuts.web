@@ -1,8 +1,10 @@
 <?php namespace app;
 
-use app\tiny\Date as Date;
+use models\User;
+use tiny\Date as Date;
+use tiny\MySQL as MySQL;
 
-class Controller
+class Application
 {
     /**
      * @throws \Exception
@@ -11,7 +13,9 @@ class Controller
 
         $date = new Date(abbr: "WIB");
         print_r(
-            $date->getHour()
+            $date->getMonth()
         );
+
+//        echo hash("sha3-256", "fish rod");
     }
 }
