@@ -8,9 +8,10 @@
 
     <!-- modules includes -->
     <link rel="stylesheet" href="../modules/style.css" />
-    <script src="../modules/jquery/jquery.slim.min.js"></script>
-    <script src="../modules/bootstrap/bootstrap.min.js"></script>
-    <script src="../modules/marked/marked.min.js"></script>
+    <script src="../modules/jquery/jquery.slim.min.js" crossorigin="anonymous"></script>
+    <script src="../modules/popperjs/popper.min.js" crossorigin="anonymous"></script>
+    <script src="../modules/bootstrap/bootstrap.min.js" crossorigin="anonymous"></script>
+    <script src="../modules/marked/marked.min.js" crossorigin="anonymous"></script>
     <!-- modules includes -->
 
     <!-- local scripts -->
@@ -89,7 +90,7 @@
                   class="d-flex flex-row flex-nowrap align-items-center justify-content-between"
                   style="width: max-content; height: fit-content"
                 >
-                  <div
+                  <button class="user-icon-m"
                     style="
                       width: fit-content;
                       height: fit-content;
@@ -102,7 +103,7 @@
                       width="40px"
                       class="rounded-circle"
                     />
-                  </div>
+                  </button>
                   <span class="text-grey">Unknown User</span>
                 </div>
               </a>
@@ -122,28 +123,31 @@
               <i class="bi-bell-fill bell"></i>
             </div>
           </a>
-          <div style="width: 40px; height: 40px">
+          <button class="user-icon"
+               style="width: 40px; height: 40px">
             <img
               src="../assets/dummy/user-icon.png"
               alt=""
               width="40px"
               class="rounded-circle"
             />
-          </div>
+          </button>
         </div>
       </div>
     </nav>
 
-    <div class="wrap-navbar-right">
-      <div class="navbar-right">
-        <div>
-          <ul>
-            <li><a href="#">Profile</a></li>
-            <li><a href="#">Notification</a></li>
-            <li><a href="#">Setting</a></li>
-          </ul>
-          <div class="logout">
-            <a href="#">Logout</a>
+    <div class="d-none user-bar">
+      <div class="wrap-navbar-right">
+        <div class="navbar-right">
+          <div>
+            <ul>
+              <li><a href="#">Profile</a></li>
+              <li><a href="#">Notification</a></li>
+              <li><a href="#">Setting</a></li>
+            </ul>
+            <div class="logout">
+              <a href="#">Logout</a>
+            </div>
           </div>
         </div>
       </div>
@@ -206,7 +210,18 @@
     <br />
     <div id="markdown_previewer"></div>
     <script>
-      $("#markdown_previewer").html(marked.parse("# **Header**\n# Header"));
+      $(() => {
+        let user = $(".user-icon");
+        let userBar = $(".user-bar");
+        let userPop = user.popover({
+          trigger: "focus",
+          container: "body",
+          placement: "bottom",
+          content: (e) => userBar.html(),
+          html: true
+        });
+        $("#markdown_previewer").html(marked.parse("# **Header**\n# Header"));
+      })
     </script>
   </body>
 </html>

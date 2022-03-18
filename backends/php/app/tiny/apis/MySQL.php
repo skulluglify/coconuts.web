@@ -116,7 +116,8 @@ class MySQL implements MySQLStructure
 
     public function has_changed(): bool {
 
-        return $this->cnx->affected_rows > 0;
+        // start at 0, is true
+        return 0 <= $this->cnx->affected_rows;
     }
 
     public function eval(string $query, mixed ...$params): MySQLFetchStructure | bool | null
