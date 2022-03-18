@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+cdir=`pwd`
+cd $(dirname $0)
 
 if [ ! -f ".installed" ]; then
 echo -en >"fonts.css"
@@ -75,13 +77,17 @@ echo $context
 
 function gen_meta_fonts() {
   IFS=
+  cdirname=
   while IFS= read -r line; do
     pathname=$(echo "$line" | sed -e 's/ /\\ /g')
     filename=$(basename $pathname)
     cdirname=$(dirname $pathname)
+    pdirname=$(echo $cdirname | cut -d\/ -f1)
     # filename=$(echo $filename | tr '[:upper:]' '[:lower:]')
     outfile="${cdirname}/${filename}"
     src=
+    ## create mp
+    {
     ## change, convert to woff2
     {
       echo "compress ${outfile} ..."
@@ -91,29 +97,53 @@ function gen_meta_fonts() {
       outfile=$(echo "${outfile}" | sed -e 's/\.ttf$/\.woff2/g' -e 's/\.otf$/woff2/g')
       cryptname=$(sha256sum $outfile | awk '{print $1}')
       cryptfile="${cryptname}.woff2"
-      src="${cdirname}/${cryptfile}"
+      src="${pdirname}/${cryptfile}"
       mv "${outfile}" "${src}"
     }
+
     ## generated font style
     fontselected=$(echo $filename | grep -Ei '\-(light|regular|medium|bold|semibold|italic|bolditalic|thin)\.(ttf|otf)$')
     if [ -n "${fontselected}" ]; then
       type=$(echo $fontselected | grep -Eio '(light|regular|medium|bold|semibold|italic|bolditalic|thin)' | tr '[:upper:]' '[:lower:]')
-      fontname=$(echo $(echo $cdirname | cut -d\/ -f1) $type | sed -e "s/\b\(.\)/\u\1/g")
+      if [ -n "$(echo $type | grep -Eiv 'regular|bold|italic')" ]; then
+        ## include types
+        fontname=$(echo $(echo $cdirname | cut -d\/ -f1 | cut -d\_ -f1) $type | sed -e "s/\b\(.\)/\u\1/g")
+      else
+        ## not include types
+        fontname=$(echo $(echo $cdirname | cut -d\/ -f1 | cut -d\_ -f1) | sed -e "s/\b\(.\)/\u\1/g")
+      fi
       src=$(echo "/modules/fonts/${src}")
       cat<<<$(gen_font_style "$fontname" "$type" "$src")>>"fonts.css"
     else
       ## remove unused files
-      rm "${src}"
+      if [ -f "${src}" ]; then
+        rm "${src}"
+      fi
+    fi	
+    } #& ## disable mp
+
+  done <<<$(find $1 -type f | grep -Ei '\.(ttf|otf)$')
+
+  # delete unused subdir
+  if [ -n "$(echo $cdirname)" ]; then
+    if [ -d "$(echo $cdirname)" ]; then
+      for x in `find $cdirname -type d | grep -Eiv "${cdirname}\$" | uniq -u`; do
+        # sleep 2 # wait last processing
+        echo delete "$x" ...
+        rm -rf "$x"
+      done
     fi
-  done <<<$(find $1 -type f | grep -Ei '\.(ttf|otf)$')    
+  fi
 }
 
 
 function wfont_install() {
   if [ ! -d "$2" ]; then
     mkdir -p "$2"
-    wload "$1" "$2".zip
-    unzip "$2".zip -d "$2"
+    echo collect "$2" ... 
+    wload "$1" "$2".zip &>/dev/null
+    echo unpack "$2" ...
+    unzip "$2".zip -d "$2" &>/dev/null
     gen_meta_fonts "$2"
     rm "$2".zip
   fi
@@ -140,3 +170,5 @@ touch ".installed"
 {
   wfont_install https://fonts.google.com/download?family=Montserrat Montserrat
 }
+
+cd $cdir
