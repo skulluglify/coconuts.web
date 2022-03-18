@@ -1,0 +1,429 @@
+@import url('https://unpkg.com/browse/bootstrap-icons@1.8.1/font/bootstrap-icons.css');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap%27');
+* {
+    font-family: 'Poppins', sans-serif;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+.grid-container {
+    position: relative;
+    padding: 50px 0 0 0;
+    max-width: 1200px;
+}
+
+.grid-item {
+    position: relative;
+    font-size: 25px;
+    padding: 20px 20px 0 20px;
+    background-color: #ffffff;
+    color: #222;
+}
+.grid-item23 {
+    position: relative;
+    font-size: 25px;
+    padding: 0 20px 20px 20px;
+    background-color: #ffffff;
+    color: rgb(255, 255, 255);
+    font-size: 1.3em;
+    text-align: center;
+}
+
+.grid-container {
+    display: grid;
+    justify-content: center;
+    height:100vh;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr 0.1fr;
+    margin: auto;
+    /**grid-auto-rows: minmax(auto, auto);**/
+    grid-gap: 0.8em;
+    max-height: 0;
+    grid-template-areas:
+    "header header"
+    "achiev relati"
+    "footer footer"
+}
+
+.GRID1 {
+    grid-area: header;
+    padding-top: 2em;
+    display: grid;
+    justify-content: center;
+    grid-template-columns: 1fr 1fr 0.5fr 0.5fr 1fr;
+    grid-template-rows: 1fr 0.3fr;
+    /**grid-auto-rows: minmax(auto, auto);**/
+    grid-gap: 0.7em;
+    grid-template-areas: 
+    "gambar nama follower followings edit"
+    "showcase showcase showcase showcase showcase"
+}
+.grid1-1 {
+    grid-area: gambar;
+    color: white;
+}
+.foto{
+    margin: 0 auto;
+    display: block;
+    max-width: 200px;
+}
+.grid1-2 {
+    grid-area: nama;
+    
+}
+.grid1-2 a {
+    font-size: 1em;
+}
+.grid1-3 {
+    grid-area: follower;
+    text-align: center;
+}
+.grid1-4 {
+    grid-area: followings;
+    text-align: center;
+}
+.grid1-5 {
+    grid-area: edit;
+    text-align: center;
+    justify-content: end;
+    display: inline-grid;
+    grid-template-columns:80%;
+}
+.grid1-5 a {
+    margin: 100px auto auto auto;
+}
+.grid1-6 {
+    grid-area: showcase;
+    text-align: center;
+    display: inline-grid;
+    grid-template-columns:100%;
+}
+
+.contrib {
+    margin: 2em 0 0.8em 0;
+    width: 100%;
+    display: block;
+    color: rgb(255, 255, 255);
+    font-weight: 500;
+    font-size: 1.25rem;
+    background: #0BA0E8;
+    border: none;
+    border-radius: 12px;
+    padding: 12px 16px;
+    cursor: pointer;
+    text-decoration: none;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+}
+.contrib:hover {
+    background: #3B346E;
+    color: rgb(255, 255, 255);
+}
+
+.GRID2 {
+    grid-area: achiev;
+    display: grid;
+    justify-content: center;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1.15fr 1fr 1fr 1fr 1fr;
+    /**grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1.45fr 1fr 1fr 1fr 1fr;
+    grid-auto-rows: minmax(auto, auto);**/
+    grid-gap: 0.4em;
+    grid-template-areas: 
+    "achievements achievements achievements"
+    "motivator investor koruptor"
+    "pelakor governor procrastinator"
+    "pemotor adaptor kompor"
+    "navigator designator pelopor"
+}
+.grid2-1 {
+    grid-area: achievements;
+    text-align: center;
+    display: inline-grid;
+    grid-template-columns:100%;
+}
+.achvmnt {
+    margin: auto;
+    width: 100%;
+    display: block;
+    color: rgb(255, 255, 255);
+    font-weight: 500;
+    font-size: 1.25rem;
+    background: #3B346E;
+    border: none;
+    border-radius: 12px;
+    padding: 12px 16px;
+    text-decoration: none;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+}
+.achvmnt:hover {
+    background: #0BA0E8;
+    color: rgb(255, 255, 255);
+}
+
+.grid2-2 {
+    grid-area: motivator;
+    padding: 12px 16px;
+    background-color: #3B346E;
+    border-radius: 5px;
+}
+.grid2-3 {
+    grid-area: investor;
+    padding: 12px 16px;
+    background-color: #3B346E;
+    border-radius: 5px;
+}
+.grid2-4 {
+    grid-area: koruptor;
+    padding: 12px 16px;
+    background-color: #3B346E;
+    border-radius: 5px;
+}
+.grid2-5 {
+    grid-area: pelakor;
+    padding: 12px 16px;
+    background-color: #3B346E;
+    border-radius: 5px;
+}
+.grid2-6 {
+    grid-area: governor;
+    padding: 12px 16px;
+    background-color: #3B346E;
+    border-radius: 5px;
+}
+.grid2-7 {
+    grid-area: procrastinator;
+    padding: 12px 16px;
+    background-color: #3B346E;
+    border-radius: 5px;
+}
+.grid2-8 {
+    grid-area: pemotor;
+    padding: 12px 16px;
+    background-color: #3B346E;
+    border-radius: 5px;
+}
+.grid2-9 {
+    grid-area: adaptor;
+    padding: 12px 16px;
+    background-color: #3B346E;
+    border-radius: 5px;
+}
+.grid2-10 {
+    grid-area: kompor;
+    padding: 12px 16px;
+    background-color: #3B346E;
+    border-radius: 5px;
+}
+.grid2-11 {
+    grid-area: navigator;
+    padding: 12px 16px;
+    background-color: #3B346E;
+    border-radius: 5px;
+}
+.grid2-12 {
+    grid-area: designator;
+    padding: 12px 16px;
+    background-color: #3B346E;
+    border-radius: 5px;
+}
+.grid2-13 {
+    grid-area: pelopor;
+    padding: 12px 16px;
+    background-color: #3B346E;
+    border-radius: 5px;
+}
+
+.GRID3 {
+    grid-area: relati;
+    display: grid;
+    justify-content: center;
+    grid-template-columns: 1fr;
+    grid-template-rows: 0fr;
+    /**grid-auto-rows: minmax(auto, auto);**/
+    grid-gap: 0.8em;
+    grid-template-areas: 
+    "relations"
+    "counts"
+}
+.grid3-1 {
+    grid-area: relations;
+    text-align: center;
+    display: inline-grid;
+    grid-template-columns:100%;
+}
+.rltn {
+    margin: auto;
+    width: 100%;
+    display: block;
+    color: rgb(255, 255, 255);
+    font-weight: 500;
+    font-size: 1.25rem;
+    background: #6E5E34;
+    border: none;
+    border-radius: 12px;
+    padding: 12px 16px;
+    text-decoration: none;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+}
+.rltn:hover {
+    background: #db1313;
+    color: rgb(255, 255, 255);
+}
+
+.grid3-2 {
+    grid-area: counts;
+    padding: 0.75em 0.8em 0 1.2em;
+    position: relative;
+    background-color: #6E5E34;
+    text-align: left;
+    display: grid;
+    border-radius: 12px;
+    justify-content: center;
+    grid-template-columns: 0fr 1fr 0fr 1fr;
+    grid-template-rows: 0fr 1fr;
+    /**grid-auto-rows: minmax(auto, auto);**/
+    grid-gap: 0.4em;
+    grid-template-areas: 
+    "groups groups visitor visitor"
+    "logo groupname friend friendname"
+}
+.grid3-2kiri1 {
+    grid-area: groups;
+    justify-content: start;
+}
+.grid3-2kiri2 {
+    grid-area: logo;
+    justify-content: start;
+}
+.grid3-2kiri3 {
+    grid-area: groupname;
+    padding: 0.4em 0 1em 0.3em;
+}
+.grid3-2kanan1 {
+    grid-area: visitor;
+}
+.grid3-2kanan2 {
+    grid-area: friend;
+}
+.grid3-2kanan3 {
+    grid-area: friendname;
+    padding: 0.4em 0 1em 0.3em;
+}
+.namabesar {
+    padding: 1em 0 0 0;
+}
+.namakecil {
+    font-size: 0.6em;
+}
+
+.GRID4 {
+    grid-area: footer;
+    display: grid;
+    justify-content: center;
+    grid-template-columns: 1fr;
+    grid-template-rows: 0fr;
+    /**grid-auto-rows: minmax(auto, auto);**/
+    grid-gap: 0.8em;
+    grid-template-areas: 
+    "conuts copyr"
+}
+.grid4-1 {
+    grid-area: conuts;
+    text-align: center;
+    display: inline-grid;
+    grid-template-columns:100%;
+}
+.grid4-2 {
+    grid-area: copyr;
+    text-align: center;
+    display: inline-grid;
+    grid-template-columns:100%;
+}
+
+.bi-star-fill {
+    color: #FFA928;
+}
+.bi-gender-female {
+    color: #df3f3f;
+}
+.bi-star-half {
+    color: #FFA928;
+}
+
+/* Background Styles Only */
+
+.fotokiri {
+    margin: auto 0;
+    display: block;
+    max-width: 60px;
+}
+.fotokiri2 {
+    margin: 0.8em auto;
+    display: block;
+    max-width: 60px;
+}
+.fotokanan {
+    margin: auto 0;
+    display: block;
+    max-width: 60px;
+}
+.fotokanan2 {
+    margin: 0.8em auto;
+    display: block;
+    max-width: 60px;
+}
+
+.coconuts {
+    width: 300px;
+}
+.footerfont {
+    text-align: justify;
+    font-size: 0.76em;
+}
+
+/**
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+.edit {
+    margin: auto;
+    display: inline-block;
+    color: rgb(255, 255, 255);
+    font-weight: 500;
+    font-size: 1.25rem;
+    background: #0BA0E8;
+    border: none;
+    border-radius: 5px;
+    padding: 12px 16px;
+    cursor: pointer;
+    text-decoration: none;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+}
+.edit:hover {
+    background: #3B346E;
+    color: rgb(255, 255, 255);
+}
+.grid1-6a {
+    margin: auto;
+}
+
+.grid3-3 {
+    grid-area: groups;
+    background-color: #6E5E34;
+    text-align: left;
+}
+.grid3-4 {
+    grid-area: visitors;
+    background-color: #6E5E34;
+    text-align: left;
+}
+.grid3-5 {
+    grid-area: name;
+    background-color: #6E5E34;
+    text-align: left;
+}
+**/
