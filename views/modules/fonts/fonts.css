@@ -1,0 +1,126 @@
+@font-face {
+font-family: "Poppins Bold";
+font-weight: bold;
+font-style: normal;
+src: url(/modules/fonts/Poppins/5bd7a1e006fa739a820cbf397667fc86e7c4e2eb700df81b532121f78ef7d3d7.woff2) format('woff2');
+}
+@font-face {
+font-family: "Poppins Medium";
+font-weight: normal;
+font-style: normal;
+src: url(/modules/fonts/Poppins/54cedf5dd7570144d85d5f94e823e02147777e9063d548723122099546d149bd.woff2) format('woff2');
+}
+@font-face {
+font-family: "Poppins Semi Bold";
+font-weight: bold;
+font-style: normal;
+src: url(/modules/fonts/Poppins/0bcf29d5a91c47ba2452ef5dd89570db049ce7803ec79b3621978e49f73bc02b.woff2) format('woff2');
+}
+@font-face {
+font-family: "Poppins Regular";
+font-weight: normal;
+font-style: normal;
+src: url(/modules/fonts/Poppins/a2c1dd01db85a00fb60520dce8e9fbce9e80ef72b602a6750689fe606fb626e8.woff2) format('woff2');
+}
+@font-face {
+font-family: "Poppins Light";
+font-weight: lighter;
+font-style: normal;
+src: url(/modules/fonts/Poppins/c976ba6a1fbe6e96abde9f19d73ef069f67a079e7778269300fb4dcc36605c0c.woff2) format('woff2');
+}
+@font-face {
+font-family: "Poppins Thin";
+font-weight: normal;
+font-style: normal;
+src: url(/modules/fonts/Poppins/6f2360b889e72267cf036324cd9dd12a5d85d016fc6a51cfb8ad7ca5b65afe78.woff2) format('woff2');
+}
+@font-face {
+font-family: "Poppins Bold Italic";
+font-weight: bold;
+font-style: italic;
+src: url(/modules/fonts/Poppins/68664c531d1189f2c93ac34be8e3f3882e9710dcbe5d529942b78ff487b9deb2.woff2) format('woff2');
+}
+@font-face {
+font-family: "Poppins Italic";
+font-weight: normal;
+font-style: italic;
+src: url(/modules/fonts/Poppins/84de818712e0474c98b472497ee32e8058744f458d009130ede4f4cc729f1166.woff2) format('woff2');
+}
+@font-face {
+font-family: "Roboto_Condensed Bold";
+font-weight: bold;
+font-style: normal;
+src: url(/modules/fonts/Roboto_Condensed/a5a8f9c78dd8fa46747f2af0b70b956d57341c4662eba1e6ff26de5fcc0f8709.woff2) format('woff2');
+}
+@font-face {
+font-family: "Roboto_Condensed Light";
+font-weight: lighter;
+font-style: normal;
+src: url(/modules/fonts/Roboto_Condensed/d418abcd0b97397fdf99081f00df5bdb74c559ec4f01602509516d66fae1e570.woff2) format('woff2');
+}
+@font-face {
+font-family: "Roboto_Condensed Regular";
+font-weight: normal;
+font-style: normal;
+src: url(/modules/fonts/Roboto_Condensed/7b67a921d4968d3f97c7d139db354ab36db01bf6d1ad9b3f8920442328fb853b.woff2) format('woff2');
+}
+@font-face {
+font-family: "Roboto_Condensed Italic";
+font-weight: normal;
+font-style: italic;
+src: url(/modules/fonts/Roboto_Condensed/f39bc816f06187913b4e7a39455e2e2f33b16ebfeb07e2a1db598b90fd12d895.woff2) format('woff2');
+}
+@font-face {
+font-family: "Roboto_Condensed Bold Italic";
+font-weight: bold;
+font-style: italic;
+src: url(/modules/fonts/Roboto_Condensed/64ab9eca3cb087edbdf4be774b022d93c8248587b41c6bcb45cdb368b0f56a64.woff2) format('woff2');
+}
+@font-face {
+font-family: "Montserrat Medium";
+font-weight: normal;
+font-style: normal;
+src: url(/modules/fonts/Montserrat/static/756f20bfd93500ae8eff251b82a073a128d29c14593355d52079fb70cd1b5be5.woff2) format('woff2');
+}
+@font-face {
+font-family: "Montserrat Light";
+font-weight: lighter;
+font-style: normal;
+src: url(/modules/fonts/Montserrat/static/4b05fd0b5e11bed6c34b537452e3bddd50c8baa08d8f31023f2bb1d24ba3d612.woff2) format('woff2');
+}
+@font-face {
+font-family: "Montserrat Italic";
+font-weight: normal;
+font-style: italic;
+src: url(/modules/fonts/Montserrat/static/74d0d9350fb84b139cc9be8779a36c22a128c801ebb974ed9e7f6f4e7718ce7d.woff2) format('woff2');
+}
+@font-face {
+font-family: "Montserrat Semi Bold";
+font-weight: bold;
+font-style: normal;
+src: url(/modules/fonts/Montserrat/static/8dcd39f98204774dce914592c4203ab02358c161a7d0e803b22c25ff92ae747f.woff2) format('woff2');
+}
+@font-face {
+font-family: "Montserrat Regular";
+font-weight: normal;
+font-style: normal;
+src: url(/modules/fonts/Montserrat/static/10d7c5fe589149db726b203b4a011eaddaf96a290829546a8b33e60ef79ae87e.woff2) format('woff2');
+}
+@font-face {
+font-family: "Montserrat Thin";
+font-weight: normal;
+font-style: normal;
+src: url(/modules/fonts/Montserrat/static/0bdfbffca2a79bd842681eea584eeae0df08cbc16dd52ab4f4bb7e01e53fa4a6.woff2) format('woff2');
+}
+@font-face {
+font-family: "Montserrat Bold Italic";
+font-weight: bold;
+font-style: italic;
+src: url(/modules/fonts/Montserrat/static/8bad48ef7ba0b386c118beca55a05c552db400f88fab8712eddd1a5a81daad1b.woff2) format('woff2');
+}
+@font-face {
+font-family: "Montserrat Bold";
+font-weight: bold;
+font-style: normal;
+src: url(/modules/fonts/Montserrat/static/52ae145cbf743bf2adf8886d48413f35fff6c2a149c57920dc6a7d079956d79a.woff2) format('woff2');
+}

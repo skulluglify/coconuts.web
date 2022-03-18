@@ -840,7 +840,13 @@ class DBUpdateTable(DBProgram):
         self.__dict__.update(kwargs)
 
 
-class DBDeleteFromTable(DBProgram): pass
+class DBDeleteFromTable(DBProgram):
+    WHERES: typing.List[DBValue] | typing.Tuple[DBValue]
+
+
+    def __init__(self, table: DBTable, *values: DBValue, **kwargs):
+        super().__init__()
+        self.__dict__.update(kwargs)
 
 
 class DBDeleteTable(DBProgram): pass

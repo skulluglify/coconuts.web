@@ -3,6 +3,8 @@
 @import url("./easymde/easymde.min.css");
 @import url("./bootstrap/bootstrap.min.css");
 @import url("./sweetalert2/sweetalert2.min.css");
+@import url("./fonts/fonts.css");
+
 
 :root {
     --var-green: #40d024;
