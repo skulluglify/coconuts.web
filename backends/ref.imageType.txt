@@ -1,0 +1,49 @@
+https://en.wikipedia.org/wiki/List_of_file_signatures
+https://mimesniff.spec.whatwg.org/#matching-an-image-type-pattern
+
+FF FF FF FF | 00 00 01 00 | image/x-icon
+FF FF FF FF | 00 00 02 00 | image/x-icon
+FF FF | 42 4D | image/bmp
+FF FF FF FF FF FF | 47 49 46 38 37 61 | image/gif
+FF FF FF FF FF FF | 47 49 46 38 39 61 | image/gif
+FF FF FF FF 00 00 00 00 FF FF FF FF FF FF | 52 49 46 46 00 00 00 00 57 45 42 50 56 50 | image/webp
+FF FF FF FF FF FF FF FF | 89 50 4E 47 0D 0A 1A 0A | image/png
+FF FF FF | FF D8 FF | image/jpeg
+
+FF x 14
+
+subarray(0, 14)
+
+mask -> define -> resultType
+
+control.addEventListener("change", function(event) {
+    var files = control.files,
+    for (var i = 0; i < files.length; i++) {
+        console.log("Filename: " + files[i].name);
+        console.log("Type: " + files[i].type);
+        console.log("Size: " + files[i].size + " bytes");
+    }
+}, false);
+
+target.addEventListener("dragover", function(event) {
+    event.preventDefault();
+}, false);
+
+target.addEventListener("drop", function(event) {
+    event.preventDefault();
+    var files = event.dataTransfer.files,
+    for (var i = 0; i < files.length; i++) {
+        console.log("Filename: " + files[i].name);
+        console.log("Type: " + files[i].type);
+        console.log("Size: " + files[i].size + " bytes");
+    }
+}, false);
+
+
+let blob = files[i];
+let fileReader = new FileReader();
+fileReader.onloadend = function(e) {
+  let buff = new Uint8Array(e.target.result)
+  let header = buff.subarray(0, 14);
+};
+fileReader.readAsArrayBuffer(blob);

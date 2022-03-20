@@ -1,0 +1,105 @@
+@import url("./bootstrap-icons/bootstrap-icons.css");
+@import url("./animate/animate.min.css");
+@import url("./easymde/easymde.min.css");
+@import url("./bootstrap/bootstrap.min.css");
+@import url("./sweetalert2/sweetalert2.min.css");
+@import url("./fonts/fonts.css");
+
+:root {
+    --var-red: #f03434;
+    --var-green: #40d024;
+    --var-yellow: #f4de00;
+    --var-orange: rgb(240, 174, 59);
+    --var-blue: #188efc;
+    --var-light-grey: #dedede;
+    --var-grey: #a6a6a6;
+    --var-white: #f4f4f4;
+    --var-black: #151515;
+    --var-purple: #b60cf0;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    border: none;
+    box-shadow: none;
+    box-sizing: border-box;
+    outline: none;
+}
+
+.brand-text {
+    font-family: 'Sansita Light';
+    font-weight: lighter;
+    font-style: normal;
+    font-size: 1.25rem;
+}
+
+.icons {
+    display: grid;
+    max-width: 100%;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr) );
+    gap: 1.25rem;
+}
+  
+.icon {
+    background-color: var(--bs-light);
+    border-radius: .25rem;
+}
+
+.bi {
+    margin: .25rem;
+    font-size: 2.5rem;
+}
+
+.label {
+    display: inline-block;
+    width: 100%;
+    overflow: hidden;
+    padding: .25rem;
+    font-size: .625rem;
+    font-family: var(--bs-font-monospace);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.white {
+    background-color: var(--var-white);
+}
+
+.red {
+    background-color: var(--var-red);
+}
+
+.green {
+    background-color: var(--var-green);
+}
+
+.blue {
+    background-color: var(--var-blue);
+}
+
+.yellow {
+    background-color: var(--var-yellow);
+}
+
+.purple {
+    background-color: var(--var-purple);
+}
+
+.sn {
+    user-select: none;
+    -webkit-user-drag: none;
+    -webkit-user-select: none;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    outline: none;
+}
+
+.sn:hover {
+    border: 1px solid var(--var-light-grey);
+}
+
+.sn:focus,
+.sn:active {
+    background-color: var(--var-light-grey);
+}

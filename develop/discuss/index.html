@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Welcome</title>
+
+    <!-- modules includes -->
+    <link rel="stylesheet" href="../modules/style.css" />
+    <script src="../modules/jquery/jquery.slim.min.js" crossorigin="anonymous"></script>
+    <script src="../modules/popperjs/popper.min.js" crossorigin="anonymous"></script>
+    <script src="../modules/bootstrap/bootstrap.min.js" crossorigin="anonymous"></script>
+    <script src="../modules/marked/marked.min.js" crossorigin="anonymous"></script>
+    <!-- modules includes -->
+
+    <!-- local scripts -->
+    <link rel="stylesheet" href="./style.css" />
+    <script src="./preview/preview.js"></script>
+    <script src="./script.js"></script>
+    <!-- local scripts -->
+</head>
+<body>
+    <!-- Navbar Right For User -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
+        <div class="container-md">
+            <a class="d-flex align-items-center justify-content-center navbar-brand"
+               draggable="false"
+               href="#">
+                <img src="../assets/cocos.svg"
+                     width="32px"
+                     height="32px"
+                     draggable="false"
+                     class="d-inline-block align-top"
+                     alt="cocos"
+                />
+                <span class="brand-text">
+                    COCONUTS
+                </span>
+
+            </a>
+            <button class="navbar-toggler"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation"
+            >
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="d-none d-lg-flex flex-row align-items-center justify-content-start w-100">
+                <ul class="navbar-nav nav-x"
+                    style="margin: 0 12px 0 0">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Pricing</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Teams</a>
+                    </li>
+                </ul>
+                <div class="search-box d-flex flex-nowrap flex-row align-items-center justify-content-start">
+                    <input class="search-input text-grey"
+                           type="text"
+                           name=""
+                           placeholder="Search"
+                           autofocus
+                    />
+                    <div class="search-img d-flex flex-column align-items-center justify-content-center">
+                        <i class="bi bi-search fs-5 text-grey me-2"></i>
+                    </div>
+                </div>
+            </div>
+            <!-- Navbar For Mobile -->
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <div class="d-block d-lg-none">
+                    <div class="search-box d-flex flex-nowrap flex-row align-items-center justify-content-start mt-3"
+                         style="width: 92%; margin: 0 0 0 12px">
+                        <input class="search-input-m text-grey"
+                               type="text"
+                               name=""
+                               placeholder="Search"
+                               autofocus
+                        />
+                        <div class="search-img d-flex flex-column align-items-center justify-content-center">
+                            <i class="bi bi-search fs-5 text-grey me-2"></i>
+                        </div>
+                    </div>
+                    <ul class="navbar-nav nav-m">
+                        <li class="nav-item active">
+                            <a class="nav-link" href="#"><i class="bi bi-house-fill"></i>Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#"><i class="bi bi-currency-dollar"></i>Pricing</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#"><i class="bi bi-people-fill"></i>Teams</a>
+                        </li>
+                    </ul>
+                    <div class="mt-3">
+                        <a href="#" class="outline-none text-decoration-none">
+                            <div class="d-flex flex-row flex-nowrap align-items-center justify-content-between"
+                                 style="width: max-content; height: fit-content">
+                                <button class="user-icon-m"
+                                        style="width: fit-content; height: fit-content; padding: 0 12px 0 0;">
+                                    <img
+                                        src="../assets/dummy/user-icon.png"
+                                        alt=""
+                                        width="40px"
+                                        draggable="false"
+                                        class="rounded-circle"
+                                        alt="user icon"
+                                    />
+                                </button>
+                                <span class="text-grey">Unknown User</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <!-- User Icon And Notification -->
+            <div class="d-none d-lg-flex flex-row align-items-center justify-content-start"
+                 style="width: max-content; height: 42px"
+            >
+                <a href="" class="text-decoration-none">
+                    <div class="d-flex flex-column align-items-center justify-content-center"
+                         style="width: 36px; height: 36px"
+                    >
+                        <div class="bell-notification"></div>
+                        <i class="bi-bell-fill bell"></i>
+                    </div>
+                </a>
+                <button class="user-icon"
+                        style="width: 40px; height: 40px">
+                    <img
+                        src="../assets/dummy/user-icon.png"
+                        alt=""
+                        width="40px"
+                        draggable="false"
+                        class="rounded-circle"
+                        alt="user icon"
+                    />
+                </button>
+            </div>
+        </div>
+    </nav>
+    <!-- Navbar Right For User -->
+    <div class="d-none user-bar">
+        <div class="wrap-navbar-right">
+            <div class="navbar-right">
+
+                <ul>
+                    <li><a href="#">Profile</a></li>
+                    <li><a href="#">Notification</a></li>
+                    <li><a href="#">Setting</a></li>
+                </ul>
+                <div class="logout">
+                    <a href="#">Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard -->
+    <div class="container-lg border">
+        <div class="ds row">
+            <div class="col-md-2 purple">
+                <!-- Utilities -->
+            </div>
+            <div class="col-md-8">
+                <!-- Post And Comments -->
+                <div class="ds-content-post">
+                    
+                    <div class="post white shadow">
+                        <div class="post-title green">
+                            <span>Post Tittle</span>
+                        </div>
+                        <div class="post-content white">
+                            <div class="wrap-content">
+                                <w-frame class="white" content="<h1 onclick='consoleee.log(12)'>Hello World!</h1><h1>Hello World!</h1><h1>Hello World!</h1><h1>Hello World!</h1><script>alert('i hack u!')</script><i class='bi bi-x' style='color:yellow; font-size:6rem; font-weight:bold;'></i>"></w-frame>
+                            </div>
+                        </div>
+                        <div class="post-categories">
+                            <button class="wrap-categories-item btn btn-primary">
+                                    <i class="bi bi-tag"></i>
+                                    <span>cplusplus</span>
+                            </button>
+                            <button class="wrap-categories-item btn btn-primary">
+                                    <i class="bi bi-tag"></i>
+                                    <span>javascript</span>
+                            </button>
+                            <button class="wrap-categories-item btn btn-primary">
+                                    <i class="bi bi-tag"></i>
+                                    <span>stylesheets</span>
+                            </button>
+                            <button class="wrap-categories-item btn btn-primary">
+                                    <i class="bi bi-tag"></i>
+                                    <span>stylesheets</span>
+                            </button>
+                            <button class="wrap-categories-item btn btn-primary">
+                                    <i class="bi bi-tag"></i>
+                                    <span>stylesheets</span>
+                            </button>
+                            <button class="wrap-categories-item btn btn-primary">
+                                    <i class="bi bi-tag"></i>
+                                    <span>stylesheets</span>
+                            </button>
+                            <button class="wrap-categories-item btn btn-primary">
+                                    <i class="bi bi-tag"></i>
+                                    <span>stylesheets</span>
+                            </button>
+                            <button class="wrap-categories-item btn btn-primary">
+                                    <i class="bi bi-tag"></i>
+                                    <span>stylesheets</span>
+                            </button>
+                        </div>
+                        <div class="post-info">
+                            <div class="user-info sn">
+                                <div class="user-photo">
+                                    <img src="../assets/dummy/user-icon.png" alt="" width="52px" draggable="false" class="rounded-circle" alt="user photo">
+                                </div>
+                                <div class="user-description">
+                                    <div class="user-name">
+                                        <span>Slamet Ujang</span>
+                                        <i class="bi bi-patch-check-fill"></i>
+                                    </div>
+                                    <div class="user-rate">
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-half"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="count-like sn">
+                                <i class="bi bi-hand-thumbs-up-fill"></i>
+                                <span>Like 250</span>
+                            </div>
+                            <div class="count-dislike sn">
+                                <i class="bi bi-hand-thumbs-down-fill"></i>
+                                <span>250</span>
+                            </div>
+                            <div class="comment-reply sn">
+                                <i class="bi bi-chat-right-text"></i>
+                                <span>Reply as 250</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-md-2 green">
+                <!-- Teams And Message -->
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

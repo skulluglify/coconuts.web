@@ -66,7 +66,7 @@ echo "font-weight: normal;"
 echo "font-style: normal;"
 ;;
 esac`
-src: url(`echo $3`) format('woff2');
+src: url("`echo $3`") format('woff2');
 }
 
 EOF
@@ -112,7 +112,9 @@ function gen_meta_fonts() {
         ## not include types
         fontname=$(echo $(echo $cdirname | cut -d\/ -f1 | cut -d\_ -f1) | sed -e "s/\b\(.\)/\u\1/g")
       fi
-      src=$(echo "/modules/fonts/${src}")
+      ## URL no-root
+      # src=$(echo "/modules/fonts/${src}")
+      src=$(echo "./${src}")
       cat<<<$(gen_font_style "$fontname" "$type" "$src")>>"fonts.css"
     else
       ## remove unused files
@@ -162,13 +164,18 @@ touch ".installed"
 
 ## Roboto Condensed Font
 {
-  wfont_install https://fonts.google.com/download?family=Roboto%20Condensed Roboto_Condensed
+  wfont_install https://fonts.google.com/download?family=Roboto%20Condensed Roboto
 }
 
 
 ## montserrat Font
 {
   wfont_install https://fonts.google.com/download?family=Montserrat Montserrat
+}
+
+## sansita swashed
+{
+  wfont_install https://fonts.google.com/download?family=Sansita%20Swashed Sansita
 }
 
 cd $cdir
