@@ -13,6 +13,7 @@
     <script src="../modules/popperjs/popper.min.js" crossorigin="anonymous"></script>
     <script src="../modules/bootstrap/bootstrap.min.js" crossorigin="anonymous"></script>
     <script src="../modules/marked/marked.min.js" crossorigin="anonymous"></script>
+    <script src="../modules/easymde/easymde.min.js" crossorigin="anonymous"></script>
     <!-- modules includes -->
 
     <!-- local scripts -->
@@ -22,7 +23,7 @@
     <!-- local scripts -->
 </head>
 <body>
-    <!-- Navbar Right For User -->
+    <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
         <div class="container-md">
             <a class="d-flex align-items-center justify-content-center navbar-brand"
@@ -148,7 +149,7 @@
             </div>
         </div>
     </nav>
-    <!-- Navbar Right For User -->
+    <!-- Navbar Right -->
     <div class="d-none user-bar">
         <div class="wrap-navbar-right">
             <div class="navbar-right">
@@ -166,22 +167,55 @@
     </div>
 
     <!-- Dashboard -->
-    <div class="container-lg border">
+    <div class="container-lg">
         <div class="ds row">
             <div class="col-md-2 purple">
                 <!-- Utilities -->
             </div>
-            <div class="col-md-8">
+            <div class="col-md-8 mt-4">
+                <div class="ds-editor-post">
+                    <div class="editor white shadow">
+                        <div class="banner">
+                            <i class="bi bi-pencil-square"></i>
+                            <span>Write a new post</span>
+                        </div>
+                        <div class="title">
+                            <span>
+                                Title
+                            </span>
+                            <input type="text" class="white" placeholder="title">
+                        </div>
+                        <textarea id="editor-area"></textarea>
+                        <div class="categories">
+                            <span>
+                                <i class="bi bi-exclamation-triangle-fill"></i>
+                                Category words, separator character with comma!
+                            </span>
+                            <textarea class="white" rows="4" placeholder="categories"></textarea>
+                        </div>
+                        <div class="prompt-box">
+                            <button class="btn btn-danger">
+                                cencel
+                            </button>
+                            <button class="btn btn-primary">
+                                submit
+                            </button>
+                        </div>
+                    </div>
+                </div>
                 <!-- Post And Comments -->
                 <div class="ds-content-post">
                     
                     <div class="post white shadow">
                         <div class="post-title green">
-                            <span>Post Tittle</span>
+                            <span>How to Make Children! Lorem ipsum dolor, sit amet consectetur adipisicing elit. Iure tempore quaerat provident dolore, ex dolorem ad nam culpa porro dolores nemo optio distinctio, dolor consectetur tenetur laudantium! Veniam, exercitationem ratione.</span>
                         </div>
                         <div class="post-content white">
                             <div class="wrap-content">
-                                <w-frame class="white" content="<h1 onclick='consoleee.log(12)'>Hello World!</h1><h1>Hello World!</h1><h1>Hello World!</h1><h1>Hello World!</h1><script>alert('i hack u!')</script><i class='bi bi-x' style='color:yellow; font-size:6rem; font-weight:bold;'></i>"></w-frame>
+                                <w-frame class="" content="<h1 onclick='consoleee.log(12)'>Hello World!</h1><h1>Hello World!</h1><h1>Hello World!</h1><h1>Hello World!</h1><script>alert('i hack u!')</script><i class='bi bi-x' style='color:yellow; font-size:6rem; font-weight:bold;'></i>"></w-frame>
+                                <div class="date">
+                                    <span>2020-10-12 20:24 WIB</span>
+                                </div>
                             </div>
                         </div>
                         <div class="post-categories">
