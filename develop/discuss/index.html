@@ -11,14 +11,15 @@
     <link rel="stylesheet" href="../modules/style.css" />
     <script src="../modules/jquery/jquery.slim.min.js" crossorigin="anonymous"></script>
     <script src="../modules/popperjs/popper.min.js" crossorigin="anonymous"></script>
-    <script src="../modules/bootstrap/bootstrap.min.js" crossorigin="anonymous"></script>
+    <script src="../modules/sweetalert2/sweetalert2.min.js" crossorigin="anonymous"></script>
     <script src="../modules/marked/marked.min.js" crossorigin="anonymous"></script>
     <script src="../modules/easymde/easymde.min.js" crossorigin="anonymous"></script>
+    <script src="../modules/bootstrap/bootstrap.min.js" crossorigin="anonymous"></script>
     <!-- modules includes -->
 
     <!-- local scripts -->
     <link rel="stylesheet" href="./style.css" />
-    <script src="./preview/preview.js"></script>
+    <script src="./preview.min.js"></script>
     <script src="./script.js"></script>
     <!-- local scripts -->
 </head>
@@ -51,7 +52,7 @@
             >
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="d-none d-lg-flex flex-row align-items-center justify-content-start w-100">
+            <div class="d-none d-lg-flex flex-row align-items-center justify-content-between w-100">
                 <ul class="navbar-nav nav-x"
                     style="margin: 0 12px 0 0">
                     <li class="nav-item active">
@@ -183,7 +184,7 @@
                             <span>
                                 Title
                             </span>
-                            <input type="text" class="white" placeholder="title">
+                            <input type="text" class="white" placeholder="title" autofocus>
                         </div>
                         <textarea id="editor-area"></textarea>
                         <div class="categories">
@@ -191,6 +192,7 @@
                                 <i class="bi bi-exclamation-triangle-fill"></i>
                                 Category words, separator character with comma!
                             </span>
+                            <div class="categories-preview"></div>
                             <textarea class="white" rows="4" placeholder="categories"></textarea>
                         </div>
                         <div class="prompt-box">
@@ -207,12 +209,12 @@
                 <div class="ds-content-post">
                     
                     <div class="post white shadow">
-                        <div class="post-title green">
+                        <div class="post-title">
                             <span>How to Make Children! Lorem ipsum dolor, sit amet consectetur adipisicing elit. Iure tempore quaerat provident dolore, ex dolorem ad nam culpa porro dolores nemo optio distinctio, dolor consectetur tenetur laudantium! Veniam, exercitationem ratione.</span>
                         </div>
                         <div class="post-content white">
                             <div class="wrap-content">
-                                <w-frame class="" content="<h1 onclick='consoleee.log(12)'>Hello World!</h1><h1>Hello World!</h1><h1>Hello World!</h1><h1>Hello World!</h1><script>alert('i hack u!')</script><i class='bi bi-x' style='color:yellow; font-size:6rem; font-weight:bold;'></i>"></w-frame>
+                                <w-frame class="white" content="<span class='sn'>this is post, with w-frame!</span>"></w-frame>
                                 <div class="date">
                                     <span>2020-10-12 20:24 WIB</span>
                                 </div>

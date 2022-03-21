@@ -10,7 +10,7 @@ use mysqli_result;
 interface MySQLStructure
 {
     public function has_changed(): bool;
-    public function eval(string $query, mixed ...$params): MySQLFetchStructure | bool | null;
+    public function eval(string $query, mixed ...$params): null | bool | MySQLFetchStructure;
     public function close();
 }
 
@@ -37,7 +37,7 @@ class MySQLFetch implements MySQLFetchStructure
     public function all(): array | null
     {
 
-        $result = $this->result->fetch_all();
+        $result = $this->result->fetch_all(mode: MYSQLI_ASSOC);
         if ($result) return $result;
         return null;
     }
@@ -46,7 +46,7 @@ class MySQLFetch implements MySQLFetchStructure
     {
 
         $result = array();
-        while ($row = $this->result->fetch_row())
+        while ($row = $this->result->fetch_assoc())
         {
             if ($size != 0)
             {
@@ -64,7 +64,7 @@ class MySQLFetch implements MySQLFetchStructure
     public function one(): array | null
     {
 
-        $result = $this->result->fetch_row();
+        $result = $this->result->fetch_assoc();
         if ($result) return $result;
         return null;
     }
@@ -120,7 +120,7 @@ class MySQL implements MySQLStructure
         return 0 <= $this->cnx->affected_rows;
     }
 
-    public function eval(string $query, mixed ...$params): MySQLFetchStructure | bool | null
+    public function eval(string $query, mixed ...$params): null | bool | MySQLFetchStructure
     {
 
         $types = "";
@@ -171,7 +171,22 @@ class MySQL implements MySQLStructure
 
             $stmt->bind_param($types, ...$params);
             $stmt->execute();
+
+            $result = $stmt->get_result();
+
             $stmt->close();
+
+            if (is_bool($result)) {
+
+                return $result;
+            }
+
+            if ($result instanceof mysqli_result) {
+
+                return new MySQLFetch($result);
+            }
+
+            return null;
 
         } else
         {

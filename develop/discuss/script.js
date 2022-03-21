@@ -113,4 +113,119 @@ $(() => {
             enabled: true
         }
     });
+
+    // tricky
+    $(".EasyMDEContainer .CodeMirror").bind("keydown", (e) => {
+
+        if (e.ctrlKey || e.metaKey) {
+
+            switch ((e.key || String.fromCodePoint(e.which)).toLowerCase()) {
+
+                case "s":
+
+                    e.preventDefault();
+                    
+
+                    Swal.fire({
+                    
+                        title: 'Do you want to save the changes?',
+                        icon: "question",
+                    
+                        showDenyButton: true,
+                        showCancelButton: true,
+                        confirmButtonText: 'Save',
+                        denyButtonText: `Don't save`,
+                    
+                    }).then((result) => {
+                    
+                        if (result.isConfirmed) {
+                    
+                            Swal.fire('Saved!', '', 'success')
+                    
+                        } else if (result.isDenied) {
+                    
+                            Swal.fire('Changes are not saved', '', 'info')
+                            localStorage.setItem("smde_markdown", "")
+                            
+                        } else if (result.isDismissed) {
+                            
+                            
+                            Swal.fire('Cencel!', '', 'error')
+                        }
+                    })
+                break;
+            }
+        }
+    })
+
+    // categories
+    // `<button class="wrap-categories-item btn btn-primary">
+    // <i class="bi bi-x"></i>
+    // <span>cplusplus</span>
+    // </button>`
+
+    !0 && (function main() {
+
+        let categories = document.querySelector(".ds-editor-post .editor .categories .categories-preview")
+        let textarea = document.querySelector(".ds-editor-post .editor .categories textarea")
+
+        function createCategoryButton(context) {
+
+            if (typeof context == "string") {
+
+                let el = document.createElement("button")
+                let spanel = document.createElement("span")
+                let iel = document.createElement("i")
+                el.classList.add("btn", "btn-primary", "wrap-categories-item", "animate__animated", "animate__bounceInLeft")
+                iel.classList.add("bi", "bi-x")
+                spanel.textContent = context
+                el.append(iel, spanel)
+        
+                el.addEventListener("click", function click(e) {
+
+                    // setTimeout(() => {
+                    //     el.remove()
+                    // }, 2000)
+
+                    el.remove()
+                })
+                return el;
+            }
+            return null
+        }
+
+        textarea.addEventListener("keydown", (e) => {
+
+            let c = (e.key || String.fromCodePoint(e.which)).toLowerCase()
+
+            if (e.keyCode === 13) {
+
+                let value = e.target.value
+                
+                if (!!value) {
+
+                    value.split(",").forEach(text => {
+
+                        text = text.trim()
+
+                        if (!!text) {
+
+                            let el = createCategoryButton(text)
+                            if (!!el) categories.appendChild(el)
+                        }
+                    })
+                }
+                
+                e.target.value = ""
+            }
+        })
+
+        textarea.addEventListener("keyup", (e) => {
+
+            let context = (e.target.value || "")
+            if (context.startsWith(",")) e.target.value = context.substr(1)
+            // else if (context.endsWith(",")) e.target.value = context.substr(0, context.length - 1)
+            else e.target.value = context
+        })
+    })()
 })

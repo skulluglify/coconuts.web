@@ -4,7 +4,7 @@
 use tiny\MySQL;
 
 
-interface UserStructure
+interface UserStructure // drop, create, insert, update, delete, select
 {
     public function drop(): void;
     public function create(): void;
@@ -21,7 +21,7 @@ interface UserStructure
         string | null $user_description,
     ): bool;
     public function update(
-        int $user_id, // where
+        array $wheres,
         string $user_photo, // URLs
         string $user_name,  // John, Don
         string $user_uniq,  // john_123
@@ -33,8 +33,8 @@ interface UserStructure
         string $user_location,
         string $user_description,
     ): bool;
-    public function delete(int $user_id): bool;
-    public function select(int $user_id): array | null;
+    public function delete(array $wheres): bool;
+    public function select(array $wheres): array | null;
 }
 
 
@@ -118,7 +118,7 @@ class User implements UserStructure
     }
 
     public function update(
-        int $user_id, // where
+        array $wheres,
         string | null $user_photo, // URLs
         string | null $user_name,  // John, Don
         string | null $user_uniq,  // john_123
@@ -200,23 +200,61 @@ class User implements UserStructure
         $context = join(",", $names);
         $q = join(",", $qs);
 
-        $maps[] = $user_id;
+        // added
+        $w_maps = $this->whereMaps($wheres);
+        $where_maps = $w_maps[0];
+        array_push($maps, ...$w_maps[1]);
 
-        $this->conn->eval("UPDATE `users`({$context}) SET ({$q}) WHERE `user_id` LIKE ?", ...$maps);
-
-        return $this->conn->has_changed();
-    }
-
-    public function delete(int $user_id): bool {
-
-        $this->conn->eval("DELETE FROM `users` WHERE `user_id` LIKE ?", $user_id);
+        $this->conn->eval("UPDATE `users`({$context}) SET ({$q}) WHERE ({$where_maps})", ...$maps);
 
         return $this->conn->has_changed();
     }
 
-    public function select(int $user_id): array | null {
+    public function delete(array $wheres): bool {
 
-        $d = $this->conn->eval("SELECT * FROM `users` WHERE `user_id` LIKE ?", $user_id);
+        $maps = [];
+
+        $w_maps = $this->whereMaps($wheres);
+        $where_maps = $w_maps[0];
+        array_push($maps, ...$w_maps[1]);
+
+        $this->conn->eval("DELETE FROM `users` WHERE ({$where_maps})", ...$maps);
+
+        return $this->conn->has_changed();
+    }
+
+    public function select(array $wheres): array | null {
+
+        $maps = [];
+
+        $w_maps = $this->whereMaps($wheres);
+        $where_maps = $w_maps[0];
+        array_push($maps, ...$w_maps[1]);
+
+        $d = $this->conn->eval("SELECT * FROM `users` WHERE ({$where_maps})", ...$maps);
         return $d->one();
+    }
+
+    private function whereMaps(array $wheres): array {
+
+        $maps = array_map(function (string $key): string {
+
+            $key = strtolower($key);
+
+            if (str_ends_with($key, "like")) {
+
+                $key = rtrim(substr($key, 0, strlen($key) - 4));
+                return "`{$key}` LIKE ?";
+
+            } else {
+
+                return "`{$key}` = ?";
+            }
+        }, array_keys($wheres));
+
+        return [
+            join(" AND ", $maps),
+            array_values($wheres)
+        ];
     }
 }

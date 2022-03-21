@@ -42,6 +42,19 @@ function wload() {
     wload https://unpkg.com/bootstrap-icons@latest/font/bootstrap-icons.json bootstrap-icons/bootstrap-icons.json
     wload https://unpkg.com/bootstrap-icons@latest/font/fonts/bootstrap-icons.woff bootstrap-icons/fonts/bootstrap-icons.woff
     wload https://unpkg.com/bootstrap-icons@latest/font/fonts/bootstrap-icons.woff2 bootstrap-icons/fonts/bootstrap-icons.woff2
+
+    wload https://unpkg.com/bootstrap-icons@latest/font/bootstrap-icons.css bootstrap/icons.css
+
+    ## tricky source
+	cat<<<$(cat bootstrap/icons.css | sed -e 's/bootstrap\-icons\.woff/icons\.woff/g')>bootstrap/icons.css    
+
+    wload https://unpkg.com/bootstrap-icons@latest/font/bootstrap-icons.json bootstrap/icons.json
+
+    ## makedir
+    mkdir -p bootstrap/fonts
+    
+    wload https://unpkg.com/bootstrap-icons@latest/font/fonts/bootstrap-icons.woff bootstrap/fonts/icons.woff
+    wload https://unpkg.com/bootstrap-icons@latest/font/fonts/bootstrap-icons.woff2 bootstrap/fonts/icons.woff2
 }
 
 
@@ -56,7 +69,7 @@ function wload() {
 ## sweetalert2
 {
     mkdir -p sweetalert2
-    wload https://unpkg.com/sweetalert2@latest/dist/sweetalert2.min.css sweetalert2/sweetalert2.min.js
+    wload https://unpkg.com/sweetalert2@latest/dist/sweetalert2.min.js sweetalert2/sweetalert2.min.js
     wload https://unpkg.com/sweetalert2@latest/dist/sweetalert2.min.css sweetalert2/sweetalert2.min.css
 }
 

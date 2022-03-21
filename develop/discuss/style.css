@@ -44,6 +44,7 @@
 .search-box {
     width: fit-content;
     color: var(--var-grey);
+    margin: 0 12px 0 12px;
     background: transparent;
     box-shadow: 0px 2px 8px var(--var-light-grey);
     border-radius: 10px;
@@ -226,6 +227,10 @@
     width: 100%;
 }
 
+.ds-editor-post .editor .categories {
+    padding: 12px 0 0 0;
+}
+
 .ds-editor-post .editor .banner {
     display: flex;
     flex-wrap: nowrap;
@@ -260,6 +265,16 @@
     margin: 0 0 0 0.5em;
 }
 
+.ds-editor-post .editor .categories .categories-preview {
+    display: flex;
+    width: 100%;
+    margin: 12px 0 0 0;
+    flex-wrap: wrap;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+}
+
 .ds-editor-post .editor .title input[type='text'],
 .ds-editor-post .editor .categories textarea {
     width: 100%;
@@ -292,7 +307,7 @@
 .post-title {
     width: 100%;
     padding: 4px;
-    padding-left: 16px;
+    /* padding-left: 16px; */
 }
 
 .post-title span {
@@ -304,14 +319,16 @@
 
 .post .post-content {
     width: 100%;
+    padding: 4px;
+    padding-left: 16px;
 }
 
 .post .post-content .wrap-content {
+    width: 100%;
     margin: 0;
     padding: 0;
     border: none;
-    width: 100%;
-    min-height: 300px;
+    /* min-height: 300px; */
 }
 
 .post .post-content .wrap-content iframe {
@@ -350,9 +367,10 @@
 .wrap-categories-item {
     display: flex;
     width: fit-content;
-    height: 24px;
+    height: fit-content;
     margin: 2px;
     padding: 0 6px 0 0;
+    flex-wrap: nowrap;
     flex-direction: row;
     align-items: center;
     justify-content: center;   
