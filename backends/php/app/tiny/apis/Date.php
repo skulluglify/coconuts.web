@@ -5,6 +5,7 @@ use DateTime;
 use Exception;
 
 
+// ref https://www.php.net/manual/en/function.localtime.php
 enum DateType: int
 {
 
@@ -28,7 +29,7 @@ enum LocationType: string
 }
 
 
-enum DayType: int
+enum WeekdayType: int
 {
     case MONDAY = 1;
     case TUESDAY = 2;
@@ -73,9 +74,11 @@ interface DateStructure
     public function getSecond(): int;
     public function getYear(): int;
     public function getMonth(): int;
+    public function getTypeOfMon(): MonType;
     public function getDay(): int;
     public function getDayOfYear(): int;
     public function getWeekday(): int;
+    public function getTypeOfWeekday(): WeekdayType;
 }
 
 
@@ -102,7 +105,7 @@ class Date implements DateStructure
     private int $tm_day_of_year;
     private int $tm_day_of_week;
 
-    public function __construct(mixed $datetime = "now", string $abbr = "CST")
+    public function __construct(mixed $datetime = "now", string $abbr = "UTC")
     {
 
         // initialize Time Zone
@@ -251,6 +254,24 @@ class Date implements DateStructure
         return $this->tm_mon;
     }
 
+    public function getTypeOfMon(): MonType
+    {
+        return match ($this->tm_mon) {
+            MonType::JANUARY->value => MonType::JANUARY,
+            MonType::FEBRUARY->value => MonType::FEBRUARY,
+            MonType::MARCH->value => MonType::MARCH,
+            MonType::APRIL->value => MonType::APRIL,
+            MonType::MAY->value => MonType::MAY,
+            MonType::JUNE->value => MonType::JUNE,
+            MonType::JULY->value => MonType::JULY,
+            MonType::AUGUST->value => MonType::AUGUST,
+            MonType::SEPTEMBER->value => MonType::SEPTEMBER,
+            MonType::OCTOBER->value => MonType::OCTOBER,
+            MonType::NOVEMBER->value => MonType::NOVEMBER,
+            default => MonType::DECEMBER
+        };
+    }
+
     public function getDay(): int
     {
 
@@ -267,5 +288,18 @@ class Date implements DateStructure
     {
 
         return $this->tm_day_of_week;
+    }
+
+    public function getTypeOfWeekday(): WeekdayType
+    {
+        return match ($this->tm_day_of_week) {
+            WeekdayType::MONDAY->value => WeekdayType::MONDAY,
+            WeekdayType::TUESDAY->value => WeekdayType::TUESDAY,
+            WeekdayType::WEDNESDAY->value => WeekdayType::WEDNESDAY,
+            WeekdayType::THURSDAY->value => WeekdayType::THURSDAY,
+            WeekdayType::FRIDAY->value => WeekdayType::FRIDAY,
+            WeekdayType::SATURDAY->value => WeekdayType::SATURDAY,
+            default => WeekdayType::SUNDAY,
+        };
     }
 }

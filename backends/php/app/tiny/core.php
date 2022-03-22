@@ -1,5 +1,6 @@
 <?php namespace tiny;
 
+// find depth, array multiple
 function c(array $obj, string ...$params) {
 
     $temp = $obj;

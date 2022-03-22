@@ -39,12 +39,77 @@ $user->insert(
     null
 );
 
-print_r(
-    strtotime($user->select(array(
-        "user_gender" => "male"
-    ))["time"])
-);
+$time = $user->select(array(
+    "user_gender" => "male"
+))["time"];
+
+if (is_string($time)) {
+
+    $date = new \tiny\Date($time);
+
+    print_r(
+        $date->getTimestamp()
+    );
+
+    echo "<br/>";
+
+    switch ($date->getTypeOfWeekday()) {
+
+        case \tiny\WeekdayType::TUESDAY:
+            print_r("is tuesday");
+            break;
+        default:
+            break;
+    }
+
+    echo "<br/>";
+    echo "<br/>";
+
+    print_r(strtotime($time));
+}
+
+echo "<br/>";
 
 print_r(23);
+
+echo "<br/>";
+
+$a = array(
+    "user_name" => "ahmad asy, syafiq"
+);
+
+foreach ($a as $key => $value) {
+
+    print_r($key);
+    echo "<br/>";
+    print_r($value);
+}
+
+echo "<br/>";
+
+//foreach ($_SERVER as $key => $value) {
+//
+//    print_r($key);
+//    echo "<br/>";
+//    print_r($value);
+//    echo "<br/>";
+//    print_r(gettype($value));
+//    echo "<br/>";
+//    echo "<br/>";
+//}
+
+$server_info = new \tiny\Server();
+
+// GET POST PUT DELETE PATCH
+
+print_r(
+    $server_info->Remote->getAddress()
+);
+echo "<br/>";
+print_r(
+    $server_info->Server->getPort()
+);
+echo "<br/>";
+print_r(empty(null));
 
 $mysql->close();

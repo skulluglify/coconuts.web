@@ -1,6 +1,4 @@
-<?php
-
-namespace tiny;
+<?php namespace tiny;
 
 use mysqli;
 //use mysqli_stmt;
