@@ -1,14 +1,14 @@
 <?php namespace tiny;
 
 use mysqli;
-//use mysqli_stmt;
+use mysqli_stmt;
 use mysqli_result;
 
 
 interface MySQLStructure
 {
     public function has_changed(): bool;
-    public function eval(string $query, mixed ...$params): null | bool | MySQLFetchStructure;
+    public function eval(string $query, mixed ...$params): MySQLFetchStructure | bool | null;
     public function close();
 }
 
@@ -118,89 +118,81 @@ class MySQL implements MySQLStructure
         return 0 <= $this->cnx->affected_rows;
     }
 
-    public function eval(string $query, mixed ...$params): null | bool | MySQLFetchStructure
+    public function eval(string $query, mixed ...$params): MySQLFetchStructure | bool | null
     {
 
         $types = "";
         // check params is not null
-        if (count($params))
+        if (count($params) > 0)
         {
 
             $stmt = $this->cnx->prepare($query);
 
-            foreach ($params as $param)
-            {
+            if ($stmt instanceof mysqli_stmt) {
 
-                $t = gettype($param);
-                if (in_array($t, [
-                    "integer",
-                    "boolean",
-                    "NULL"
-                ])) {
-                    $types .= "i";
-                    continue;
-                }
-                if (in_array($t, [
-                    "float",
-                    "double"
-                ])) {
-                    $types .= "d";
-                    continue;
-                }
-                if (in_array($t, [
-                    "string"
-                ])) {
-                    $types .= "s";
-                    continue;
-                }
-                if (in_array($t, [
-                    "array"
-                ])) {
-                    $types .= "b";
-                    continue;
+                foreach ($params as $param)
+                {
+
+                    $t = gettype($param);
+                    if (in_array($t, [
+                        "integer",
+                        "boolean",
+                        "NULL"
+                    ])) {
+                        $types .= "i";
+                        continue;
+                    }
+                    if (in_array($t, [
+                        "float",
+                        "double"
+                    ])) {
+                        $types .= "d";
+                        continue;
+                    }
+                    if ($t == "string") {
+                        $types .= "s";
+                        continue;
+                    }
+                    if ($t == "array") {
+                        $types .= "b";
+                        continue;
+                    }
+
+                    // finally catch
+                    die("Var can't identify!");
                 }
 
-                // finally catch
-                die("Var can't identify!");
+                // Array as Blob
+                // Need Handler
+
+                $stmt->bind_param($types, ...$params);
+                $stmt->execute();
+
+                $result = $stmt->get_result();
+
+                // cause already sending ...
+                if (is_bool($result)) $result = true;
+
+                $stmt->close();
+
+            } else {
+
+                // cause stmt failed create!
+                $result = false;
             }
-
-            // Array as Blob
-            // Need Handler
-
-            $stmt->bind_param($types, ...$params);
-            $stmt->execute();
-
-            $result = $stmt->get_result();
-
-            $stmt->close();
-
-            if (is_bool($result)) {
-
-                return $result;
-            }
-
-            if ($result instanceof mysqli_result) {
-
-                return new MySQLFetch($result);
-            }
-
-            return null;
 
         } else
         {
 
             $result = $this->cnx->query(query: $query, result_mode: MYSQLI_STORE_RESULT);
 
-            if (is_bool($result)) {
-                return $result;
-            }
+        }
 
-            if ($result instanceof mysqli_result) {
+        if (is_bool($result)) return $result;
 
-                return new MySQLFetch($result);
-            }
+        if ($result instanceof mysqli_result) {
 
-            return null;
+            return new MySQLFetch($result);
         }
 
         return null;

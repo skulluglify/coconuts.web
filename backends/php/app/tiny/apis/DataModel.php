@@ -1,12 +1,13 @@
 <?php namespace tiny;
 
+// require first
 require_once "MySQL.php";
 
 
 interface DataModelStructure // drop, create, insert, update, delete, select
 {
-    public function drop(): void;
-    public function create(): void;
+    public function drop(): bool;
+    public function create(): bool;
     public function insert(array $values): bool;
     public function update(array $values, array $wheres): bool;
     public function select(array $wheres, array | string | null $tables = null, int $size = 0): array | null;
@@ -17,22 +18,27 @@ interface DataModelStructure // drop, create, insert, update, delete, select
 abstract class DataModel implements DataModelStructure
 {
 
-    protected string $table_name;
-    protected MySQL $conn;
+    protected string $name;
+    protected MySQL $connect;
 
     public function __construct(MySQL $conn, string $name)
     {
 
-        $this->conn = $conn;
-        $this->table_name = $name;
+        $this->connect = $conn;
+        $this->name = $name;
     }
 
-    public function drop(): void {
+    public function drop(): bool {
 
-        $this->conn->eval("DROP TABLE IF EXISTS `$this->table_name`");
+        if ($this->connect->eval("DROP TABLE IF EXISTS `$this->name`")) {
+
+            return true;
+        }
+
+        return false;
     }
 
-    public abstract function create(): void;
+    public abstract function create(): bool;
 
     public abstract function insert(array $values): bool;
 
@@ -42,8 +48,8 @@ abstract class DataModel implements DataModelStructure
 
     public abstract function select(array $wheres, array | string | null $tables = null, int $size = 0): array | null;
 
-    protected function tableMaps(array | string | null $tables): string {
-
+    protected function tableMaps(array | string | null $tables): string
+    {
         if (!is_null($tables)) {
 
             if (is_array($tables)) {

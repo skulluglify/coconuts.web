@@ -5,24 +5,25 @@ use JetBrains\PhpStorm\Pure;
 use tiny\DataModel;
 use tiny\DataModelStructure;
 use tiny\MySQL;
+use tiny\MySQLFetch;
 
 
 class User extends DataModel implements DataModelStructure
 {
-    protected MySQL $conn;
+    protected MySQL $connect;
 
     #[Pure] public function __construct(MySQL $conn)
     {
 
         parent::__construct($conn, "users");
-        $this->conn = $conn;
+        $this->connect = $conn;
     }
 
-    public function create(): void
+    public function create(): bool
     {
 
-        $this->conn->eval("
-            CREATE TABLE IF NOT EXISTS `$this->table_name`(
+        $check = $this->connect->eval("
+            CREATE TABLE IF NOT EXISTS `$this->name`(
                 `user_id` INT AUTO_INCREMENT,
                 `user_photo` TEXT,
                 `user_name` TEXT NOT NULL,
@@ -38,13 +39,17 @@ class User extends DataModel implements DataModelStructure
                 PRIMARY KEY(`user_id`)
             )
         ");
+
+        if (is_bool($check)) return $check;
+        if ($check instanceof MySQLFetch) return true;
+        return false;
     }
 
     public function insert(array $values): bool
     {
 
-        $this->conn->eval("
-            INSERT INTO `$this->table_name`(
+        $check = $this->connect->eval("
+            INSERT INTO `$this->name`(
                 `user_photo`,
                 `user_name`,
                 `user_uniq`,
@@ -69,7 +74,9 @@ class User extends DataModel implements DataModelStructure
             $values["user_description"]
         );
 
-        return $this->conn->has_changed();
+        if (is_bool($check)) return $check;
+        if ($check instanceof MySQLFetch) return true;
+        return false;
     }
 
     public function update(array $values, array $wheres): bool
@@ -88,7 +95,7 @@ class User extends DataModel implements DataModelStructure
 
         $context = join(",", array_map(function ($key) {
 
-            return "`{$key}` = ?";
+            return "`$key` = ?";
         }, $names));
 
         // added
@@ -96,9 +103,11 @@ class User extends DataModel implements DataModelStructure
         $where_maps = $w[0];
         array_push($maps, ...$w[1]);
 
-        $this->conn->eval("UPDATE `$this->table_name` SET $context WHERE $where_maps", ...$maps);
+        $check = $this->connect->eval("UPDATE `$this->name` SET $context WHERE $where_maps", ...$maps);
 
-        return $this->conn->has_changed();
+        if (is_bool($check)) return $check;
+        if ($check instanceof MySQLFetch) return true;
+        return false;
     }
 
     public function delete(array $wheres): bool {
@@ -109,9 +118,10 @@ class User extends DataModel implements DataModelStructure
         $where_maps = $w[0];
         array_push($maps, ...$w[1]);
 
-        $this->conn->eval("DELETE FROM `$this->table_name` WHERE $where_maps", ...$maps);
-
-        return $this->conn->has_changed();
+        $check = $this->connect->eval("DELETE FROM `$this->name` WHERE $where_maps", ...$maps);
+        if (is_bool($check)) return $check;
+        if ($check instanceof MySQLFetch) return true;
+        return false;
     }
 
     public function select(array $wheres, array | string | null $tables = null, int $size = 0): array | null
@@ -131,7 +141,7 @@ class User extends DataModel implements DataModelStructure
             $size_maps = "LIMIT $size";
         }
 
-        $d = $this->conn->eval("SELECT $table_maps FROM `$this->table_name` WHERE $where_maps $size_maps", ...$maps);
+        $d = $this->connect->eval("SELECT $table_maps FROM `$this->name` WHERE $where_maps $size_maps", ...$maps);
 
         if (2 <= $size) {
 

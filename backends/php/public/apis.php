@@ -9,7 +9,11 @@ $mysql = new \tiny\MySQL("config", prefix: "..");
 $user = new \models\User($mysql);
 
 // debug
-$user->drop();
+if ($user->drop()) {
+
+    print_r("tut");
+    echo "<br>";
+};
 
 /*
  "user_photo"
@@ -56,7 +60,7 @@ $user->insert(
     )
 );
 
-$user->update(array(
+if ($user->update(array(
     "user_photo" => null,
     "user_name" => "samsudin",
     "user_uniq" => "asy_0x0",
@@ -68,8 +72,12 @@ $user->update(array(
     "user_location" => null,
     "user_description" => null
 ), array(
-    "user_uniq+" => "asy_0x0"
-));
+    "user_uniq" => "asy_0x0"
+))) {
+
+    print_r("tut");
+    echo "<br/>";
+};
 
 $user->delete(array(
     "user_uniq+" => "asy%"
