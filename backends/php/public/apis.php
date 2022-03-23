@@ -11,37 +11,79 @@ $user = new \models\User($mysql);
 // debug
 $user->drop();
 
+/*
+ "user_photo"
+ "user_name"
+ "user_uniq"
+ "user_age"
+ "user_gender"
+ "user_email"
+ "user_pass"
+ "user_phone"
+ "user_location"
+ "user_description"
+*/
+
 // production
 $user->create();
 $user->insert(
-    null,
-    "ahmad asy, syafiq",
-    "asy_0x0",
-    "2002-07-07",
-    "male",
-    "user@example.com",
-    "Xzcsd0oodeuwdgy",
-    null,
-    null,
-    null
+    array(
+        "user_photo" => null,
+        "user_name" => "ahmad asy, syafiq",
+        "user_uniq" => "asy_0x0",
+        "user_age" => "2002-07-07",
+        "user_gender" => "male",
+        "user_email" => "example@email.com",
+        "user_pass" => "Xshuwgdw9089e",
+        "user_phone" => null,
+        "user_location" => null,
+        "user_description" => null
+    )
 );
 
 $user->insert(
-    null,
-    "slamet, udin",
-    "udin123",
-    "2012-10-12",
-    "male",
-    "user@example.com",
-    "hsuaUHSaoswnUW878",
-    null,
-    null,
-    null
+    array(
+        "user_photo" => null,
+        "user_name" => "ujang",
+        "user_uniq" => "sy_0x0",
+        "user_age" => "2002-07-07",
+        "user_gender" => "male",
+        "user_email" => "example@email.com",
+        "user_pass" => "Xshuwgdw9089e",
+        "user_phone" => null,
+        "user_location" => null,
+        "user_description" => null
+    )
+);
+
+$user->update(array(
+    "user_photo" => null,
+    "user_name" => "samsudin",
+    "user_uniq" => "asy_0x0",
+    "user_age" => "2010-10-12",
+    "user_gender" => "male",
+    "user_email" => "example@email.com",
+    "user_pass" => "ioshd87273bbd",
+    "user_phone" => null,
+    "user_location" => null,
+    "user_description" => null
+), array(
+    "user_uniq+" => "asy_0x0"
+));
+
+$user->delete(array(
+    "user_uniq+" => "asy%"
+));
+
+print_r(
+    $user->select(array(
+        "user_uniq+" => "sy%"
+    ))
 );
 
 $time = $user->select(array(
-    "user_gender" => "male"
-))["time"];
+    "user_name" => "ujang"
+), "time", 1)["time"];
 
 if (is_string($time)) {
 
@@ -50,8 +92,6 @@ if (is_string($time)) {
     print_r(
         $date->getTimestamp()
     );
-
-    echo "<br/>";
 
     switch ($date->getTypeOfWeekday()) {
 
@@ -63,26 +103,11 @@ if (is_string($time)) {
     }
 
     echo "<br/>";
-    echo "<br/>";
 
     print_r(strtotime($time));
-}
 
-echo "<br/>";
-
-print_r(23);
-
-echo "<br/>";
-
-$a = array(
-    "user_name" => "ahmad asy, syafiq"
-);
-
-foreach ($a as $key => $value) {
-
-    print_r($key);
     echo "<br/>";
-    print_r($value);
+    print_r($time);
 }
 
 echo "<br/>";

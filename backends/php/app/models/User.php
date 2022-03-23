@@ -1,63 +1,28 @@
 <?php namespace models;
 
 
+use JetBrains\PhpStorm\Pure;
+use tiny\DataModel;
+use tiny\DataModelStructure;
 use tiny\MySQL;
 
 
-interface UserStructure // drop, create, insert, update, delete, select
+class User extends DataModel implements DataModelStructure
 {
-    public function drop(): void;
-    public function create(): void;
-    public function insert(
-        string | null $user_photo, // URLs
-        string $user_name,  // John, Don
-        string $user_uniq,  // john_123
-        string $user_age,   // 2020-10-12
-        string $user_gender,
-        string $user_email,
-        string $user_pass,
-        string | null $user_phone,
-        string | null $user_location,
-        string | null $user_description,
-    ): bool;
-    public function update(
-        array $wheres,
-        string $user_photo, // URLs
-        string $user_name,  // John, Don
-        string $user_uniq,  // john_123
-        string $user_age,   // 2020-10-12
-        string $user_gender,
-        string $user_email,
-        string $user_pass,
-        string $user_phone,
-        string $user_location,
-        string $user_description,
-    ): bool;
-    public function delete(array $wheres): bool;
-    public function select(array $wheres): array | null;
-}
+    protected MySQL $conn;
 
-
-class User implements UserStructure
-{
-    private MySQL $conn;
-
-    public function __construct(MySQL $conn)
+    #[Pure] public function __construct(MySQL $conn)
     {
 
+        parent::__construct($conn, "users");
         $this->conn = $conn;
-    }
-
-    public function drop(): void {
-
-        $this->conn->eval("DROP TABLE IF EXISTS `users`");
     }
 
     public function create(): void
     {
 
         $this->conn->eval("
-            CREATE TABLE IF NOT EXISTS `users`(
+            CREATE TABLE IF NOT EXISTS `$this->table_name`(
                 `user_id` INT AUTO_INCREMENT,
                 `user_photo` TEXT,
                 `user_name` TEXT NOT NULL,
@@ -75,21 +40,11 @@ class User implements UserStructure
         ");
     }
 
-    public function insert(
-        string | null $user_photo, // URLs
-        string $user_name,  // John, Don
-        string $user_uniq,  // john_123
-        string $user_age,   // 2020-10-12
-        string $user_gender,
-        string $user_email,
-        string $user_pass,
-        string | null $user_phone,
-        string | null $user_location,
-        string | null $user_description,
-    ): bool
+    public function insert(array $values): bool
     {
+
         $this->conn->eval("
-            INSERT INTO `users`(
+            INSERT INTO `$this->table_name`(
                 `user_photo`,
                 `user_name`,
                 `user_uniq`,
@@ -102,110 +57,46 @@ class User implements UserStructure
                 `user_description`
             ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )
         ",
-            $user_photo,
-            $user_name,
-            $user_uniq,
-            $user_age,
-            $user_gender,
-            $user_email,
-            $user_pass,
-            $user_phone,
-            $user_location,
-            $user_description
+            $values["user_photo"],
+            $values["user_name"],
+            $values["user_uniq"],
+            $values["user_age"],
+            $values["user_gender"],
+            $values["user_email"],
+            $values["user_pass"],
+            $values["user_phone"],
+            $values["user_location"],
+            $values["user_description"]
         );
 
         return $this->conn->has_changed();
     }
 
-    public function update(
-        array $wheres,
-        string | null $user_photo, // URLs
-        string | null $user_name,  // John, Don
-        string | null $user_uniq,  // john_123
-        string | null $user_age,   // 2020-10-12
-        string | null $user_gender,
-        string | null $user_email,
-        string | null $user_pass,
-        string | null $user_phone,
-        string | null $user_location,
-        string | null $user_description,
-    ): bool
+    public function update(array $values, array $wheres): bool
     {
 
         $maps = [];
         $names = [];
-        $qs = [];
 
-        if (!is_null($user_photo)) {
-            $maps[] = $user_photo;
-            $names[] = "`user_photo`";
-            $qs[] = "?";
+        foreach ($values as $key => $value) {
+
+            if (!is_null($value)) {
+                $maps[] = $value;
+                $names[] = $key;
+            }
         }
 
-        if (!is_null($user_name)) {
-            $maps[] = $user_name;
-            $names[] = "`user_name`";
-            $qs[] = "?";
-        }
+        $context = join(",", array_map(function ($key) {
 
-        if (!is_null($user_uniq)) {
-            $maps[] = $user_uniq;
-            $names[] = "`user_uniq`";
-            $qs[] = "?";
-
-        }
-
-        if (!is_null($user_age)) {
-            $maps[] = $user_age;
-            $names[] = "`user_age`";
-            $qs[] = "?";
-        }
-
-        if (!is_null($user_gender)) {
-            $maps[] = $user_gender;
-            $names[] = "`user_gender`";
-            $qs[] = "?";
-        }
-
-        if (!is_null($user_email)) {
-            $maps[] = $user_email;
-            $names[] = "`user_email`";
-            $qs[] = "?";
-        }
-
-        if (!is_null($user_pass)) {
-            $maps[] = $user_pass;
-            $names[] = "`user_pass`";
-            $qs[] = "?";
-        }
-
-        if (!is_null($user_phone)) {
-            $maps[] = $user_phone;
-            $names[] = "`user_phone`";
-            $qs[] = "?";
-        }
-
-        if (!is_null($user_location)) {
-            $maps[] = $user_location;
-            $names[] = "`user_location`";
-            $qs[] = "?";
-        }
-
-        if (!is_null($user_description)) {
-            $maps[] = $user_description;
-            $names[] = "`user_description`";
-            $qs[] = "?";
-        }
-
-        $context = join(",", $names);
-        $q = join(",", $qs);
+            return "`{$key}` = ?";
+        }, $names));
 
         // added
-        $w_maps = $this->whereMaps($wheres);
-        $where_maps = $w_maps[0];
-        array_push($maps, ...$w_maps[1]);
+        $w = $this->whereMaps($wheres);
+        $where_maps = $w[0];
+        array_push($maps, ...$w[1]);
 
-        $this->conn->eval("UPDATE `users`({$context}) SET ({$q}) WHERE ({$where_maps})", ...$maps);
+        $this->conn->eval("UPDATE `$this->table_name` SET $context WHERE $where_maps", ...$maps);
 
         return $this->conn->has_changed();
     }
@@ -214,47 +105,44 @@ class User implements UserStructure
 
         $maps = [];
 
-        $w_maps = $this->whereMaps($wheres);
-        $where_maps = $w_maps[0];
-        array_push($maps, ...$w_maps[1]);
+        $w = $this->whereMaps($wheres);
+        $where_maps = $w[0];
+        array_push($maps, ...$w[1]);
 
-        $this->conn->eval("DELETE FROM `users` WHERE ({$where_maps})", ...$maps);
+        $this->conn->eval("DELETE FROM `$this->table_name` WHERE $where_maps", ...$maps);
 
         return $this->conn->has_changed();
     }
 
-    public function select(array $wheres): array | null {
+    public function select(array $wheres, array | string | null $tables = null, int $size = 0): array | null
+    {
 
         $maps = [];
 
-        $w_maps = $this->whereMaps($wheres);
-        $where_maps = $w_maps[0];
-        array_push($maps, ...$w_maps[1]);
+        $table_maps = $this->tableMaps($tables);
+        $w = $this->whereMaps($wheres);
+        $where_maps = $w[0];
+        array_push($maps, ...$w[1]);
 
-        $d = $this->conn->eval("SELECT * FROM `users` WHERE ({$where_maps})", ...$maps);
-        return $d->one();
-    }
+        $size_maps = "";
+        if ($size > 0) {
 
-    private function whereMaps(array $wheres): array {
+            // safety, +performance
+            $size_maps = "LIMIT $size";
+        }
 
-        $maps = array_map(function (string $key): string {
+        $d = $this->conn->eval("SELECT $table_maps FROM `$this->table_name` WHERE $where_maps $size_maps", ...$maps);
 
-            $key = strtolower($key);
+        if (2 <= $size) {
 
-            if (str_ends_with($key, "like")) {
+            return $d->many($size);
 
-                $key = rtrim(substr($key, 0, strlen($key) - 4));
-                return "`{$key}` LIKE ?";
+        } else
+        if (1 == $size) {
 
-            } else {
+            return $d->one();
+        }
 
-                return "`{$key}` = ?";
-            }
-        }, array_keys($wheres));
-
-        return [
-            join(" AND ", $maps),
-            array_values($wheres)
-        ];
+        return $d->all();
     }
 }
