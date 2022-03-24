@@ -1,5 +1,6 @@
 <?php namespace app;
 
+use controllers\Login;
 use controllers\Registry;
 use Exception;
 use tiny\Date;
@@ -26,20 +27,27 @@ class Application
      */
     public function __construct() {
 
-        $date = new Date(abbr: "UTC");
+        // $date = new Date(abbr: "UTC");
         $server = new Server();
         $conn = new MySQL("config", prefix: __DIR__);
 
-        $regis = new Registry($conn, $server);
+        $attach = true;
+        while ($attach) {
 
-        if (!$regis->isRunning()) {
+            $regis = new Registry($conn, $server);
 
-            print_r("not registry yet!");
+            if ($regis->lock()) break;
+
+            $login = new Login($conn, $server, $this->level);
+
+            if ($login->lock()) break;
+
+            $attach = false;
         }
         // year in seconds
-//        print_r(
-//            Date::enhance_time_ms($this->level[4])
-//        );
+        // print_r(
+            // Date::enhance_time_ms($this->level[4])
+        // );
 
         // echo hash("sha3-256", "fish rod");
         $conn->close();

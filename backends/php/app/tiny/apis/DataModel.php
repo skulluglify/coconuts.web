@@ -97,17 +97,17 @@ abstract class DataModel implements DataModelStructure
         return $this->success($check);
     }
 
-    protected function selectRows(array $wheres, array | string | null $tables = null, int $size = 0): array | null
+    protected function selectRows(array $wheres, array | string | null $tables = null, int $size = 0, string $operators = "AND"): array | null
     {
 
-        $contexts = $this->getContextSelector($wheres, $tables, $size);
+        $contexts = $this->getContextSelector($wheres, $tables, $size, $operators);
 
         $fetch = $this->connect->eval("SELECT $contexts[0] FROM `$this->name` WHERE $contexts[1]", ...$contexts[2]);
 
         return $this->getResult($fetch);
     }
 
-    protected function getVarContext(array $vars): array
+    protected function getContextVar(array $vars): array
     {
 
         if (!empty($vars)) {
@@ -134,6 +134,7 @@ abstract class DataModel implements DataModelStructure
 
         foreach ($values as $key => $value) {
 
+            // or empty
             if (!is_null($value)) {
                 $maps[] = $value;
                 $names[] = $key;
@@ -175,13 +176,16 @@ abstract class DataModel implements DataModelStructure
 
                 if (!empty($tables)) {
 
+                    // auto fit
+                    if (!c($tables, 0)) $tables = array_keys($tables);
 
                     $keys = array_map(function ($v) {
 
                         return "`$v`";
-                    }, array_keys($tables));
+
+                    }, $tables);
                     $qs = join(",", $keys);
-                    return "($qs)";
+                    return "$qs";
                 }
 
             }
@@ -200,7 +204,7 @@ abstract class DataModel implements DataModelStructure
 
         $maps = array_map(function (string $key): string {
 
-            $key = strtolower($key);
+            // $key = str to lower($key);
 
             if (str_ends_with($key, "+")) {
 

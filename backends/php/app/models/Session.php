@@ -4,7 +4,9 @@
 use JetBrains\PhpStorm\Pure;
 use tiny\DataModel;
 use tiny\DataModelStructure;
+use tiny\Date;
 use tiny\MySQL;
+use tiny\StringMap;
 
 
 class Session extends DataModel implements DataModelStructure
@@ -18,7 +20,7 @@ class Session extends DataModel implements DataModelStructure
         "user_ip" => "TEXT NOT NULL",
         "user_agent" => "TEXT NOT NULL",
         "try_login" => "INT NOT NULL",
-        "token" => "TEXT NOT NULL"
+        "token" => "TEXT"
     );
 
     #[Pure] public function __construct(MySQL $conn)
@@ -29,7 +31,7 @@ class Session extends DataModel implements DataModelStructure
 
     public function create(): bool
     {
-        $contexts = $this->getVarContext($this->vars);
+        $contexts = $this->getContextVar($this->vars);
 
         $check = $this->connect->eval("
             CREATE TABLE IF NOT EXISTS `$this->name`(
@@ -56,7 +58,8 @@ class Session extends DataModel implements DataModelStructure
         return $this->updateRow($values, $wheres);
     }
 
-    public function delete(array $wheres): bool {
+    public function delete(array $wheres): bool
+    {
 
         return $this->deleteRow($wheres);
     }
@@ -65,5 +68,13 @@ class Session extends DataModel implements DataModelStructure
     {
 
         return $this->selectRows($wheres, $tables, $size);
+    }
+
+    // utilities
+    public static function createToken(string $headers = "", string $abbr = "UTC"): string
+    {
+
+        $timestamp = (new Date(abbr: $abbr))->getTimestamp();
+        return hash("sha3-256", $headers.str_shuffle(StringMap::alpha())."$timestamp");
     }
 }

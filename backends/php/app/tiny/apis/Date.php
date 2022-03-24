@@ -120,7 +120,63 @@ class Date implements DateStructure
         // initialize Time
         try
         {
-            if (is_int($datetime)) $datetime = strtotime($datetime);
+            if (is_int($datetime)) {
+
+                // bad, handling timestamp to string
+                $d = getdate($datetime);
+
+                $Y = $d["year"];
+                $M = $d["mon"];
+                $D = $d["mday"];
+                $h = $d["hours"];
+                $m = $d["minutes"];
+                $s = $d["seconds"];
+
+                // fix Y M D h m s
+                if ($s > 60) {
+
+                    $l = $s % 60;
+                    $m += ($s - $l) / 60;
+                    $s = $l;
+                }
+
+                if ($m > 60) {
+
+                    $l = $m % 60;
+                    $h += ($m - $l) / 60;
+                    $m = $l;
+                }
+
+                if ($h > 24) {
+
+                    $l = $h % 24;
+                    $D += ($h - $l) / 24;
+                    $h = $l;
+                }
+
+                if ($D > 30) {
+
+                    $l = $D % 30;
+                    $M += ($D - $l) / 30;
+                    $D = $l;
+                }
+
+                if ($M > 12) {
+
+                    $l = $M % 12;
+                    $Y += ($M - $l) / 12;
+                    $M = $l;
+                }
+
+                $Y = str_pad($Y, 2, "0", STR_PAD_LEFT);
+                $M = str_pad($M, 2, "0", STR_PAD_LEFT);
+                $D = str_pad($D, 2, "0", STR_PAD_LEFT);
+                $h = str_pad($h, 2, "0", STR_PAD_LEFT);
+                $m = str_pad($m, 2, "0", STR_PAD_LEFT);
+                $s = str_pad($s, 2, "0", STR_PAD_LEFT);
+
+                $datetime = "$Y-$M-$D $h:$m:$s";
+            }
 
             $this->tm = new DateTime(
                 datetime: $datetime,
@@ -312,7 +368,7 @@ class Date implements DateStructure
     {
         $timestamp = $timestamp > 0 ? $timestamp : "now";
 
-        $start = new Date($timestamp, $abbr);
+        $start = new self($timestamp, $abbr);
 
         $seconds = $seconds + $start->getSecond();
 
@@ -342,18 +398,62 @@ class Date implements DateStructure
         $seconds = $loose;
 
         // years, like default
-        $months = str_pad($months, 2, "0", STR_PAD_LEFT);
-        $days = str_pad($days, 2, "0", STR_PAD_LEFT);
-        $hours = str_pad($hours, 2, "0", STR_PAD_LEFT);
-        $minutes = str_pad($minutes, 2, "0", STR_PAD_LEFT);
-        $seconds = str_pad($seconds, 2, "0", STR_PAD_LEFT);
+        $Y = $years;
+        $M = $months;
+        $D = $days;
+        $h = $hours;
+        $m = $minutes;
+        $s = $seconds;
 
-        return "$years-$months-$days $hours:$minutes:$seconds";
+        // fix Y M D h m s
+        if ($s > 60) {
+
+            $l = $s % 60;
+            $m += ($s - $l) / 60;
+            $s = $l;
+        }
+
+        if ($m > 60) {
+
+            $l = $m % 60;
+            $h += ($m - $l) / 60;
+            $m = $l;
+        }
+
+        if ($h > 24) {
+
+            $l = $h % 24;
+            $D += ($h - $l) / 24;
+            $h = $l;
+        }
+
+        if ($D > 30) {
+
+            $l = $D % 30;
+            $M += ($D - $l) / 30;
+            $D = $l;
+        }
+
+        if ($M > 12) {
+
+            $l = $M % 12;
+            $Y += ($M - $l) / 12;
+            $M = $l;
+        }
+
+        $Y = str_pad($Y, 2, "0", STR_PAD_LEFT);
+        $M = str_pad($M, 2, "0", STR_PAD_LEFT);
+        $D = str_pad($D, 2, "0", STR_PAD_LEFT);
+        $h = str_pad($h, 2, "0", STR_PAD_LEFT);
+        $m = str_pad($m, 2, "0", STR_PAD_LEFT);
+        $s = str_pad($s, 2, "0", STR_PAD_LEFT);
+
+        return "$Y-$M-$D $h:$m:$s";
     }
 
     public static function enhance_time_ms(int $seconds, int $timestamp = 0, string $abbr = "UTC"): int
     {
-        $date = new Date(self::enhance_time($seconds, $timestamp, $abbr));
+        $date = new self(self::enhance_time($seconds, $timestamp, $abbr));
         return $date->getTimestamp();
     }
 }

@@ -1,9 +1,13 @@
 <?php namespace controllers;
 
 
+use models\Session;
 use models\User;
+use tiny\Date;
 use tiny\MySQL;
 use tiny\Server;
+use tiny\StringMap;
+use function tiny\c;
 
 class Registry
 {
@@ -12,12 +16,13 @@ class Registry
 
     // tables
     protected User $user;
+    protected Session $session;
 
     // server
     protected Server $server;
 
     // running
-    protected bool $running = false;
+    protected bool $wait = false;
 
     // multiply generic params, levels
     public function __construct(MySQL $conn, Server $server)
@@ -33,9 +38,11 @@ class Registry
     {
 
         $this->user = new User($this->connect);
+        $this->session = new Session($this->connect);
 
-        // create tables if exists
+        // create tables if exists, debug drop it
         $this->user->create();
+        $this->session->create();
 
         $data = $this->server->getDataJSON();
 
@@ -45,7 +52,7 @@ class Registry
             // get commands key
             if (property_exists($data, "registry")) {
 
-                $this->running = true;
+                $this->wait = true;
 
                 $regis = $data->registry;
                 $user_photo = property_exists($regis, "user_photo") ? $regis->user_photo : null;
@@ -100,49 +107,23 @@ class Registry
                     }
 
                     // no dup
-                    // check user_email
                     $check = $this->user->select(array(
+                        "user_uniq" => $user_uniq,
                         "user_email" => $user_email
-                    ), "user_name", 1);
+                    ), [
+                        "user_uniq",
+                        "user_email"
+                    ], 1, "OR");
 
-                    if (!is_null($check)) {
-
-                        if (count($check) > 0) {
-
-                            $dup = $check["user_name"];
-
-                            if (!is_null($dup)) {
-
-                                $this->errorMessage("var user_email already used by another user!");
-
-                            } else {
-
-                                $this->errorMessage("var user_email already used!");
-                            }
-
-                            break;
-                        }
-                    }
-
-                    // check user_uniq
-                    $check = $this->user->select(array(
-                        "user_uniq" => $user_uniq
-                    ), "user_name", 1);
-
-                    if (!is_null($check)) {
+                    if (!empty($check)) {
 
                         if (count($check) > 0) {
 
-                            $dup = $check["user_name"];
+                            $uniq = c($check[0], "user_uniq");
+                            $email = c($check[0], "user_email");
 
-                            if (!is_null($dup)) {
-
-                                $this->errorMessage("var user_uniq already used by another user!");
-
-                            } else {
-
-                                $this->errorMessage("var user_uniq already used!");
-                            }
+                            if ($user_uniq == $uniq) $this->errorMessage("var user_uniq already used by another user!");
+                            else if ($user_email == $email) $this->errorMessage("var user_email already used by another user!");
 
                             break;
                         }
@@ -161,10 +142,35 @@ class Registry
                         "user_description" => $user_description
                     ))) {
 
+                        $token = Session::createToken($user_name);
+
                         $this->successMessage("success insert table!", array(
-                            "token" => "1234"
+                            "token" => $token
                         ));
-                        // create session
+
+                        $user_id = $this->user->getId(array(
+                            "user_uniq" => $user_uniq
+                        ));
+
+                        if (is_int($user_id)) {
+
+                            // delete session
+                            // wait, if someone login
+                            // duplicate user ?
+                            // $this->session->delete(array(
+                                // "user_id" => $user_id
+                            // ));
+
+                            $this->session->insert(array(
+                                "user_id" => $user_id,
+                                "user_ip" => $this->server->getClientIP(),
+                                "user_agent" => $this->server->HTTP->getUserAgent(),
+                                "try_login" => 0,
+                                "token" => $token,
+                            ));
+                        }
+
+                        // break;
 
                     } else {
 
@@ -187,7 +193,7 @@ class Registry
             )
         );
 
-        if (!is_null($assign)) $data["extra"] = $assign;
+        if (!is_null($assign)) $data = array_merge($data, $assign);
 
         echo json_encode($data);
     }
@@ -201,13 +207,13 @@ class Registry
             )
         );
 
-        if (!is_null($assign)) $data["extra"] = $assign;
+        if (!is_null($assign)) $data = array_merge($data, $assign);
 
         echo json_encode($data);
     }
 
-    public function isRunning(): bool
+    public function lock(): bool
     {
-        return $this->running;
+        return $this->wait;
     }
 }

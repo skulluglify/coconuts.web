@@ -5,6 +5,7 @@ use JetBrains\PhpStorm\Pure;
 use tiny\DataModel;
 use tiny\DataModelStructure;
 use tiny\MySQL;
+use function tiny\c;
 
 
 class User extends DataModel implements DataModelStructure
@@ -33,7 +34,7 @@ class User extends DataModel implements DataModelStructure
 
     public function create(): bool
     {
-        $contexts = $this->getVarContext($this->vars);
+        $contexts = $this->getContextVar($this->vars);
 
         $check = $this->connect->eval("
             CREATE TABLE IF NOT EXISTS `$this->name`(
@@ -63,9 +64,24 @@ class User extends DataModel implements DataModelStructure
         return $this->deleteRow($wheres);
     }
 
-    public function select(array $wheres, array | string | null $tables = null, int $size = 0): array | null
+    public function select(array $wheres, array | string | null $tables = null, int $size = 0, string $operators = "AND"): array | null
     {
 
-        return $this->selectRows($wheres, $tables, $size);
+        return $this->selectRows($wheres, $tables, $size, $operators);
+    }
+
+    // utilities
+    public function getId(array $wheres): int | null
+    {
+
+        $data = $this->select($wheres, "id", 1);
+
+        if (!empty($data)) {
+
+            $v = c($data, 0, "id");
+            if (is_int($v)) return intval($v);
+        }
+
+        return null;
     }
 }

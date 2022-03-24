@@ -28,7 +28,7 @@ class Banned extends DataModel implements DataModelStructure
 
     public function create(): bool
     {
-        $contexts = $this->getVarContext($this->vars);
+        $contexts = $this->getContextVar($this->vars);
 
         $check = $this->connect->eval("
             CREATE TABLE IF NOT EXISTS `$this->name`(
