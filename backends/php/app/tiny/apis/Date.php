@@ -79,6 +79,10 @@ interface DateStructure
     public function getDayOfYear(): int;
     public function getWeekday(): int;
     public function getTypeOfWeekday(): WeekdayType;
+
+    // utils
+    public static function enhance_time(int $seconds, int $timestamp, string $abbr): string;
+    public static function enhance_time_ms(int $seconds, int $timestamp = 0, string $abbr = "UTC"): int;
 }
 
 
@@ -116,6 +120,7 @@ class Date implements DateStructure
         // initialize Time
         try
         {
+            if (is_int($datetime)) $datetime = strtotime($datetime);
 
             $this->tm = new DateTime(
                 datetime: $datetime,
@@ -301,5 +306,54 @@ class Date implements DateStructure
             WeekdayType::SATURDAY->value => WeekdayType::SATURDAY,
             default => WeekdayType::SUNDAY,
         };
+    }
+
+    public static function enhance_time(int $seconds, int $timestamp = 0, string $abbr = "UTC"): string
+    {
+        $timestamp = $timestamp > 0 ? $timestamp : "now";
+
+        $start = new Date($timestamp, $abbr);
+
+        $seconds = $seconds + $start->getSecond();
+
+        $loose = $seconds % 29030400;
+        $years = ($seconds - $loose) / 29030400;
+        $years = $years + $start->getYear();
+        $seconds = $loose;
+
+        $loose = $seconds % 2419200;
+        $months = ($seconds - $loose) / 2419200;
+        $months = $months + $start->getMonth();
+        $seconds = $loose;
+
+        $loose = $seconds % 86400;
+        $days = ($seconds - $loose) / 86400;
+        $days = $days + $start->getDay();
+        $seconds = $loose;
+
+        $loose = $seconds % 3600;
+        $hours = ($seconds - $loose) / 3600;
+        $hours = $hours + $start->getHour();
+        $seconds = $loose;
+
+        $loose = $seconds % 60;
+        $minutes = ($seconds - $loose) / 60;
+        $minutes = $minutes + $start->getMinute();
+        $seconds = $loose;
+
+        // years, like default
+        $months = str_pad($months, 2, "0", STR_PAD_LEFT);
+        $days = str_pad($days, 2, "0", STR_PAD_LEFT);
+        $hours = str_pad($hours, 2, "0", STR_PAD_LEFT);
+        $minutes = str_pad($minutes, 2, "0", STR_PAD_LEFT);
+        $seconds = str_pad($seconds, 2, "0", STR_PAD_LEFT);
+
+        return "$years-$months-$days $hours:$minutes:$seconds";
+    }
+
+    public static function enhance_time_ms(int $seconds, int $timestamp = 0, string $abbr = "UTC"): int
+    {
+        $date = new Date(self::enhance_time($seconds, $timestamp, $abbr));
+        return $date->getTimestamp();
     }
 }

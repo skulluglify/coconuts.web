@@ -7,28 +7,24 @@ use tiny\DataModelStructure;
 use tiny\MySQL;
 
 
-class User extends DataModel implements DataModelStructure
+class Session extends DataModel implements DataModelStructure
 {
     protected MySQL $connect;
 
     protected array $vars = array(
         "id" => "INT AUTO_INCREMENT",
-        "user_photo" => "TEXT",
-        "user_name" => "TEXT NOT NULL",
-        "user_uniq" => "TEXT NOT NULL",
-        "user_age" => "DATE NOT NULL",
-        "user_gender" => "TEXT NOT NULL",
-        "user_email" => "TEXT NOT NULL",
-        "user_pass" => "TEXT NOT NULL",
-        "user_phone" => "TEXT",
-        "user_location" => "TEXT",
-        "user_description" => "TEXT"
+        "user_id" => "INT",
+        "x_user_id" => "INT",
+        "user_ip" => "TEXT NOT NULL",
+        "user_agent" => "TEXT NOT NULL",
+        "try_login" => "INT NOT NULL",
+        "token" => "TEXT NOT NULL"
     );
 
     #[Pure] public function __construct(MySQL $conn)
     {
 
-        parent::__construct($conn, "users");
+        parent::__construct($conn, "sessions");
     }
 
     public function create(): bool
@@ -38,6 +34,8 @@ class User extends DataModel implements DataModelStructure
         $check = $this->connect->eval("
             CREATE TABLE IF NOT EXISTS `$this->name`(
                 $contexts[0],
+                INDEX `x_user_id`(`user_id`),
+                FOREIGN KEY(`user_id`) REFERENCES `users`(`id`) ON UPDATE RESTRICT ON DELETE CASCADE,
                 time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 PRIMARY KEY(`id`)
             )

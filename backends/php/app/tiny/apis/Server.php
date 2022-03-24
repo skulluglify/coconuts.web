@@ -1,6 +1,8 @@
 <?php namespace tiny;
 
 
+use Exception;
+
 interface HTTPInfoStructure
 {
     public function getContentLength(): int;
@@ -70,6 +72,7 @@ interface RequestInfoStructure
 interface ServerStructure
 {
     public function getClientIP(): string;
+    public function getDataJSON(): object | null;
 }
 
 
@@ -496,5 +499,30 @@ class Server implements ServerStructure
         }
 
         return "127.0.0.1"; // default
+    }
+
+    public function getDataJSON(): object | null
+    {
+
+        $inputs = file_get_contents("php://input");
+
+        if (is_string($inputs)) {
+
+            try {
+
+                $data = json_decode($inputs);
+
+                if (is_object($data)) {
+
+                    return $data;
+                }
+
+            } catch (Exception) {
+
+                return null;
+            }
+        }
+
+        return null;
     }
 }

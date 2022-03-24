@@ -128,6 +128,8 @@ class MySQL implements MySQLStructure
 
             $stmt = $this->cnx->prepare($query);
 
+            $result = false;
+
             if ($stmt instanceof mysqli_stmt) {
 
                 foreach ($params as $param)
@@ -166,19 +168,18 @@ class MySQL implements MySQLStructure
                 // Need Handler
 
                 $stmt->bind_param($types, ...$params);
-                $stmt->execute();
 
-                $result = $stmt->get_result();
+                // if success
+                if ($stmt->execute()) {
 
-                // cause already sending ...
-                if (is_bool($result)) $result = true;
+                    $result = $stmt->get_result();
+
+                    // data has been sending but not have result ...
+                    if (is_bool($result)) $result = true;
+                }
 
                 $stmt->close();
 
-            } else {
-
-                // cause stmt failed create!
-                $result = false;
             }
 
         } else
