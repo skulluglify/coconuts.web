@@ -1,14 +1,67 @@
 $(() => {
     let userIcon = $(".user-icon")
     let userBar = $(".user-bar")
+    const mediaQuery = window.matchMedia("(max-width: 500px)");
     let popOptions = {
-        trigger: "focus",
+        // trigger: "focus",
+        strategy: "fixed",
+        modifiers: [
+          {
+            name: "preventOverflow",
+            options: {
+              padding: 0
+            }
+          },
+          {
+            name: "offset",
+            options: {
+              offset: () => [0, mediaQuery.matches ? 0 : 8],
+            },
+          }
+        ],
+        // placement: "bottom-start",
         placement: "bottom",
-        container: "body",
-        content: () => userBar.html(),
-        html: true
+        // container: "body",
+        // content: () => userBar.html(),
+        // html: true
     }
-    userIcon.popover(popOptions)
+    // userIcon.popover(popOptions)
+    let toggle = true;
+    const popperInstance = Popper.createPopper(userIcon[0], userBar[0], popOptions)
+    userIcon.on("click", function (e) {
+
+    	if (!!toggle) {
+
+			userBar.removeClass("d-none")
+			userBar.show()
+    		popperInstance.setOptions((options) => ({
+	          ...popOptions,
+	          modifiers: [
+	            ...popOptions.modifiers,
+	            {
+	              name: "eventListeners",
+	              enabled: true
+	            }
+	          ]
+	        }))
+    	} else {
+
+			userBar.addClass("d-none")
+			userBar.hide()
+    		popperInstance.setOptions((options) => ({
+	          ...popOptions,
+	          modifiers: [
+	            ...popOptions.modifiers,
+	            {
+	              name: "eventListeners",
+	              enabled: false
+	            }
+	          ]
+	        }))
+    	}
+
+    	toggle = !toggle
+    })
     let easymde = new EasyMDE({
         autoDownloadFontAwesome: false,
         element: $("#editor-area")[0],

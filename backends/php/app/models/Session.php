@@ -71,10 +71,11 @@ class Session extends DataModel implements DataModelStructure
     }
 
     // utilities
-    public static function createToken(string $headers = "", string $abbr = "UTC"): string
+    public static function createToken(string $labels = "", string $abbr = "UTC"): string
     {
 
         $timestamp = (new Date(abbr: $abbr))->getTimestamp();
-        return hash("sha3-256", $headers.str_shuffle(StringMap::alpha())."$timestamp");
+        $key = hash("sha3-256", $labels.$timestamp);
+        return hash_hmac("sha3-256", $labels."|".str_shuffle($key)."|".$timestamp, $key);
     }
 }

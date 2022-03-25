@@ -206,7 +206,7 @@ class Login extends Controller implements ControllerStructure
 
                     if ($user_pass == $pass) {
 
-                        $token = Session::createToken($user_uniq or $user_email);
+                        $token = Session::createToken(!empty($user_uniq) ? $user_uniq : "unknown");
 
                         $this->setMessage("success login", array(
                             "token" => $token

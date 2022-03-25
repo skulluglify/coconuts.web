@@ -81,7 +81,6 @@ interface DateStructure
     public function getTypeOfWeekday(): WeekdayType;
 
     // utils
-    public static function fix_date(int $Y, int $M, int $D, int $h, int $m, int $s): string;
     public static function enhance_time(int $seconds, int $timestamp, string $abbr): string;
     public static function enhance_time_ms(int $seconds, int $timestamp = 0, string $abbr = "UTC"): int;
 }
@@ -322,7 +321,7 @@ class Date implements DateStructure
         };
     }
 
-    public static function fix_date(int $Y, int $M, int $D, int $h, int $m, int $s): string
+    protected static function fix_date(int $Y, int $M, int $D, int $h, int $m, int $s): string
     {
 
         // fix Y M D h m s

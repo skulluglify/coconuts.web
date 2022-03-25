@@ -42,7 +42,7 @@
 }
 
 .search-box {
-    width: fit-content;
+    width: 100%;
     color: var(--var-grey);
     margin: 0 12px 0 12px;
     background: transparent;
@@ -81,7 +81,8 @@
 }
 
 .search-input {
-    width: 480px;
+    /* width: 480px; */
+    width: 100%; /* minimum */
 
 }
 

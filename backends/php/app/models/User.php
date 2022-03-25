@@ -81,8 +81,9 @@ class User extends DataModel implements DataModelStructure
             $v = c($data, 0, "id");
             if (!empty($v)) {
 
-                if (!is_string($v)) return intval($v);
-                return $v;
+                // check - convert - error
+                if (is_string($v)) return intval($v);
+                if (is_int($v)) return $v;
             }
         }
 
