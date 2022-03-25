@@ -75,22 +75,22 @@ class MySQL implements MySQLStructure
     private mysqli $cnx;
 
 
-    public function __construct(string $configname, string $prefix, string $extensions = "ini")
+    public function __construct(string $config, string $prefix, string $suffix = "ini")
     {
 
         mysqli_report(flags: MYSQLI_REPORT_OFF);
 
         if ($prefix) {
             if (strlen($prefix) > 0) {
-                $configname = join(separator: "/", array: [
-                    $prefix, $configname
+                $config = join(separator: "/", array: [
+                    $prefix, $config
                 ]);
             }
         }
 
         $this->config = parse_ini_file(
             filename: join(".", [
-                $configname, $extensions
+                $config, $suffix
             ]),
             process_sections: true,
             scanner_mode: INI_SCANNER_RAW
@@ -155,8 +155,16 @@ class MySQL implements MySQLStructure
                         $types .= "s";
                         continue;
                     }
+
+                    // bad idea
                     if ($t == "array") {
                         $types .= "b";
+
+                        // convert to string
+                        $params = join("", array_map(function ($codepoint) {
+
+                            return chr($codepoint);
+                        }, $params));
                         continue;
                     }
 

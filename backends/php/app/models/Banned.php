@@ -35,7 +35,7 @@ class Banned extends DataModel implements DataModelStructure
                 $contexts[0],
                 INDEX `x_user_id`(`user_id`),
                 FOREIGN KEY(`user_id`) REFERENCES `users`(`id`) ON UPDATE RESTRICT ON DELETE CASCADE,
-                time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                time TIMESTAMP DEFAULT UTC_TIMESTAMP,
                 PRIMARY KEY(`id`)
             )
         ");

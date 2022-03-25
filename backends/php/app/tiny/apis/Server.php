@@ -72,7 +72,8 @@ interface RequestInfoStructure
 interface ServerStructure
 {
     public function getClientIP(): string;
-    public function getDataJSON(): object | null;
+    public function getDataJSON(): object | array | null;
+    public function setDataJSON(array $data): void;
 }
 
 
@@ -501,7 +502,7 @@ class Server implements ServerStructure
         return "127.0.0.1"; // default
     }
 
-    public function getDataJSON(): object | null
+    public function getDataJSON(): object | array | null
     {
 
         $inputs = file_get_contents("php://input");
@@ -510,12 +511,10 @@ class Server implements ServerStructure
 
             try {
 
-                $data = json_decode($inputs);
+                // JSON_OBJECT_AS_ARRAY set by associative
+                $data = json_decode($inputs, associative: true, flags: JSON_BIGINT_AS_STRING);
 
-                if (is_object($data)) {
-
-                    return $data;
-                }
+                if (!empty($data)) return $data;
 
             } catch (Exception) {
 
@@ -524,5 +523,17 @@ class Server implements ServerStructure
         }
 
         return null;
+    }
+
+    public function setDataJSON(array $data): void
+    {
+        if (!empty($data)) {
+
+            echo json_encode($data);
+
+        } else {
+
+            echo "null";
+        }
     }
 }

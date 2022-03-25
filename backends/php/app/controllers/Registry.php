@@ -3,13 +3,14 @@
 
 use models\Session;
 use models\User;
-use tiny\Date;
+use tiny\Controller;
+use tiny\ControllerStructure;
+use tiny\MessageType;
 use tiny\MySQL;
 use tiny\Server;
-use tiny\StringMap;
 use function tiny\c;
 
-class Registry
+class Registry extends Controller implements ControllerStructure
 {
 
     protected MySQL $connect;
@@ -28,9 +29,8 @@ class Registry
     public function __construct(MySQL $conn, Server $server)
     {
 
+        parent::__construct($server);
         $this->connect = $conn;
-        $this->server = $server;
-
         $this->init();
     }
 
@@ -47,24 +47,25 @@ class Registry
         $data = $this->server->getDataJSON();
 
         // check data json
-        if (is_object($data)) {
+        if (is_array($data)) {
 
             // get commands key
-            if (property_exists($data, "registry")) {
+            $regis = c($data, "registry");
+
+            if (!empty($regis)) {
 
                 $this->wait = true;
 
-                $regis = $data->registry;
-                $user_photo = property_exists($regis, "user_photo") ? $regis->user_photo : null;
-                $user_name = property_exists($regis, "user_name") ? $regis->user_name : null;
-                $user_uniq = property_exists($regis, "user_uniq") ? $regis->user_uniq : null;
-                $user_age = property_exists($regis, "user_age") ? $regis->user_age : null;
-                $user_gender = property_exists($regis, "user_gender") ? $regis->user_gender : null;
-                $user_email = property_exists($regis, "user_email") ? $regis->user_email : null;
-                $user_pass = property_exists($regis, "user_pass") ? $regis->user_pass : null;
-                $user_phone = property_exists($regis, "user_phone") ? $regis->user_phone : null;
-                $user_location = property_exists($regis, "user_location") ? $regis->user_location : null;
-                $user_description = property_exists($regis, "user_description") ? $regis->user_description : null;
+                $user_photo = c($regis, "user_photo");
+                $user_name = c($regis, "user_name");
+                $user_uniq = c($regis, "user_uniq");
+                $user_age = c($regis, "user_age");
+                $user_gender = c($regis, "user_gender");
+                $user_email = c($regis, "user_email");
+                $user_pass = c($regis, "user_pass");
+                $user_phone = c($regis, "user_phone");
+                $user_location = c($regis, "user_location");
+                $user_description = c($regis, "user_description");
 
                 $attach = true;
                 while ($attach)
@@ -72,37 +73,37 @@ class Registry
 
                     if (is_null($user_name)) {
 
-                        $this->errorMessage("var user_name cannot be empty!");
+                        $this->setMessage("var user_name cannot be empty!", mode: MessageType::FAILURE);
                         break;
                     }
 
                     if (is_null($user_uniq)) {
 
-                        $this->errorMessage("var user_uniq cannot be empty!");
+                        $this->setMessage("var user_uniq cannot be empty!", mode: MessageType::FAILURE);
                         break;
                     }
 
                     if (is_null($user_age)) {
 
-                        $this->errorMessage("var user_age cannot be empty!");
+                        $this->setMessage("var user_age cannot be empty!", mode: MessageType::FAILURE);
                         break;
                     }
 
                     if (is_null($user_gender)) {
 
-                        $this->errorMessage("var user_gender cannot be empty!");
+                        $this->setMessage("var user_gender cannot be empty!", mode: MessageType::FAILURE);
                         break;
                     }
 
                     if (is_null($user_email)) {
 
-                        $this->errorMessage("var user_email cannot be empty!");
+                        $this->setMessage("var user_email cannot be empty!", mode: MessageType::FAILURE);
                         break;
                     }
 
                     if (is_null($user_pass)) {
 
-                        $this->errorMessage("var user_pass cannot be empty!");
+                        $this->setMessage("var user_pass cannot be empty!", mode: MessageType::FAILURE);
                         break;
                     }
 
@@ -122,8 +123,8 @@ class Registry
                             $uniq = c($check[0], "user_uniq");
                             $email = c($check[0], "user_email");
 
-                            if ($user_uniq == $uniq) $this->errorMessage("var user_uniq already used by another user!");
-                            else if ($user_email == $email) $this->errorMessage("var user_email already used by another user!");
+                            if ($user_uniq == $uniq) $this->setMessage("var user_uniq already used by another user!", mode: MessageType::FAILURE);
+                            else if ($user_email == $email) $this->setMessage("var user_email already used by another user!", mode: MessageType::FAILURE);
 
                             break;
                         }
@@ -144,7 +145,7 @@ class Registry
 
                         $token = Session::createToken($user_name);
 
-                        $this->successMessage("success insert table!", array(
+                        $this->setMessage("success insert table!", array(
                             "token" => $token
                         ));
 
@@ -155,7 +156,7 @@ class Registry
                         if (is_int($user_id)) {
 
                             // delete session
-                            // wait, if someone login
+                            // wait, if someone logs in
                             // duplicate user ?
                             // $this->session->delete(array(
                                 // "user_id" => $user_id
@@ -174,7 +175,7 @@ class Registry
 
                     } else {
 
-                        $this->errorMessage("failed insert table!");
+                        $this->setMessage("failed insert table!", mode: MessageType::FAILURE);
                         break;
                     }
 
@@ -182,38 +183,5 @@ class Registry
                 }
             }
         }
-    }
-
-    protected function successMessage(string $msg, array | null $assign = null): void
-    {
-
-        $data = array(
-            "success" => array(
-                "message" => $msg
-            )
-        );
-
-        if (!is_null($assign)) $data = array_merge($data, $assign);
-
-        echo json_encode($data);
-    }
-
-    protected function errorMessage(string $msg, array | null $assign = null): void
-    {
-
-        $data = array(
-            "error" => array(
-                "message" => $msg
-            )
-        );
-
-        if (!is_null($assign)) $data = array_merge($data, $assign);
-
-        echo json_encode($data);
-    }
-
-    public function lock(): bool
-    {
-        return $this->wait;
     }
 }

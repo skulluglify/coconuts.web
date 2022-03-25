@@ -81,6 +81,7 @@ interface DateStructure
     public function getTypeOfWeekday(): WeekdayType;
 
     // utils
+    public static function fix_date(int $Y, int $M, int $D, int $h, int $m, int $s): string;
     public static function enhance_time(int $seconds, int $timestamp, string $abbr): string;
     public static function enhance_time_ms(int $seconds, int $timestamp = 0, string $abbr = "UTC"): int;
 }
@@ -122,7 +123,7 @@ class Date implements DateStructure
         {
             if (is_int($datetime)) {
 
-                // bad, handling timestamp to string
+                // auto fixed
                 $d = getdate($datetime);
 
                 $Y = $d["year"];
@@ -131,49 +132,6 @@ class Date implements DateStructure
                 $h = $d["hours"];
                 $m = $d["minutes"];
                 $s = $d["seconds"];
-
-                // fix Y M D h m s
-                if ($s > 60) {
-
-                    $l = $s % 60;
-                    $m += ($s - $l) / 60;
-                    $s = $l;
-                }
-
-                if ($m > 60) {
-
-                    $l = $m % 60;
-                    $h += ($m - $l) / 60;
-                    $m = $l;
-                }
-
-                if ($h > 24) {
-
-                    $l = $h % 24;
-                    $D += ($h - $l) / 24;
-                    $h = $l;
-                }
-
-                if ($D > 30) {
-
-                    $l = $D % 30;
-                    $M += ($D - $l) / 30;
-                    $D = $l;
-                }
-
-                if ($M > 12) {
-
-                    $l = $M % 12;
-                    $Y += ($M - $l) / 12;
-                    $M = $l;
-                }
-
-                $Y = str_pad($Y, 2, "0", STR_PAD_LEFT);
-                $M = str_pad($M, 2, "0", STR_PAD_LEFT);
-                $D = str_pad($D, 2, "0", STR_PAD_LEFT);
-                $h = str_pad($h, 2, "0", STR_PAD_LEFT);
-                $m = str_pad($m, 2, "0", STR_PAD_LEFT);
-                $s = str_pad($s, 2, "0", STR_PAD_LEFT);
 
                 $datetime = "$Y-$M-$D $h:$m:$s";
             }
@@ -364,6 +322,62 @@ class Date implements DateStructure
         };
     }
 
+    public static function fix_date(int $Y, int $M, int $D, int $h, int $m, int $s): string
+    {
+
+        // fix Y M D h m s
+        if (60 <= $s) {
+
+            $l = $s % 60;
+            $m += ($s - $l) / 60;
+            $s = $l;
+        }
+
+        if (60 <= $m) {
+
+            $l = $m % 60;
+            $h += ($m - $l) / 60;
+            $m = $l;
+        }
+
+        // set default 24, 12 with DST
+        if (24 <= $h) {
+
+            $l = $h % 24;
+            $D += ($h - $l) / 24;
+            $h = $l;
+        }
+
+        // not like index
+        // make precious number
+        $K = 12 < $M ? $Y + (($M - ($M % 12)) / 12) : $Y;
+        $Z = !($K % 4) ? (($K % 400 and !($K % 100)) ? 28 : 29) : 28;
+
+        if ($Z < $D) {
+
+            $l = $D % $Z;
+            $M += ($D - $l) / $Z;
+            $D = $l;
+        }
+
+        // not like index
+        if (12 < $M) {
+
+            $l = $M % 12;
+            $Y += ($M - $l) / 12;
+            $M = $l;
+        }
+
+        $Y = str_pad($Y, 2, "0", STR_PAD_LEFT);
+        $M = str_pad($M, 2, "0", STR_PAD_LEFT);
+        $D = str_pad($D, 2, "0", STR_PAD_LEFT);
+        $h = str_pad($h, 2, "0", STR_PAD_LEFT);
+        $m = str_pad($m, 2, "0", STR_PAD_LEFT);
+        $s = str_pad($s, 2, "0", STR_PAD_LEFT);
+
+        return "$Y-$M-$D $h:$m:$s";
+    }
+
     public static function enhance_time(int $seconds, int $timestamp = 0, string $abbr = "UTC"): string
     {
         $timestamp = $timestamp > 0 ? $timestamp : "now";
@@ -397,58 +411,7 @@ class Date implements DateStructure
         $minutes = $minutes + $start->getMinute();
         $seconds = $loose;
 
-        // years, like default
-        $Y = $years;
-        $M = $months;
-        $D = $days;
-        $h = $hours;
-        $m = $minutes;
-        $s = $seconds;
-
-        // fix Y M D h m s
-        if ($s > 60) {
-
-            $l = $s % 60;
-            $m += ($s - $l) / 60;
-            $s = $l;
-        }
-
-        if ($m > 60) {
-
-            $l = $m % 60;
-            $h += ($m - $l) / 60;
-            $m = $l;
-        }
-
-        if ($h > 24) {
-
-            $l = $h % 24;
-            $D += ($h - $l) / 24;
-            $h = $l;
-        }
-
-        if ($D > 30) {
-
-            $l = $D % 30;
-            $M += ($D - $l) / 30;
-            $D = $l;
-        }
-
-        if ($M > 12) {
-
-            $l = $M % 12;
-            $Y += ($M - $l) / 12;
-            $M = $l;
-        }
-
-        $Y = str_pad($Y, 2, "0", STR_PAD_LEFT);
-        $M = str_pad($M, 2, "0", STR_PAD_LEFT);
-        $D = str_pad($D, 2, "0", STR_PAD_LEFT);
-        $h = str_pad($h, 2, "0", STR_PAD_LEFT);
-        $m = str_pad($m, 2, "0", STR_PAD_LEFT);
-        $s = str_pad($s, 2, "0", STR_PAD_LEFT);
-
-        return "$Y-$M-$D $h:$m:$s";
+        return self::fix_date($years, $months, $days, $hours, $minutes, $seconds);
     }
 
     public static function enhance_time_ms(int $seconds, int $timestamp = 0, string $abbr = "UTC"): int

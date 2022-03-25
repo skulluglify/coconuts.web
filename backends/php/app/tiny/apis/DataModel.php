@@ -1,6 +1,8 @@
 <?php namespace tiny;
 
 // require first
+use JetBrains\PhpStorm\Pure;
+
 require_once "MySQL.php";
 
 
@@ -244,10 +246,10 @@ abstract class DataModel implements DataModelStructure
         return null;
     }
 
-    protected function success(bool | null | MySQLFetchStructure $check): bool
+    #[Pure] protected function success(bool | null | MySQLFetchStructure $check): bool
     {
 
-        if (is_bool($check)) return $check;
+        if (is_bool($check)) return $check or $this->connect->has_changed();
         if ($check instanceof MySQLFetch) return true;
         return false;
     }

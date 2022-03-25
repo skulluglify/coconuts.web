@@ -39,7 +39,7 @@ class User extends DataModel implements DataModelStructure
         $check = $this->connect->eval("
             CREATE TABLE IF NOT EXISTS `$this->name`(
                 $contexts[0],
-                time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                time TIMESTAMP DEFAULT UTC_TIMESTAMP,
                 PRIMARY KEY(`id`)
             )
         ");
@@ -79,7 +79,11 @@ class User extends DataModel implements DataModelStructure
         if (!empty($data)) {
 
             $v = c($data, 0, "id");
-            if (is_int($v)) return intval($v);
+            if (!empty($v)) {
+
+                if (!is_string($v)) return intval($v);
+                return $v;
+            }
         }
 
         return null;

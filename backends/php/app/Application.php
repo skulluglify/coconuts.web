@@ -3,7 +3,6 @@
 use controllers\Login;
 use controllers\Registry;
 use Exception;
-use tiny\Date;
 use tiny\MySQL;
 use tiny\Server;
 
@@ -34,12 +33,11 @@ class Application
         $attach = true;
         while ($attach) {
 
-            $regis = new Registry($conn, $server);
 
+            $regis = new Registry($conn, $server);
             if ($regis->lock()) break;
 
             $login = new Login($conn, $server, $this->level);
-
             if ($login->lock()) break;
 
             $attach = false;
