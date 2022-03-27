@@ -31,6 +31,8 @@ spl_autoload_register(function(string $mainClasses): void {
             ]
         );
 
+        error_log($pathClass);
+
         if (file_exists($pathClass))
         {
             require_once $pathClass;

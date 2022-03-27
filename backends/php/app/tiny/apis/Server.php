@@ -102,23 +102,23 @@ class HTTPInfo implements HTTPInfoStructure
     public function __construct(array $info)
     {
 
-        $this->HTTP_CONTENT_LENGTH = $info["HTTP_CONTENT_LENGTH"];
-        $this->HTTP_COOKIE = $info["HTTP_COOKIE"];
-        $this->HTTP_ACCEPT_LANGUAGE = $info["HTTP_ACCEPT_LANGUAGE"];
-        $this->HTTP_ACCEPT_ENCODING = $info["HTTP_ACCEPT_ENCODING"];
-        $this->HTTP_REFERER = $info["HTTP_REFERER"];
-        $this->HTTP_SEC_FETCH_DEST = $info["HTTP_SEC_FETCH_DEST"];
-        $this->HTTP_SEC_FETCH_USER = $info["HTTP_SEC_FETCH_USER"];
-        $this->HTTP_SEC_FETCH_MODE = $info["HTTP_SEC_FETCH_MODE"];
-        $this->HTTP_SEC_FETCH_SITE = $info["HTTP_SEC_FETCH_SITE"];
-        $this->HTTP_USER_AGENT = $info["HTTP_USER_AGENT"];
-        $this->HTTP_UPGRADE_INSECURE_REQUESTS = $info["HTTP_UPGRADE_INSECURE_REQUESTS"];
-        $this->HTTP_CACHE_CONTROL = $info["HTTP_CACHE_CONTROL"];
-        $this->HTTP_SEC_CH_UA_PLATFORM = $info["HTTP_SEC_CH_UA_PLATFORM"];
-        $this->HTTP_SEC_CH_UA_MOBILE = $info["HTTP_SEC_CH_UA_MOBILE"];
-        $this->HTTP_HOST = $info["HTTP_HOST"];
-        $this->HTTP_CLIENT_IP = $info["HTTP_CLIENT_IP"];
-        $this->HTTP_X_FORWARDED_FOR = $info["HTTP_X_FORWARDED_FOR"];
+        $this->HTTP_CONTENT_LENGTH = c($info, "HTTP_CONTENT_LENGTH");
+        $this->HTTP_COOKIE = c($info, "HTTP_COOKIE");
+        $this->HTTP_ACCEPT_LANGUAGE = c($info, "HTTP_ACCEPT_LANGUAGE");
+        $this->HTTP_ACCEPT_ENCODING = c($info, "HTTP_ACCEPT_ENCODING");
+        $this->HTTP_REFERER = c($info, "HTTP_REFERER");
+        $this->HTTP_SEC_FETCH_DEST = c($info, "HTTP_SEC_FETCH_DEST");
+        $this->HTTP_SEC_FETCH_USER = c($info, "HTTP_SEC_FETCH_USER");
+        $this->HTTP_SEC_FETCH_MODE = c($info, "HTTP_SEC_FETCH_MODE");
+        $this->HTTP_SEC_FETCH_SITE = c($info, "HTTP_SEC_FETCH_SITE");
+        $this->HTTP_USER_AGENT = c($info, "HTTP_USER_AGENT");
+        $this->HTTP_UPGRADE_INSECURE_REQUESTS = c($info, "HTTP_UPGRADE_INSECURE_REQUESTS");
+        $this->HTTP_CACHE_CONTROL = c($info, "HTTP_CACHE_CONTROL");
+        $this->HTTP_SEC_CH_UA_PLATFORM = c($info, "HTTP_SEC_CH_UA_PLATFORM");
+        $this->HTTP_SEC_CH_UA_MOBILE = c($info, "HTTP_SEC_CH_UA_MOBILE");
+        $this->HTTP_HOST = c($info, "HTTP_HOST");
+        $this->HTTP_CLIENT_IP = c($info, "HTTP_CLIENT_IP");
+        $this->HTTP_X_FORWARDED_FOR = c($info, "HTTP_X_FORWARDED_FOR");
     }
 
     public function getContentLength(): int
@@ -240,8 +240,8 @@ class ContentInfo implements ContentInfoStructure
     public function __construct(array $info)
     {
 
-        $this->CONTENT_TYPE = $info["CONTENT_TYPE"];
-        $this->CONTENT_LENGTH = $info["CONTENT_LENGTH"];
+        $this->CONTENT_TYPE = c($info, "CONTENT_TYPE");
+        $this->CONTENT_LENGTH = c($info, "CONTENT_LENGTH");;
     }
 
     public function getType(): string | null
@@ -269,8 +269,8 @@ class URLInfo implements URLInfoStructure
     public function __construct(array $info)
     {
 
-        $this->QUERY_STRING = $info["QUERY_STRING"];
-        $this->DOCUMENT_URI = $info["DOCUMENT_URI"];
+        $this->QUERY_STRING = c($info,"QUERY_STRING");
+        $this->DOCUMENT_URI = c($info,"DOCUMENT_URI");
     }
 
     public function getQuery(): string | null
@@ -298,9 +298,9 @@ class ResponseInfo implements ResponseInfoStructure
 
     public function __construct(array $info)
     {
-        $this->REDIRECT_STATUS = $info["REDIRECT_STATUS"];
-        $this->GATEWAY_INTERFACE = $info["GATEWAY_INTERFACE"];
-        $this->SERVER_PROTOCOL = $info["SERVER_PROTOCOL"];
+        $this->REDIRECT_STATUS = c($info,"REDIRECT_STATUS");
+        $this->GATEWAY_INTERFACE = c($info,"GATEWAY_INTERFACE");
+        $this->SERVER_PROTOCOL = c($info,"SERVER_PROTOCOL");
     }
 
     public function getRedirectStatus(): int
@@ -341,9 +341,9 @@ class ServerInfo implements ServerInfoStructure
 
     public function __construct(array $info)
     {
-        $this->SERVER_PORT = $info["SERVER_PORT"];
-        $this->SERVER_ADDRESS = $info["SERVER_ADDRESS"];
-        $this->SERVER_NAME = $info["SERVER_NAME"];
+        $this->SERVER_PORT = c($info,"SERVER_PORT");
+        $this->SERVER_ADDRESS = c($info,"SERVER_ADDRESS");
+        $this->SERVER_NAME = c($info,"SERVER_NAME");
     }
 
     public function getPort(): int
@@ -383,8 +383,8 @@ class RemoteInfo implements RemoteInfoStructure
 
     public function __construct(array $info)
     {
-        $this->REMOTE_PORT = $info["REMOTE_PORT"];
-        $this->REMOTE_ADDRESS = $info["REMOTE_ADDRESS"];
+        $this->REMOTE_PORT = c($info,"REMOTE_PORT");
+        $this->REMOTE_ADDRESS = c($info,"REMOTE_ADDRESS");
     }
 
 
@@ -417,9 +417,9 @@ class RequestInfo implements RequestInfoStructure
 
     public function __construct(array $info)
     {
-        $this->REQUEST_METHOD = $info["REQUEST_METHOD"];
-        $this->REQUEST_URI = $info["REQUEST_URI"];
-        $this->REQUEST_TIME = $info["REQUEST_TIME"];
+        $this->REQUEST_METHOD = c($info,"REQUEST_METHOD");
+        $this->REQUEST_URI = c($info,"REQUEST_URI");
+        $this->REQUEST_TIME = c($info,"REQUEST_TIME");
     }
 
     public function getURI(): string

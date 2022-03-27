@@ -5,6 +5,5 @@
     <file url="file://$PROJECT_DIR$/app/models/Session.php" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/app/models/User.php" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/app/tiny/apis/DataModel.php" dialect="GenericSQL" />
-    <file url="file://$PROJECT_DIR$/init.php" dialect="GenericSQL" />
   </component>
 </project>
