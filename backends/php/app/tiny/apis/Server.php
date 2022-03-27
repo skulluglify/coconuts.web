@@ -69,11 +69,24 @@ interface RequestInfoStructure
 }
 
 
+interface RequestStructure
+{
+    public function json(): array | null;
+}
+
+
+interface ResponseStructure
+{
+    public function header(string $headers): void;
+    public function render(mixed $content): void;
+}
+
+
 interface ServerStructure
 {
     public function getClientIP(): string;
-    public function getDataJSON(): object | array | null;
-    public function setDataJSON(array $data): void;
+    public function modify(array $options): void;
+    public function route(string $paths, callable $callback): void;
 }
 
 
@@ -241,7 +254,7 @@ class ContentInfo implements ContentInfoStructure
     {
 
         $this->CONTENT_TYPE = c($info, "CONTENT_TYPE");
-        $this->CONTENT_LENGTH = c($info, "CONTENT_LENGTH");;
+        $this->CONTENT_LENGTH = c($info, "CONTENT_LENGTH");
     }
 
     public function getType(): string | null
@@ -456,53 +469,15 @@ class RequestInfo implements RequestInfoStructure
 }
 
 
-class Server implements ServerStructure
+class Request implements RequestStructure
 {
-    // ROUTING
-    // GET POST PUT DELETE PATCH
-
-    public HTTPInfoStructure $HTTP;
-    public ContentInfoStructure $Content;
-    public URLInfoStructure $URL;
-    public ResponseInfoStructure $Response;
-    public ServerInfoStructure $Server;
-    public RemoteInfoStructure $Remote;
-    public RequestInfoStructure $Request;
 
     public function __construct()
     {
-        $info = $_SERVER;
 
-        if (!empty($info)) {
-
-            $this->HTTP = new HTTPInfo($info);
-            $this->Content = new ContentInfo($info);
-            $this->URL = new URLInfo($info);
-            $this->Response = new ResponseInfo($info);
-            $this->Server = new ServerInfo($info);
-            $this->Remote = new RemoteInfo($info);
-            $this->Request = new RequestInfo($info);
-        }
+        // nothing to do
     }
-
-    public function getClientIP(): string
-    {
-        $client_ip = $this->HTTP->getClientIP();
-        if (!empty($client_ip)) {
-
-            return $client_ip;
-        }
-
-        $remote_address = $this->Remote->getAddress();
-        if (!empty($remote_address)) {
-
-            return $remote_address;
-        }
-
-        return "127.0.0.1"; // default
-    }
-
-    public function getDataJSON(): object | array | null
+    public function json() : array | null
     {
 
         $inputs = file_get_contents("php://input");
@@ -524,16 +499,116 @@ class Server implements ServerStructure
 
         return null;
     }
+}
 
-    public function setDataJSON(array $data): void
+
+class Response implements ResponseStructure
+{
+
+    public function __construct()
     {
-        if (!empty($data)) {
 
-            echo json_encode($data);
+        // nothing to do
+    }
 
-        } else {
+    public function header(string $headers) : void
+    {
 
-            echo "null";
+        // replacement in built in
+        header($headers);
+    }
+
+    public function render(mixed $content) : void
+    {
+        if (is_array($content)) echo json_encode($content);
+        else if (is_string($content)) echo $content;
+        else if (is_int($content)) echo $content;
+        else echo "<unknown/>";
+    }
+}
+
+
+class Server implements ServerStructure
+{
+    // ROUTING
+    // GET POST PUT DELETE PATCH
+    protected string $prefix;
+
+    public HTTPInfoStructure $HTTP;
+    public ContentInfoStructure $Content;
+    public URLInfoStructure $URL;
+    public ResponseInfoStructure $Response;
+    public ServerInfoStructure $Server;
+    public RemoteInfoStructure $Remote;
+    public RequestInfoStructure $Request;
+
+    public function __construct()
+    {
+        $info = $_SERVER;
+        $this->prefix = "";
+
+        if (!empty($info)) {
+
+            $this->HTTP = new HTTPInfo($info);
+            $this->Content = new ContentInfo($info);
+            $this->URL = new URLInfo($info);
+            $this->Response = new ResponseInfo($info);
+            $this->Server = new ServerInfo($info);
+            $this->Remote = new RemoteInfo($info);
+            $this->Request = new RequestInfo($info);
+        }
+
+        // set default headers
+        header("X-Powered-By: Tiny Service .Ltd");
+        header("Access-Control-Allow-Origin: Same-Origin");
+        header("Vary: Origin");
+    }
+
+    public function getClientIP(): string
+    {
+        $client_ip = $this->HTTP->getClientIP();
+        if (!empty($client_ip)) {
+
+            return $client_ip;
+        }
+
+        $remote_address = $this->Remote->getAddress();
+        if (!empty($remote_address)) {
+
+            return $remote_address;
+        }
+
+        return "127.0.0.1"; // default
+    }
+
+    // new concept
+    public function modify(array $options): void
+    {
+
+        // nothing to do
+    }
+
+    // new concept
+    public function route(string $paths, callable $callback): void {
+
+        $uri = $this->Request->getURI();
+        $origin = join("/", [$this->prefix, $paths]);
+
+        if (!str_starts_with($origin, "/")) $origin = "/".$origin;
+        if (str_ends_with($uri, "/")) $uri = substr($uri, 0, strlen($uri) - 1);
+
+        if ($uri === $origin)
+        {
+            $req = new Request();
+            $res = new Response();
+            if (is_callable($callback)) {
+
+                $res->header("HTTP/2.0 200 OK");
+                $callback($req, $res);
+            } else {
+
+                $res->header("HTTP/2.0 401 Unauthorized");
+            }
         }
     }
 }

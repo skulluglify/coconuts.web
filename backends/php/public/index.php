@@ -2,24 +2,24 @@
 
 require_once join("/", array(__DIR__, "../app/init.php"));
 
-
+header("HTTP/2.0 404 Not Found");
 use app\Application;
 
-
+new Application();
 
 // http://www.faqs.org/rfcs/rfc2616.html
-if ((new \tiny\Server())->Request->getURI() == "/login") {
-
-    new Application();
-    header("HTTP/2.0 200 OK");
-} else {
-
-    header("HTTP/2.0 401 Unauthorized");
-}
-header("Content-Type: application/json");
-header("X-Powered-By: Coconuts Services .Ltd");
-header("Vary: Origin");
-header("Access-Control-Allow-Origin: Same-Origin");
+//if ((new \tiny\Server())->Request->getURI() == "/login") {
+//
+//    new Application();
+//    header("HTTP/2.0 200 OK");
+//} else {
+//
+//    header("HTTP/2.0 401 Unauthorized");
+//}
+//header("Content-Type: application/json");
+//header("X-Powered-By: Coconuts Services .Ltd");
+//header("Vary: Origin");
+//header("Access-Control-Allow-Origin: Same-Origin");
 
 //var_dump(
 //    headers_list()

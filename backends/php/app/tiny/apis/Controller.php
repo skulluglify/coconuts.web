@@ -29,7 +29,7 @@ abstract class Controller implements ControllerStructure
 
     protected abstract function init(): void;
 
-    protected function setMessage(string $msg, array | null $assign = null, MessageType $mode = MessageType::SUCCESS): void
+    protected function trace(string $msg, array | null $assign = null, MessageType $mode = MessageType::SUCCESS): array
     {
         // $data = []; // unused
 
@@ -48,7 +48,7 @@ abstract class Controller implements ControllerStructure
 
         if (!is_null($assign)) $data = array_merge($data, $assign);
 
-        $this->server->setDataJSON($data);
+        return $data;
     }
 
     public function lock(): bool
