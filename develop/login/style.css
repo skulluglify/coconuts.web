@@ -1,0 +1,198 @@
+.container {
+
+    width: 100%;
+    height: 100vh;
+}
+
+.login {
+
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-user-drag: none;
+    display: flex;
+    flex-wrap: nowrap;
+    margin: 24px;
+    width: 400px;
+    min-width: 360px;
+    max-width: 420px;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid var(--var-grey);
+    border-radius: 16px;
+    flex-direction: column;
+}
+
+.login .logo .logo {
+    width: 182px;
+    height: 182px;
+    margin: 24px;
+    background-image: url("../assets/cocos.svg");
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+}
+
+.login .log {
+
+    display: flex;
+    cursor: auto;
+    width: 98%;
+    height: fit-content;
+    flex-wrap: wrap;
+    margin: 0 0 12px;
+    align-items: center;
+    justify-content: flex-start;
+    font-family: 'Poppins', Roboto;
+    padding: 2px 6px 2px 4px;
+    flex-direction: row;
+    white-space: normal;
+    overflow: hidden;
+}
+.login .log:hover,
+.login .log:active,
+.login .log:focus {
+
+    background-color: transparent;
+}
+
+
+.login .log-err:hover,
+.login .log-err:active,
+.login .log-err:focus {
+
+    color: var(--bs-danger);
+}
+
+.login .log-warn:hover,
+.login .log-warn:active,
+.login .log-warn:focus {
+
+    color: var(--bs-warning);
+}
+
+.login .log i.bi,
+.login .log span {
+
+    font-size: 0.75rem;
+}
+
+.login .identify,
+.login .userpass {
+
+    display: flex;
+    flex-wrap: nowrap;
+    width: 100%;
+    height: fit-content;
+    margin: 0 0 0 0;
+    align-items: center;
+    justify-content: center;
+    padding: 0 24px 0 24px;
+    flex-direction: row;
+}
+
+.login .identify > i,
+.login .userpass > i {
+
+    display: flex;
+    width: 42px;
+    height: 42px;
+    margin: 0.25rem;
+    padding: 4px;
+    flex-wrap: nowrap;
+    border: 1px solid var(--var-grey);
+    border-radius: 50%;
+    font-size: 1.75rem;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background-color: var(--var-light-grey);
+    overflow: hidden;
+}
+
+.login .identify input[type='text'] {
+
+    width: 260px;
+    height: 42px;
+    border-radius: 4px;
+    padding: 4px 12px 4px 12px;
+    font-weight: lighter;
+    font-family: 'Poppins', Roboto;
+    border: 1px solid var(--var-grey);
+    background-color: var(--var-light-grey);
+}
+
+.login .userpass .pass {
+
+    display: flex;
+    width: 260px;
+    height: 42px;
+    flex-wrap: nowrap;
+    padding: 4px 12px 4px 12px;
+    border-radius: 4px;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    border: 1px solid var(--var-grey);
+    background-color: var(--var-light-grey);
+}
+
+.login .userpass .pass input[type='text'],
+.login .userpass .pass input[type='password'] {
+
+    width: 100%;
+    text-decoration: none;
+    font-weight: lighter;
+    background-color: transparent;
+    font-family: 'Poppins', Roboto;
+}
+
+.login .userpass .pass .eye {
+
+    display: flex;
+    width: 32px;
+    height: 32px;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    background-color: transparent;
+    overflow: hidden;
+}
+
+.login .userpass .pass .eye .activate {
+
+    color: var(--var-black) !important;
+}
+
+.login .userpass .pass .eye i {
+
+    margin: 0;
+    padding: 0;
+    color: var(--var-grey);
+    font-size: 1.75rem;
+}
+
+.login .forgot-password {
+
+    margin: 12px 0 12px 0;
+}
+
+.login .forgot-password a {
+
+    text-decoration: none;
+}
+
+.login .forgot-password a span {
+
+    font-family: 'Poppins', Roboto;
+}
+
+.login .keep-me-signed span {
+
+    font-family: 'Poppins', Roboto;
+}
+
+.login .prompt-box button {
+
+    margin: 24px;
+    font-family: 'Poppins', Roboto;
+}

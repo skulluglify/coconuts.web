@@ -1,0 +1,275 @@
+body {
+
+    display: flex;
+    width: 100vw;
+    min-height: 100vh;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.container {
+    width: fit-content;
+    height: fit-content;
+}
+
+.regis  {
+
+    width: fit-content;
+    height: fit-content;
+    user-select: none;
+    -webkit-user-drag: none;
+    -webkit-user-select: none;
+    border-radius: 24px;
+    background-color: var(--var-white);
+}
+
+.regis .paper {
+
+    display: flex;
+    width: 300px;
+    height: 606px;
+    margin: 12px;
+    padding: 12px;
+    border: 2px dashed var(--var-grey);
+    border-radius: 16px;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background-color: var(--var-white);
+}
+
+.regis .paper.user-attachment {
+
+    align-items: flex-start;
+}
+
+.regis .paper .name-box {
+
+    display: flex;
+    width: fit-content;
+    margin: 0 0 4px 0;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+}
+
+.regis .paper .name-box input[name='first-name'] {
+
+    width: 140px;
+    margin: 0 4px 0 0;
+}
+
+.regis .paper .name-box input[name='last-name'] {
+
+    width: 100%;
+    margin: 0;
+}
+
+.regis .paper input[type='text'],
+.regis .paper input[type='password'],
+.regis .paper input[type='tel']{
+
+    width: 260px;
+    height: fit-content;
+    font-family: 'Poppins', Roboto;
+    padding: 4px 12px 4px 10px;
+    margin: 0 0 4px 0;
+    border: 1px solid var(--var-grey);
+    border-radius: 4px;
+    background-color: var(--var-light-grey);
+}
+
+.regis .paper fieldset {
+
+    margin: 12px 0 6px 0;
+    padding: 0 6px 0 6px;
+    border: 1px solid var(--var-grey);
+    border-radius: 4px;
+}
+
+.regis .paper fieldset legend {
+
+    display: inline-block;
+    width: fit-content;
+    height: fit-content;
+    font-family: 'Poppins', Roboto;
+    font-weight: bold;
+    font-size: 12px;
+    padding: 0 2px 0 2px;
+    margin: -10px 0 0 4px;
+    background-color: var(--var-white);
+    /*z-index: 1;*/
+}
+
+.regis .paper .date {
+
+    display: flex;
+    width: fit-content;
+    height: fit-content;
+    flex-wrap: nowrap;
+    margin: 6px 0 6px 0;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+}
+
+.regis .paper .date select {
+
+    width: fit-content;
+    height: fit-content;
+    padding-top: 4px;
+    padding-bottom: 2px;
+    font-family: 'Poppins', Roboto;
+    font-size: 0.85rem;
+    margin: 0 2px 0 2px;
+    border: 1px solid var(--var-grey);
+    border-radius: 4px;
+    background-color: var(--var-white);
+}
+
+.regis .paper .gender {
+
+    margin: 0 0 4px 0;
+}
+
+.regis .paper .gender .check {
+
+    display: flex;
+    min-width: 102px;
+    width: fit-content;
+    height: fit-content;
+    flex-wrap: nowrap;
+    margin: 0 4px 0 0;
+    border: 1px solid var(--var-grey);
+    border-radius: 4px;
+    padding: 2px 0 2px 4px;
+    align-items: center;
+    justify-content: flex-start;
+    background-color: var(--var-light-grey);
+    flex-direction: row;
+}
+
+.regis .paper .gender .check input[type='radio'] {
+
+    margin: 0 0.45em 0 0;
+    accent-color: var(--bs-primary);
+    background-color: var(--bs-primary);
+    border: 1px solid var(--bs-primary);
+    /*border-radius: 50%;*/
+    border-radius: 0.25em;
+}
+
+.regis .paper .gender .check input[type='radio']:focus {
+
+    border: 1px solid rgba(var(--bs-white-rgb), 0.42);
+}
+
+.regis .paper .gender .check input[type='radio']:focus,
+.regis .paper .gender .check input[type='radio']:active,
+.regis .paper .gender .check input[type='radio']:checked {
+    background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCAyMCAyMCc+PHBhdGggZmlsbD0nbm9uZScgc3Ryb2tlPScjZmZmJyBzdHJva2UtbGluZWNhcD0ncm91bmQnIHN0cm9rZS1saW5lam9pbj0ncm91bmQnIHN0cm9rZS13aWR0aD0nMycgZD0nTTYgMTBsMyAzbDYtNicvPjwvc3ZnPg==");
+    box-shadow: 0 0 0 0.25em rgba(var(--bs-primary-rgb), 0.18);
+}
+
+.regis .paper .gender .check label {
+
+    font-family: 'Poppins', Roboto;
+    font-size: 0.85em;
+}
+
+.regis .paper .gender .check.female input[type='radio'] {
+
+    accent-color: #ff74fc;
+    background-color: #ff74fc;
+    border: 1px solid #ff74fc;
+}
+
+.regis .paper .gender .check.female input[type='radio']:focus,
+.regis .paper .gender .check.female input[type='radio']:active,
+.regis .paper .gender .check.female input[type='radio']:checked {
+
+    border-color: #ff74fc;
+    box-shadow: 0 0 0 0.25em #ff74fc2f;
+}
+
+.regis .paper .box-textarea {
+
+    width: 260px;
+    height: fit-content;
+    font-family: 'Poppins', Roboto;
+    padding: 4px 12px 4px 10px;
+    border: 1px solid var(--var-grey);
+    border-radius: 4px;
+    background-color: var(--var-light-grey);
+    background-image: url('../assets/cocktail.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-blend-mode: soft-light;
+    background-size: 130px;
+}
+.regis .paper .box-textarea textarea {
+
+    resize: none;
+    background-color: transparent;
+}
+
+.regis .paper .photo {
+
+    display: flex;
+    width: 256px;
+    height: 256px;
+    margin: 0 0 12px 0;
+    border: 0;
+    flex-wrap: nowrap;
+    border-radius: 50%;
+    background-color: var(--var-light-grey);
+    background-image: url("../assets/dummy/user-icon.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    align-items: center;
+    justify-content: flex-end;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.regis .paper .photo .edit {
+
+    display: flex;
+    width: 100%;
+    height: 40%;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(15, 15, 15, 0.6);
+    flex-direction: column;
+}
+
+.regis .paper .photo .edit i.bi {
+
+    margin: 0 0 36px 0;
+    color: var(--var-white);
+    font-size: 1.75rem;
+}
+
+.prompt-box {
+
+    display: flex;
+    width: 100%;
+    height: fit-content;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: flex-end;
+    flex-direction: row;
+}
+
+.prompt-box button {
+
+    font-family: 'Poppins', Roboto;
+    font-size: 0.85em;
+    margin: 12px 0 0 0;
+}

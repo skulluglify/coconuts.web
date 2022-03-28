@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Registry</title>
+
+    <!-- modules includes -->
+    <link rel="stylesheet" href="../modules/style.css" />
+    <script src="../modules/jquery/jquery.slim.min.js" crossorigin="anonymous"></script>
+    <script src="../modules/popperjs/popper.min.js" crossorigin="anonymous"></script>
+    <script src="../modules/sweetalert2/sweetalert2.min.js" crossorigin="anonymous"></script>
+    <script src="../modules/marked/marked.min.js" crossorigin="anonymous"></script>
+    <script src="../modules/easymde/easymde.min.js" crossorigin="anonymous"></script>
+    <script src="../modules/bootstrap/bootstrap.min.js" crossorigin="anonymous"></script>
+    <!-- modules includes -->
+
+    <!-- local scripts -->
+    <link rel="stylesheet" href="./style.css" />
+    <script src="./script.js"></script>
+    <!-- local scripts -->
+</head>
+<body>
+    <div class="container">
+        <div class="regis d-flex flex-wrap flex-row align-content-center justify-content-evenly">
+            <div class="paper user-attachment">
+                <input type="text" name="username" id="username" placeholder="username" spellcheck="false"/>
+                <div class="name-box">
+                    <input type="text" name="first-name" id="first-name" placeholder="first name" spellcheck="false"/>
+                    <input type="text" name="last-name" id="last-name" placeholder="last name" spellcheck="false"/>
+                </div>
+                <input type="password" name="password" id="password" placeholder="password" spellcheck="false"/>
+                <input type="password" name="confirm-password" id="confirm-password" placeholder="confirm password" spellcheck="false"/>
+                <fieldset>
+                    <legend>Your Date</legend>
+                    <div class="date">
+                        <select class="form-select" name="year" id="date-year">
+                            <option selected>2022</option>
+                        </select>
+                        <select class="form-select" name="month" id="date-month">
+                            <option selected>Jan</option>
+                        </select>
+                        <select class="form-select" name="day" id="date-day">
+                            <option selected>01</option>
+                        </select>
+                    </div>
+                </fieldset>
+                <div class="gender d-flex flex-nowrap flex-row align-items-center justify-content-evenly">
+                    <div class="form-check check male">
+                        <input class="form-check-input" type="radio" name="gender" id="gender-male" value="male" checked/>
+                        <label class="form-check-label" for="gender-male">male</label>
+                    </div>
+                    <div class="form-check check female">
+                        <input class="form-check-input" type="radio" name="gender" id="gender-female" value="female" />
+                        <label class="form-check-label" for="gender-female">female</label>
+                    </div>
+                </div>
+                <input type="text" name="email" id="email" placeholder="email" spellcheck="false"/>
+                <input type="tel" name="phone" id="phone" placeholder="phone number" spellcheck="false"/>
+                <div class="address box-textarea">
+                    <textarea name="address" id="address" cols="16" rows="10" placeholder="address" spellcheck="false"></textarea>
+                </div>
+            </div>
+            <div class="paper user-profile">
+                <div class="photo">
+                    <div class="edit animate__animated animate__fadeInUp">
+                        <i class="bi bi-pencil-square"></i>
+                    </div>
+                </div>
+                <div class="categories"></div>
+                <div class="user-description box-textarea">
+                    <textarea name="address" id="user-description" cols="16" rows="10" placeholder="description" spellcheck="false"></textarea>
+                </div>
+                <div class="prompt-box">
+                    <button class="btn btn-primary btn-lg submit">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

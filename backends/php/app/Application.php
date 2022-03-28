@@ -34,11 +34,12 @@ class Application
         while ($attach) {
 
 
-            $regis = new Registry($conn, $server);
-            if ($regis->lock()) break;
-
+            // priority
             $login = new Login($conn, $server, $this->level);
             if ($login->lock()) break;
+
+            $regis = new Registry($conn, $server);
+            if ($regis->lock()) break;
 
             $attach = false;
         }

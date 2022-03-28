@@ -1,7 +1,7 @@
 $(() => {
     let userIcon = $(".user-icon")
     let userBar = $(".user-bar")
-    const mediaQuery = window.matchMedia("(max-width: 500px)");
+    const mediaQuery = window.matchMedia("(max-width: 500px)")
     let popOptions = {
         // trigger: "focus",
         strategy: "fixed",
@@ -61,6 +61,21 @@ $(() => {
     	}
 
     	toggle = !toggle
+    })
+    userIcon.on("focusout", function (e) {
+
+        userBar.hide()
+        popperInstance.setOptions((options) => ({
+          ...popOptions,
+          modifiers: [
+            ...popOptions.modifiers,
+            {
+              name: "eventListeners",
+              enabled: false
+            }
+          ]
+        }))
+        toggle = true;
     })
     let easymde = new EasyMDE({
         autoDownloadFontAwesome: false,

@@ -374,7 +374,7 @@ class ServerInfo implements ServerInfoStructure
 
             return $this->SERVER_ADDRESS;
         }
-        return "127.0.0.1"; // assume is localhost
+        return "0.0.0.0"; // unknown, default
     }
 
     public function getName(): string
@@ -383,7 +383,7 @@ class ServerInfo implements ServerInfoStructure
 
             return $this->SERVER_NAME;
         }
-        return "Unknown"; // assume is unknown server
+        return "Unknown Server"; // assume is unknown server
     }
 }
 

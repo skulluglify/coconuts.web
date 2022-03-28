@@ -18,7 +18,10 @@
     --var-purple: #b60cf0;
 }
 
-* {
+*, ::after, ::before {
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-user-drag: none;
     margin: 0;
     padding: 0;
     border: none;
