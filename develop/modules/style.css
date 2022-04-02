@@ -30,6 +30,13 @@
     outline: none;
 }
 
+hr {
+
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
 .brand-text {
     font-family: 'Sansita Light';
     font-weight: lighter;

@@ -1,0 +1,124 @@
+@import url("bootstrap/icons.css");
+@import url("fonts/fonts.css");
+@import url("flexbox/flexbox.css");
+@import url("text/text.css");
+@import url("color/color.css");
+
+*, *:after, *:before
+{
+
+    -webkit-user-select: none;
+    -webkit-user-drag: none;
+    user-select: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-family: 'Poppins', Roboto;
+    font-weight: normal;
+    font-style: normal;
+    box-shadow: none;
+    box-sizing: border-box;
+    outline: none;
+}
+
+*:focus {
+
+    outline: none;
+}
+
+body
+{
+
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    flex-wrap: wrap;
+    align-items: center;
+    align-content: space-between;
+    justify-content: space-between;
+    flex-direction: column;
+
+}
+
+a
+{
+
+    margin: 4px 0 10px 0;
+    font-size: 1em;
+    text-decoration: none;
+    outline: none;
+}
+
+button
+{
+
+    font-size: 1em;
+    border-radius: 0.25em;
+    padding: 0.375em 0.75em;
+    color: var(--var-white);
+    background-color: var(--var-blue);
+    outline: var(--var-grey) solid 1px;
+}
+
+button:hover
+{
+
+    cursor: pointer;
+    /* background-image: linear-gradient(0deg, rgba(75, 75, 75, 0.1), rgba(75, 75, 75, 0.1)); */
+    outline: var(--var-black) solid 1px;
+}
+
+button:active
+{
+
+    outline: none;
+}
+
+.primary
+{
+
+    color: var(--var-white);
+    background-color: var(--var-blue);
+}
+
+.success
+{
+
+    color: var(--var-white);
+    background-color: var(--var-green);
+}
+
+.warning
+{
+
+    color: var(--var-black);
+    background-color: var(--var-orange);
+}
+
+button.large
+{
+
+    font-size: 1.25em;
+    border-radius: 0.3em;
+    padding: 0.5em 1em;
+}
+
+hr
+{
+
+    width: 92%;
+    margin: 0 4px 0 0;
+    outline: var(--var-grey-light) solid 1px;
+}
+
+.bi
+{
+    display: flex;
+    margin: 0;
+    padding: 0;
+    flex-wrap: nowrap;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    flex-direction: column;
+}

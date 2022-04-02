@@ -1,0 +1,80 @@
+#!/usr/bin/env bash
+
+## check binary
+function check_binary() {
+if [ ! -f "$(which $1 | grep -iv 'not found')" ]; then
+  echo -en "\x1b[1;31;40m$1 not found\x21\x1b[0m\n" && exit 1
+fi
+}
+
+check_binary wget
+
+index_header=$(cat << 'EOF'
+<!DOCTYPE html PUBLIC>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Material Icons</title>
+    <link rel="stylesheet" href="fonts/fonts.css" type="text/css" />
+    <style>
+      .material-icons {
+        font-family: 'Material Icons';
+      }
+    </style>
+  </head>
+  <body>
+EOF
+)
+
+index_footer=$(cat << 'EOF'
+  </body>
+</html>
+EOF
+)
+
+if [ ! -f material_icons.codepoints ]; then
+
+  ## create showcase, padding inside index.html
+  echo $index_header >index.html
+  echo >>index.html
+
+  ## keep silent mode
+  wget -c https://raw.githubusercontent.com/google/material-design-icons/master/font/MaterialIcons-Regular.codepoints -O material_icons.codepoints &>/dev/null
+
+  if [ ! -f fonts/material_icons.css ]; then
+
+    mkdir -p fonts
+    touch fonts/material_icons.css
+  fi
+
+  ## start with padding
+  echo >>fonts/material_icons.css
+
+  ## merge codepoints by classname
+  while IFS= read -r line; do
+
+    name=$(echo $line | awk '{print $1}')
+    code=$(echo $line | awk '{print $2}')
+
+    ## fix integer
+    check=$(echo $name | grep -Ei '^[0-9]')
+    if [ -n "$check" ]; then
+
+      name=$(echo i$name)
+    fi
+    
+    echo -en "\x1b[1;33;40m" replaces $name ... "\x1b[0m\n"
+    echo ".material-icons.$name:before { content: '\\$code'; }" >>fonts/material_icons.css
+
+    ## testing icons inside index.html
+    echo "    <span class=\"material-icons md-48 md-dark $name\"></span>" >>index.html
+
+  done <<<$(cat material_icons.codepoints)
+
+  ## closed index.html with footer
+  echo >>index.html
+  echo $index_footer >>index.html
+
+fi

@@ -1,0 +1,3 @@
+# Main Program hanya ditunjukan untuk API syntax
+## maka tidak harus ada views template
+## cukup json renderer saja ...

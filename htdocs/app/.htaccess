@@ -1,0 +1,7 @@
+DirectorySlash Off
+IndexIgnore all
+
+Order deny,allow
+Deny from all
+
+Options -Indexes

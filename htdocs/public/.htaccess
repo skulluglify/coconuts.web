@@ -1,0 +1,6 @@
+DirectoryIndex index.html
+DirectorySlash on
+IndexIgnore all
+
+Order deny,allow
+Allow from all

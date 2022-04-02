@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=Edge" />
+    <link rel="shortcut icon" href="resources/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="style.css" />
+    <script src="jessie/main.mjs" main=".scripts.login.Activity" type="module"></script>
+    <title>Login</title>
+</head>
+<body>
+    <div class="container center">
+        <div class="login center nowrap">
+            <div class="logo"></div>
+            <div class="form center nowrap">
+                <div class="input center row nowrap">
+                    <div class="icon center nowrap">
+                        <i class="bi bi-person"></i>
+                    </div>
+                    <input type="text"
+                           autofocus
+                           name="username"
+                           id="username-input"
+                           placeholder="username / email"
+                           spellcheck="false" />
+                </div>
+                <div class="input center row nowrap">
+                    <div class="icon center nowrap">
+                        <i class="bi bi-key"></i>
+                    </div>
+                    <div class="pass center row nowrap">
+                        <input type="password"
+                               name="password"
+                               id="password-input"
+                               placeholder="password"
+                               spellcheck="false"/>
+                        <div class="eye center">
+                            <i class="bi bi-eye-slash"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="forgot end row nowrap">
+                <a href="#forgot">forgot password ?</a>
+            </div>
+            <div class="submit center nowrap">
+                <button class="large" id="login">Log In</button>
+            </div>
+            <hr/>
+            <div class="submit create-account center nowrap">
+                <button class="success" id="registry">Create New Account</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

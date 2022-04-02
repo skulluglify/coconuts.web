@@ -196,3 +196,20 @@
     margin: 24px;
     font-family: 'Poppins', Roboto;
 }
+
+.consider {
+
+    max-width: 25em;
+}
+
+.consider span {
+
+    font-family: 'Poppins', Roboto;
+}
+
+.consider span a {
+
+    text-decoration: none;
+    color: var(--bs-primary);
+    outline: none;
+}
