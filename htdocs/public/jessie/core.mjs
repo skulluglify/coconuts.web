@@ -9,6 +9,29 @@ import JessieQuery from "./query.mjs";
  */
 (async function (global) {
 
+    // rootDir
+    let formats = [ "htm", "html", "xhtml", "php", "asp", "aspx", "pl", "plx" ]
+    let pathname = location.pathname.split("\/")
+    let suffix = pathname.pop()
+    let prefix = pathname.join("\/")
+
+    if (suffix.includes("\.")) {
+
+        let format = suffix.split("\.").pop()
+        if (!formats.includes(format)) {
+
+            throw "Jessie Core not supported!"
+        }
+    } else {
+
+        // not have index file
+        // maybe using route views
+        prefix = prefix + "\/" + suffix
+    }
+
+    // get rootDir
+    let rootDir = location.origin + prefix
+
     let pathClass = Array
         .from(document.querySelectorAll("script[src*='jessie/core.mjs'][main*='.Activity']"))
         /**
@@ -16,9 +39,10 @@ import JessieQuery from "./query.mjs";
          */
         .map(function (node) {
 
+            // path scripts
             let context = node.getAttribute("main", null)
             let path = context && context.endsWith(".Activity") ?
-                ".." + context.replace(/\./g, "\/") + "\.mjs" :
+                rootDir + context.replace(/\./g, "\/") + "\.mjs" :
                 null
 
             // set name, path into array map
@@ -54,10 +78,10 @@ import JessieQuery from "./query.mjs";
         return array.reduce(function (o, a) {
             let [ key, value ] = a
             Object.defineProperty(o, key, {
+                value: value,
                 configurable: true,
                 enumerable: true,
-                writable: false,
-                value: value
+                writable: false
             })
             return o
         }, obj)
@@ -92,12 +116,16 @@ import JessieQuery from "./query.mjs";
                             if (typeof main.Main == "function") {
 
                                 convertArrayToObject(query, main)
+
+                                // Embed Class Object (JessieQuery as jessieQuery)
                                 Object.defineProperty(main, "jessieQuery", {
-                                    value: new JessieQuery(),
+                                    value: new JessieQuery, // Auto Call
                                     configurable: true,
                                     enumerable: false,
                                     writable: false
                                 })
+
+                                // Binding main in Main (Self)
                                 callback = main.Main.bind(main)
                             }
                         }

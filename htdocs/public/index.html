@@ -6,7 +6,7 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=Edge" />
     <link rel="shortcut icon" href="resources/favicon.ico" type="image/x-icon">
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="scripts/Login/style.css" />
     <script src="jessie/core.mjs" main=".scripts.Login.Activity" type="module"></script>
     <title>Login</title>
 </head>
@@ -22,7 +22,7 @@
                     <input type="text"
                            autofocus
                            name="username"
-                           id="username-input"
+                           id="usernameInput"
                            placeholder="username / email"
                            spellcheck="false" />
                 </div>
@@ -33,7 +33,7 @@
                     <div class="pass center row nowrap">
                         <input type="password"
                                name="password"
-                               id="password-input"
+                               id="passwordInput"
                                placeholder="password"
                                spellcheck="false"/>
                         <div class="eye center">
@@ -52,6 +52,10 @@
             <div class="submit create-account center nowrap">
                 <button class="success" id="registry">Create New Account</button>
             </div>
+        </div>
+        <div class="consider center text-center">
+            <span>By registering to this website, you accept our <a href="#terms">Terms of use</a> and our
+                <a href="#policy">Privacy policy</a>.</span>
         </div>
     </div>
 </body>

@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=Edge" />
+  <link rel="shortcut icon" href="resources/favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="scripts/Registry/style.css" />
+  <script src="jessie/core.mjs" main=".scripts.Registry.Activity" type="module"></script>
+  <title>Registry</title>
+</head>
+<body>
+<div class="container center">
+
+  <div class="registry center row cyan">
+
+    <div class="user center nowrap private">
+
+      <input type="text" placeholder="username" spellcheck="false" />
+      <div class="user-real-name start row">
+        <input type="text" name="firstname" placeholder="first name" spellcheck="false" />
+        <input type="text" name="lastname" placeholder="last name" spellcheck="false" />
+      </div>
+      <div class="pass center row nowrap">
+        <input type="password"
+               name="password"
+               id="passwordInput"
+               placeholder="password"
+               spellcheck="false"/>
+        <div class="eye center">
+          <i class="material-icons md-24 md-dark visibility"></i>
+        </div>
+      </div>
+      <div class="pass center row nowrap">
+        <input type="password"
+               name="password"
+               id="confirmPasswordInput"
+               placeholder="confirm password"
+               spellcheck="false"/>
+        <div class="eye center">
+          <i class="material-icons md-24 md-dark visibility"></i>
+        </div>
+      </div>
+      <div class="user-dob start row date-option">
+        <div class="date-year">
+          <div class="option"></div>
+        </div>
+        <div class="date-mon">
+          <div class="option"></div>
+        </div>
+        <div class="date-day">
+          <div class="option"></div>
+        </div>
+      </div>
+      <div class="radio user-gender start row">
+        <div class="check start row nowrap male">
+          <input type="radio" name="gender" id="genderMale" checked />
+          <label for="genderMale">male</label>
+        </div>
+        <div class="check start row nowrap female">
+          <input type="radio" name="gender" id="genderFemale" />
+          <label for="genderFemale">female</label>
+        </div>
+      </div>
+      <input type="email" name="email" id="userEmail" placeholder="email" spellcheck="false" />
+      <input type="tel" name="phone" id="userPhoneNum" placeholder="phone number" spellcheck="false" />
+      <div class="address">
+        <textarea name="address" id="userAddress" cols="16" rows="10" placeholder="address" spellcheck="false"></textarea>
+      </div>
+    </div>
+    <div class="user center nowrap public">
+      <div class="user-photo">
+        <div class="image"></div>
+      </div>
+      <div class="description">
+        <textarea name="description" id="userDescription" cols="16" rows="10" placeholder="description" spellcheck="false"></textarea>
+      </div>
+      <div class="submit end row nowrap">
+        <button id="register">Register</button>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

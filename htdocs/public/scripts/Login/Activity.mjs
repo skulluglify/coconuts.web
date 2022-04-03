@@ -1,10 +1,16 @@
-export default class Activity {
+export default class Activity extends Object {
 
     static jessieQuery;
+    static pass;
+
+    constructor() {
+
+        super()
+    }
 
     static Main() {
 
-        let pass = document.querySelector("input[type=\"password\"]#password-input")
+        let pass = document.querySelector("input[type=\"password\"]#passwordInput")
         let eye = document.querySelector("div.eye i.material-icons.visibility")
         eye.addEventListener("click", this.eyeOnClickListener.bind(this))
         eye.visibility = false
@@ -49,7 +55,8 @@ export default class Activity {
             target.classList.add("activate")
         }
 
-        this.pass.setAttribute("type", "text")
+        if (Element.prototype.isPrototypeOf(this.pass))
+            this.pass.setAttribute("type", "text")
 
         return true
     }
@@ -65,7 +72,8 @@ export default class Activity {
             target.classList.add("visibility")
         }
 
-        this.pass.setAttribute("type", "password")
+        if (Element.prototype.isPrototypeOf(this.pass))
+            this.pass.setAttribute("type", "password")
 
         return false
     }

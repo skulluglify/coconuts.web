@@ -10,7 +10,7 @@
     --var-cyan: #54ffff;
     --var-white: #ffffff;
     --var-orange: #ffc107;
-    --var-grey-light: #dedede;
+    --var-light-grey: #dedede;
     --var-grey: #646464;
 }
 
@@ -58,7 +58,7 @@
 .grey-light
 {
 
-    background-color: var(--var-grey-light);
+    background-color: var(--var-light-grey);
 }
 
 .white

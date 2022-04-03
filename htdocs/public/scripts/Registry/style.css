@@ -1,0 +1,179 @@
+@import url("../../resources/style.css");
+
+div.registry > div.user > div.address > textarea,
+div.registry > div.user > div.description > textarea
+{
+
+    resize: none;
+}
+
+div.registry > div.user > div.submit
+{
+
+    width: 100%;
+}
+
+div.registry > div.user > div.address,
+div.registry > div.user > div.description,
+div.registry > div.user > div.radio > div.check,
+div.registry > div.user > input[type="text"],
+div.registry > div.user > div.user-real-name > input[type="text"],
+div.registry > div.user input[type="email"],
+div.registry > div.user > div.pass,
+div.registry > div.user input[type="tel"]
+{
+
+    width: 260px;
+    /* height: fit-content; */
+    padding: 4px 12px 4px 10px;
+    margin: 0 0 4px 0;
+    border: 1px solid var(--var-grey);
+    border-radius: 4px;
+    background-color: var(--var-light-grey);
+}
+
+div.registry > div.user > div.pass
+{
+
+    padding: 4px 10px 4px 10px;
+}
+
+div.registry > div.user > div.pass > input[type="text"],
+div.registry > div.user > div.pass > input[type="password"]
+{
+
+    width: 100%;
+    background-color: transparent;
+}
+
+div.registry > div.user > div.pass > div.eye > i.material-icons
+{
+
+    cursor: pointer;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 1.75em;
+    color: rgba(100, 100, 100, 0.6);
+}
+
+div.registry > div.user > div.pass > div.eye > i.material-icons:active
+{
+
+    color: var(--var-black);
+}
+
+div.registry > div.user > div.radio
+{
+
+    margin: 0 0 4px 0;
+}
+
+div.registry > div.user > div.radio > div.check
+{
+
+    cursor: pointer;
+    width: 130px;
+    padding: 4px 12px 4px 6px;
+    margin: 0;
+}
+
+div.registry > div.user > div.radio > div.check.male
+{
+
+    width: 126px;
+    margin: 0 4px 0 0;
+}
+
+div.registry > div.user > div.radio > div.check > input[type="radio"]
+{
+
+    width: 1.25em;
+    height: 1.25em;
+    margin: 0 4px 0 0;
+    border-radius: 0.25em;
+    background-color: #188EFCFF;
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+div.registry > div.user > div.radio > div.check.female > input[type="radio"]
+{
+
+    background-color: var(--var-purple);
+}
+
+div.registry > div.user > div.radio > div.check > input[type="radio"]:active
+{
+
+    background-color: var(--var-blue);
+}
+
+div.registry > div.user > div.radio > div.check.female > input[type="radio"]:active
+{
+
+    background-color: #B60CF0FF;
+}
+
+div.registry > div.user > div.radio > div.check > input[type="radio"]:checked
+{
+
+    background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCAyMCAyMCc+PHBhdGggZmlsbD0nbm9uZScgc3Ryb2tlPScjZmZmJyBzdHJva2UtbGluZWNhcD0ncm91bmQnIHN0cm9rZS1saW5lam9pbj0ncm91bmQnIHN0cm9rZS13aWR0aD0nMycgZD0nTTYgMTBsMyAzbDYtNicvPjwvc3ZnPg==");
+}
+
+div.registry > div.user > div.radio > div.check > input[type="radio"]:after,
+div.registry > div.user > div.radio > div.check > input[type="radio"]:checked:after
+{
+
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+div.registry > div.user > div.radio > div.check > label
+{
+
+    font-size: 0.875em;
+    color: var(--var-grey);
+}
+
+div.registry > div.user > div.user-real-name
+{
+
+    width: 260px;
+    margin: 0 0 4px 0;
+}
+
+div.registry > div.user > div.user-real-name > input[type="text"][name="firstname"]
+{
+
+    width: 140px;
+    margin: 0 4px 0 0;
+}
+
+div.registry > div.user > div.user-real-name > input[type="text"][name="lastname"]
+{
+
+    width: 116px;
+    margin: 0;
+}
+
+div.registry > div.user > div.address,
+div.registry > div.user > div.description
+{
+
+    background-color: var(--var-light-grey);
+    background-image: url("../../resources/cocktail.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-blend-mode: soft-light;
+    background-size: 130px;
+    margin: 0 0 4px 0;
+}
+
+div.registry > div.user > div.address > textarea,
+div.registry > div.user > div.description > textarea
+{
+
+    width: 100%;
+    background-color: transparent;
+    overflow: hidden;
+}

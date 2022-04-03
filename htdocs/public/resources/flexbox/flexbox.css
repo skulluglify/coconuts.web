@@ -70,6 +70,7 @@
 .row
 {
 
+    align-items: center;
     align-content: center;
     flex-direction: row;
 }
@@ -77,6 +78,7 @@
 .row-start
 {
 
+    align-items: flex-start;
     align-content: flex-start;
     flex-direction: row;
 }
@@ -84,6 +86,7 @@
 .row-end
 {
 
+    align-items: flex-end;
     align-content: flex-end;
     flex-direction: row;
 }
@@ -91,6 +94,7 @@
 .row-evenly
 {
 
+    align-items: center;
     align-content: space-evenly;
     flex-direction: row;
 }
@@ -98,6 +102,7 @@
 .row-around
 {
 
+    align-items: center;
     align-content: space-around;
     flex-direction: row;
 }
@@ -105,6 +110,7 @@
 .row-between
 {
 
+    align-items: center;
     align-content: space-between;
     flex-direction: row;
 }
@@ -112,6 +118,7 @@
 .column
 {
 
+    justify-items: center;
     justify-content: center;
     flex-direction: column;
 }
@@ -119,6 +126,7 @@
 .column-start
 {
 
+    justify-items: flex-start;
     justify-content: flex-start;
     flex-direction: column;
 }
@@ -126,6 +134,7 @@
 .column-end
 {
 
+    justify-items: flex-end;
     justify-content: flex-end;
     flex-direction: column;
 }
@@ -133,6 +142,7 @@
 .column-evenly
 {
 
+    justify-items: center;
     justify-content: space-evenly;
     flex-direction: column;
 }
@@ -140,6 +150,7 @@
 .column-around
 {
 
+    justify-items: center;
     justify-content: space-around;
     flex-direction: column;
 }
@@ -147,6 +158,19 @@
 .column-between
 {
 
+    justify-items: center;
     justify-content: space-between;
     flex-direction: column;
+}
+
+.row-reverse
+{
+
+    flex-direction: row-reverse !important;
+}
+
+.column-reverse
+{
+
+    flex-direction: column-reverse;
 }
