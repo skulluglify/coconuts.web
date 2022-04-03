@@ -1,0 +1,20 @@
+@font-face {
+  font-family: 'Material Icons Two Tone';
+  font-style: normal;
+  font-weight: 400;
+  src: url("fonts/80f49dff902f4c5208dbf667aa357a3e5727ef895f55059a5e6afd08c1c3a1c4.woff2") format('woff2');
+}
+
+.material-icons-two-tone {
+  font-family: 'Material Icons Two Tone';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+}

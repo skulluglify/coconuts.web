@@ -72,7 +72,7 @@ if [ ! -f material_icons.codepoints ]; then
     echo ".material-icons.$name:before { content: '\\$code'; }" >>fonts/material_icons.css
 
     ## testing icons inside index.html
-    echo "    <span class=\"material-icons md-48 md-dark $name\"></span>" >>index.html
+    echo "    <a href=\"\#$name\"><span class=\"material-icons md-48 md-dark $name\">$name</span><pre>$name</pre></a>" >>index.html
 
   done <<<$(cat material_icons.codepoints)
 

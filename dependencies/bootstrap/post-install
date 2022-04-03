@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+cdir=`pwd`
+cd $(dirname $0)
 
 ## check binary
 function check_binary() {
@@ -37,3 +39,6 @@ function wload() {
   cat<<<$(cat fonts\/fonts.css | sed -e "s/\.\/fonts\/bootstrap-icons\.woff\?/fonts\/$woff1crypt\.woff\?/g")>fonts\/fonts.css
   cat<<<$(cat fonts\/fonts.css | sed -e "s/\.\/fonts\/bootstrap-icons\.woff2\?/fonts\/$woff2crypt\.woff2\?/g")>fonts\/fonts.css
 }
+
+cd $cdir
+echo

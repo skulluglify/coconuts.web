@@ -9,4 +9,4 @@ fi
 
 check_binary zip
 
-zip -r0qy9o fonts.zip bootstrap fontpacks material
+zip -r0qy9o legacy.zip bootstrap fontpacks material

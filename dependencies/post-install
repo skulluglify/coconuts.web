@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+
+for x in `find . -maxdepth 1 -type d`; do
+
+
+  fontdir=$(echo "$x" | cut -d\/ -f2-)
+
+  if [ -n "$(echo $fontdir | grep -Ev '\.|\.\.')" ]; then
+    if [ -n "${fontdir}" -a -f "${fontdir}/post-install"  ]; then
+
+      ## using multiprocessing
+      {
+
+        for postinstall in `ls "${fontdir}" | grep -i 'post\-install'`; do
+
+          scriptfile="${fontdir}/${postinstall}"
+          echo match $scriptfile ...
+          bash "${scriptfile}"
+        done
+      } &
+    fi
+  fi
+done
+
+echo

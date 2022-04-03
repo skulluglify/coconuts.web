@@ -1,10 +1,19 @@
-// Create By Ahmad Asy SyafiQ
-// Load main Class Look like Java
+/**
+ * Create By Ahmad Asy SyafiQ
+ * Load main Class Look like Java
+ */
+import JessieQuery from "./query.mjs";
 
+/**
+ * @param {Window} global
+ */
 (async function (global) {
 
     let pathClass = Array
-        .from(document.querySelectorAll("script[src*='jessie/main.mjs'][main*='.Activity']"))
+        .from(document.querySelectorAll("script[src*='jessie/core.mjs'][main*='.Activity']"))
+        /**
+         * @param {Element} node
+         */
         .map(function (node) {
 
             let context = node.getAttribute("main", null)
@@ -20,6 +29,9 @@
         })
 
     let mainClass = await Promise.all(
+        /**
+         * @param {Array} o
+         */
         pathClass.reduce(function (o, sourceMap) {
 
             // get name, path from array map
@@ -66,6 +78,9 @@
 
         if (document.readyState === "complete") {
 
+            /**
+             * @param {Awaited<Array>} link
+             */
             let main = mainClass.map(function (link) {
 
                 let callback = null
@@ -77,6 +92,12 @@
                             if (typeof main.Main == "function") {
 
                                 convertArrayToObject(query, main)
+                                Object.defineProperty(main, "jessieQuery", {
+                                    value: new JessieQuery(),
+                                    configurable: true,
+                                    enumerable: false,
+                                    writable: false
+                                })
                                 callback = main.Main.bind(main)
                             }
                         }

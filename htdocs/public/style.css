@@ -53,7 +53,7 @@ div.form > div.input > div.icon
     background-color: var(--var-grey-light);
 }
 
-div.form > div.input > div.icon > i.bi
+div.form > div.input > div.icon > i.material-icons
 {
 
     /* merge normal */
@@ -64,6 +64,7 @@ div.form > div.input > div.icon > i.bi
 
 div.form > div.input > input[type="text"],
 div.form > div.input > div.pass > input[type="password"],
+div.form > div.input > div.pass > input[type="text"],
 div.forgot > a
 {
 
@@ -84,7 +85,8 @@ div.form > div.input > div.pass
     background-color: var(--var-grey-light);
 }
 
-div.form > div.input > div.pass > input[type="password"]
+div.form > div.input > div.pass > input[type="password"],
+div.form > div.input > div.pass > input[type="text"]
 {
 
     width: 100%;
@@ -101,21 +103,22 @@ div.form > div.input > div.pass > div.eye
     height: 42px;
 }
 
-div.form > div.input > div.pass > div.eye > i.bi
+div.form > div.input > div.pass > div.eye > i.material-icons
 {
 
     color: var(--var-grey);
     font-size: 1.5em;
 }
 
-div.form > div.input > div.pass > div.eye > i.bi:active
+div.form > div.input > div.pass > div.eye > i.material-icons:active
 {
 
     color: var(--var-black);
 }
 
 div.form > div.input > input[type="text"]:focus,
-div.form > div.input > input[type="password"]:focus
+div.form > div.input > input[type="password"]:focus,
+div.form > div.input > input[type="text"]:focus
 {
 
     border: 1px solid var(--var-black);
