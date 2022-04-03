@@ -8,6 +8,7 @@ fi
 }
 
 check_binary wget
+check_binary sha256sum
 check_binary woff2_compress
 
 #wget -c https://api.github.com/repos/google/material-design-icons/zipball -O material.zip
@@ -117,6 +118,9 @@ if [ ! -d fonts/fonts ]; then
     echo -en "\x1b[1;31;40m" compress fonts\/$fontfile ... "\x1b[0m\n"
     woff2_compress fonts\/$fontfile &>/dev/null
     fontcompress=fonts\/$filename\.woff2
+    cryptname=$(sha256sum fonts\/$fontcompress | awk '{print $1}')
+    cryptfile=fonts\/$cryptname\.woff2
+    mv fonts\/$fontcompress fonts\/$cryptfile 
     rm fonts\/$fontfile
 
     fonttype=
@@ -135,7 +139,7 @@ if [ ! -d fonts/fonts ]; then
 
     ## replaces font
     echo -en "\x1b[1;33;40m" replaces fonts\/$filename\.css ... "\x1b[0m\n"
-    cat<<<$(cat fonts\/$filename\.css | awk "{sub(\"$uri\",\"\\\"$fontcompress\\\"\")}1")>fonts\/$filename\.css
+    cat<<<$(cat fonts\/$filename\.css | awk "{sub(\"$uri\",\"\\\"$cryptfile\\\"\")}1")>fonts\/$filename\.css
 
     if [ -n "$fonttype" ]; then
 

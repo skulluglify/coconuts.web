@@ -1,0 +1,222 @@
+#!/usr/bin/env bash
+
+cdir=`pwd`
+cd $(dirname $0)
+
+
+## check binary
+function check_binary() {
+if [ ! -f "$(which $1 | grep -iv 'not found')" ]; then
+  echo -en "\x1b[1;31;40m$1 not found\x21\x1b[0m\n" && exit 1
+fi
+}
+
+
+check_binary wget
+check_binary unzip
+check_binary sha256sum
+check_binary woff2_compress
+
+mkdir -p fonts
+echo -en >fonts\/fonts.css
+
+function wload() {
+  wget -c $1 -O $2
+}
+
+
+# NOTE: italic, oblique
+function gen_font_style() {
+context=$(cat<<EOF
+@font-face {
+font-family: "$(echo $1 | sed -e 's/Bolditalic/Bold Italic/g' -e 's/Semibold/Semi Bold/g')";
+`case $2 in
+light)
+echo "font-weight: lighter;"
+echo "font-style: normal;"
+;;
+regular)
+echo "font-weight: normal;"
+echo "font-style: normal;"
+;;
+medium)
+echo "font-weight: normal;"
+echo "font-style: normal;"
+;;
+bold)
+echo "font-weight: bold;"
+echo "font-style: normal;"
+;;
+semibold)
+echo "font-weight: bold;"
+echo "font-style: normal;"
+;;
+italic)
+echo "font-weight: normal;"
+echo "font-style: italic;"
+;;
+bolditalic)
+echo "font-weight: bold;"
+echo "font-style: italic;"
+;;
+thin)
+echo "font-weight: normal;"
+echo "font-style: normal;"
+;;
+esac`
+src: url("`echo $3`") format('woff2');
+}
+
+EOF
+)
+
+echo $context
+}
+
+
+function gen_meta_fonts() {
+
+  cdirname=
+  fontname=
+  while IFS= read -r line; do
+    pathname=$(echo "$line" | sed -e 's/ /\\ /g')
+    filename=$(basename $pathname)
+    cdirname=$(dirname $pathname)
+
+    ## cut in middle section
+    ## fonts\/font\/static into fonts\/font
+    ## fonts\/fonts set into default
+    rootdir=$(echo $cdirname | cut -d\/ -f1)
+    # basedir=$(echo $cdirname | cut -d\/ -f2)
+    # currdir="${rootdir}/${basedir}"
+    if [ ! -d "${rootdir}/fonts" ]; then
+
+      mkdir -p "${rootdir}/fonts"
+    fi
+    pdirname="${rootdir}/fonts"
+    # filename=$(echo $filename | tr '[:upper:]' '[:lower:]')
+    outfile="${cdirname}/${filename}"
+    src=
+    ## create mp
+    {
+    ## change, convert to woff2
+    {
+      echo "compress ${outfile} ..."
+      # mv "$line" "${outfile}" &>/dev/null
+      woff2_compress "${outfile}" &>/dev/null
+
+      rm "${outfile}"
+      outfile=$(echo "${outfile}" | sed -e 's/\.ttf$/\.woff2/g' -e 's/\.otf$/woff2/g')
+
+      cryptname=$(sha256sum $outfile | awk '{print $1}')
+      cryptfile="${cryptname}.woff2"
+      src="${pdirname}/${cryptfile}"
+      if [ -z "$(echo $src | grep -Eiv '^\.')" ]; then
+
+          src=$(echo $src | cut -d\/ -f2-)
+      fi
+      mv "${outfile}" "${src}"
+    }
+
+    ## generated font style
+    src=$(echo $src | cut -d\/ -f2-)
+    fontname=$(basename $1 | sed -e 's/\_/ /g')
+    fontselected=$(echo $filename | grep -Ei '\-(light|regular|medium|bold|semibold|italic|bolditalic|thin)\.(ttf|otf)$')
+    if [ -n "${fontselected}" ]; then
+
+      type=$(echo $fontselected | grep -Eio '(light|regular|medium|bold|semibold|italic|bolditalic|thin)' | tr '[:upper:]' '[:lower:]')
+
+      if [ -n "$(echo $type | grep -Eiv '^(light|regular|bold|italic|bolditalic)$')" ]; then
+
+        ## include types
+        fontname=$(echo $fontname $type | sed -e "s/\b\(.\)/\u\1/g")
+
+      else
+
+        ## not include types
+        fontname=$(echo $fontname | sed -e "s/\b\(.\)/\u\1/g")
+      fi
+
+      ## URL no-root
+      gen_font_style "$fontname" "$type" "$src" >>fonts\/fonts.css
+
+    else
+
+      ## remove unused files
+      if [ -f "fonts/${src}" ]; then
+        rm "fonts/${src}"
+      fi
+    fi
+    } #& ## disable mp
+
+  done <<<$(find $1 -type f | grep -Ei '\.(ttf|otf)$')
+
+  # delete unused subdir
+  if [ -n "$(echo $cdirname)" ]; then
+    if [ -d "$(echo $cdirname)" ]; then
+      # for x in `find $cdirname -type d | grep -Eiv "${cdirname}\$" | uniq -u`; do
+        ## sleep 2 # wait last processing
+        # echo delete "$x" ...
+        # rm -rf "$x"
+      # done
+      rm -rf "${cdirname}"
+    fi
+  fi
+}
+
+
+function wfont_install() {
+  mkdir -p ".tmp"
+  echo collect "$2" ... 
+  wload "$1" ".tmp/$2".zip &>/dev/null
+  echo unpack "$2" ...
+  unzip ".tmp/$2".zip -d "fonts/$2" &>/dev/null
+  gen_meta_fonts "fonts/$2"
+  rm -rf ".tmp"
+}
+
+## using multiprocessing
+
+## Poppins
+{
+  wfont_install https://fonts.google.com/download?family=Poppins Poppins
+} &
+
+
+## Roboto Condensed Font
+{
+  wfont_install https://fonts.google.com/download?family=Roboto%20Condensed Roboto
+} &
+
+
+## montserrat Font
+{
+  wfont_install https://fonts.google.com/download?family=Montserrat Montserrat
+} &
+
+## sansita swashed
+{
+  wfont_install https://fonts.google.com/download?family=Sansita%20Swashed Sansita_Swashed
+} &
+
+# sansita
+{
+  wfont_install https://fonts.google.com/download?family=Sansita Sansita
+} &
+
+## comic neue
+{
+  wfont_install https://fonts.google.com/download?family=Comic%20Neue Comic_Neue
+} &
+
+## hurricane
+{
+  wfont_install https://fonts.google.com/download?family=Hurricane Hurricane
+} &
+
+## fira code
+{
+  wfont_install https://fonts.google.com/download?family=Fira%20Code Fira_Code
+} &
+
+cd $cdir

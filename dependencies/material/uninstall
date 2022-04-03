@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+cdir=`pwd`
+cd $(dirname $0)
+for x in `ls -A | grep -Eiv '^(post-install|uninstall|README|\.gitignore)'`; do
+
+  if [ -d "$x" ]; then
+
+    echo removed "$x" ...
+  fi
+  
+  rm -rf "$x"
+
+done
+cd $cdir

@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+
+
+## check binary
+function check_binary() {
+if [ ! -f "$(which $1 | grep -iv 'not found')" ]; then
+  echo -en "\x1b[1;31;40m$1 not found\x21\x1b[0m\n" && exit 1
+fi
+}
+
+
+check_binary wget
+check_binary sha256sum
+
+
+function wload() {
+
+  echo download $2 ...
+  wget -c $1 -O $2 &>/dev/null
+}
+
+## bootstrap-icons
+{
+
+  mkdir -p fonts\/fonts
+  wload https://unpkg.com/bootstrap-icons@latest/font/bootstrap-icons.css fonts\/fonts.css
+  wload https://unpkg.com/bootstrap-icons@latest/font/bootstrap-icons.json bootstrap-icons.json
+  wload https://unpkg.com/bootstrap-icons@latest/font/fonts/bootstrap-icons.woff fonts\/fonts\/icons.woff
+  wload https://unpkg.com/bootstrap-icons@latest/font/fonts/bootstrap-icons.woff2 fonts\/fonts\/icons.woff2
+
+  woff1crypt=$(sha256sum fonts\/fonts\/icons.woff | awk '{print $1}')
+  woff2crypt=$(sha256sum fonts\/fonts\/icons.woff2 | awk '{print $1}')
+
+  mv fonts\/fonts\/icons.woff fonts\/fonts\/$woff1crypt\.woff
+  mv fonts\/fonts\/icons.woff2 fonts\/fonts\/$woff2crypt\.woff2
+
+  cat<<<$(cat fonts\/fonts.css | sed -e "s/\.\/fonts\/bootstrap-icons\.woff\?/fonts\/$woff1crypt\.woff\?/g")>fonts\/fonts.css
+  cat<<<$(cat fonts\/fonts.css | sed -e "s/\.\/fonts\/bootstrap-icons\.woff2\?/fonts\/$woff2crypt\.woff2\?/g")>fonts\/fonts.css
+}
