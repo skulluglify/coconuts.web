@@ -7,42 +7,47 @@
   <meta http-equiv="X-UA-Compatible" content="ie=Edge" />
   <link rel="shortcut icon" href="resources/favicon.ico" type="image/x-icon">
   <link rel="stylesheet" href="scripts/Registry/style.css" />
-  <script src="jessie/core.mjs" main=".scripts.Registry.Activity" type="module"></script>
+  <script src="jessie/core.mjs" data-main=".scripts.Registry.Activity" type="module"></script>
   <title>Registry</title>
 </head>
 <body>
-<div class="container center">
+<div class="container center column">
 
-  <div class="registry center row cyan">
+  <div class="registry evenly row cyan">
 
-    <div class="user center nowrap private">
+    <div class="user center column nowrap private">
 
-      <input type="text" placeholder="username" spellcheck="false" />
+      <input type="text" id="userName" placeholder="username" spellcheck="false" />
+      <label for="userName"></label>
       <div class="user-real-name start row">
-        <input type="text" name="firstname" placeholder="first name" spellcheck="false" />
-        <input type="text" name="lastname" placeholder="last name" spellcheck="false" />
+        <input type="text" name="firstname" id="firstName" placeholder="first name" spellcheck="false" />
+        <label for="firstName"></label>
+        <input type="text" name="lastname" id="lastName" placeholder="last name" spellcheck="false" />
+        <label for="lastName"></label>
       </div>
       <div class="pass center row nowrap">
         <input type="password"
                name="password"
-               id="passwordInput"
+               id="userPassword"
                placeholder="password"
                spellcheck="false"/>
+        <label for="userPassword"></label>
         <div class="eye center">
-          <i class="material-icons md-24 md-dark visibility"></i>
+          <i class="material-icons md-24 md-dark visibility_off"></i>
         </div>
       </div>
       <div class="pass center row nowrap">
         <input type="password"
                name="password"
-               id="confirmPasswordInput"
+               id="userConfirmPassword"
                placeholder="confirm password"
                spellcheck="false"/>
+        <label for="userConfirmPassword"></label>
         <div class="eye center">
-          <i class="material-icons md-24 md-dark visibility"></i>
+          <i class="material-icons md-24 md-dark visibility_off"></i>
         </div>
       </div>
-      <div class="user-dob start row date-option">
+      <div class="user-dob between row date-option">
         <div class="date-year">
           <div class="option"></div>
         </div>
@@ -64,17 +69,21 @@
         </div>
       </div>
       <input type="email" name="email" id="userEmail" placeholder="email" spellcheck="false" />
+      <label for="userEmail"></label>
       <input type="tel" name="phone" id="userPhoneNum" placeholder="phone number" spellcheck="false" />
+      <label for="userPhoneNum"></label>
       <div class="address">
         <textarea name="address" id="userAddress" cols="16" rows="10" placeholder="address" spellcheck="false"></textarea>
+        <label for="userAddress"></label>
       </div>
     </div>
-    <div class="user center nowrap public">
+    <div class="user center column-start nowrap public">
       <div class="user-photo">
         <div class="image"></div>
       </div>
       <div class="description">
         <textarea name="description" id="userDescription" cols="16" rows="10" placeholder="description" spellcheck="false"></textarea>
+        <label for="userDescription"></label>
       </div>
       <div class="submit end row nowrap">
         <button id="register">Register</button>

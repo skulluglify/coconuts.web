@@ -1,4 +1,6 @@
-export default class Activity extends Object {
+import ActivityLogin from "../Login/Activity.mjs"
+
+export default class Activity extends ActivityLogin {
 
     static jessieQuery;
 
@@ -9,6 +11,6 @@ export default class Activity extends Object {
 
     static Main() {
 
-
+        this.InitEyeVisible()
     }
 }

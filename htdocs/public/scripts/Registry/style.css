@@ -1,5 +1,29 @@
 @import url("../../resources/style.css");
 
+div.container
+{
+
+    width: 100%;
+    height: fit-content;
+    margin: auto;
+}
+
+div.registry
+{
+
+    width: 100%;
+    max-width: 668px;
+    padding: 12px 8px 12px 8px;
+}
+
+div.registry > div.user
+{
+
+    min-width: 260px;
+    width: 320px;
+    height: 588px;
+}
+
 div.registry > div.user > div.address > textarea,
 div.registry > div.user > div.description > textarea
 {
@@ -13,23 +37,56 @@ div.registry > div.user > div.submit
     width: 100%;
 }
 
+div.registry > div.user > div.pass,
 div.registry > div.user > div.address,
 div.registry > div.user > div.description,
+div.registry > div.user > div.date-option,
 div.registry > div.user > div.radio > div.check,
 div.registry > div.user > input[type="text"],
 div.registry > div.user > div.user-real-name > input[type="text"],
 div.registry > div.user input[type="email"],
-div.registry > div.user > div.pass,
 div.registry > div.user input[type="tel"]
 {
 
-    width: 260px;
-    /* height: fit-content; */
+    width: 100%;
+    max-width: 320px;
+    height: 42px;
     padding: 4px 12px 4px 10px;
     margin: 0 0 4px 0;
     border: 1px solid var(--var-grey);
     border-radius: 4px;
     background-color: var(--var-light-grey);
+}
+
+div.registry > div.user > div.address,
+div.registry > div.user > div.description
+{
+
+    height: fit-content;
+}
+
+div.registry > div.user > div.date-option
+{
+
+    padding: 0;
+}
+
+div.registry > div.user > div.date-option > div.date-year,
+div.registry > div.user > div.date-option > div.date-mon,
+div.registry > div.user > div.date-option > div.date-day
+{
+
+    width: calc(33% - 4px);
+    height: 100%;
+    margin: 0 4px 0 0;
+    background-color: greenyellow;
+}
+
+div.registry > div.user > div.date-option > div.date-day
+{
+
+    width: 33%;
+    margin: 0;
 }
 
 div.registry > div.user > div.pass
@@ -65,6 +122,8 @@ div.registry > div.user > div.pass > div.eye > i.material-icons:active
 div.registry > div.user > div.radio
 {
 
+    width: 100%;
+    max-width: 320px;
     margin: 0 0 4px 0;
 }
 
@@ -72,7 +131,7 @@ div.registry > div.user > div.radio > div.check
 {
 
     cursor: pointer;
-    width: 130px;
+    width: calc(50% - 2px); /* 130px */
     padding: 4px 12px 4px 6px;
     margin: 0;
 }
@@ -80,7 +139,7 @@ div.registry > div.user > div.radio > div.check
 div.registry > div.user > div.radio > div.check.male
 {
 
-    width: 126px;
+    width: calc(50% - 2px); /* 126px */
     margin: 0 4px 0 0;
 }
 
@@ -138,21 +197,23 @@ div.registry > div.user > div.radio > div.check > label
 div.registry > div.user > div.user-real-name
 {
 
-    width: 260px;
+    width: 100%; /* 260px */
+    max-width: 320px;
     margin: 0 0 4px 0;
 }
 
 div.registry > div.user > div.user-real-name > input[type="text"][name="firstname"]
 {
 
-    width: 140px;
+    width: 100%;
+    max-width: 172px;
     margin: 0 4px 0 0;
 }
 
 div.registry > div.user > div.user-real-name > input[type="text"][name="lastname"]
 {
 
-    width: 116px;
+    width: calc(100% - 176px);
     margin: 0;
 }
 
@@ -167,6 +228,43 @@ div.registry > div.user > div.description
     background-blend-mode: soft-light;
     background-size: 130px;
     margin: 0 0 4px 0;
+}
+
+div.registry > div.user > div.user-photo
+{
+
+    cursor: pointer;
+    width: 180px;
+    height: 180px;
+    border: 2px solid white;
+    border-radius: 50%;
+    margin: 12px;
+    background-color: greenyellow;
+    background-image: url("../../resources/dummy.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    overflow: hidden;
+}
+
+div.registry > div.user > div.user-photo:after
+{
+
+    content: "\e3c9";
+    display: inline-block;
+    position: relative;
+    top: 68%;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 32%;
+    padding: 10px 0 0 0;
+    font-size: 24px;
+    font-family: "Material Icons";
+    text-align: center;
+    color: var(--var-white);
+    background-color: rgba(15, 15, 15, 0.4);
 }
 
 div.registry > div.user > div.address > textarea,

@@ -5,13 +5,15 @@ div.container
 
     width: 100%;
     height: 100%;
+    padding: 12px;
 }
 
 div.container > div.login
 {
 
-    width: 400px;
-    min-width: 360px;
+    width: 100%;
+    /* min-width: 360px; */
+    max-width: 400px;
     border: 1px solid var(--var-grey);
     border-radius: 1em;
     background-color: var(--var-white);
@@ -47,7 +49,9 @@ div.form > div.input > div.icon
 {
 
     width: 42px;
+    min-width: 42px;
     height: 42px;
+    margin: 0 10px 0 12px;
     border: 1px solid var(--var-grey);
     border-radius: 50%;
     background-color: var(--var-light-grey);
@@ -56,10 +60,9 @@ div.form > div.input > div.icon
 div.form > div.input > div.icon > i.material-icons
 {
 
-    /* merge normal */
     font-style: normal;
     font-weight: normal;
-    font-size: 1.75em;
+    /* font-size: 1.75em; */
 }
 
 div.form > div.input > input[type="text"],
@@ -76,9 +79,10 @@ div.form > div.input > input[type="text"],
 div.form > div.input > div.pass
 {
 
-    width: 260px;
+    width: 100%;
+    max-width: 260px;
     height: 42px;
-    margin: 0 0 0 10px;
+    margin: 0 12px 0 0;
     border: 1px solid var(--var-grey);
     border-radius: 4px;
     padding: 4px 10px 4px 12px;

@@ -33,26 +33,36 @@ import JessieQuery from "./query.mjs";
     let rootDir = location.origin + prefix
 
     let pathClass = Array
-        .from(document.querySelectorAll("script[src*='jessie/core.mjs'][main*='.Activity']"))
+        .from(document.querySelectorAll("script[src*='jessie/core.mjs'][data-main*='.Activity']"))
         /**
          * @param {Element} node
          */
         .map(function (node) {
 
             // path scripts
-            let context = node.getAttribute("main", null)
-            let path = context && context.endsWith(".Activity") ?
-                rootDir + context.replace(/\./g, "\/") + "\.mjs" :
-                null
+            if (node && HTMLElement.prototype.isPrototypeOf(node)) {
 
-            // set name, path into array map
-            context = context.startsWith("\.") ? context.split("\.").pop() : context
-            return new Map([
-                [ context, path ]
-            ])
+                let context = "main" in node.dataset ? node.dataset.main : null
+
+                if (!!context) {
+
+                    let path = context && context.endsWith(".Activity") ?
+                        rootDir + context.replace(/\./g, "\/") + "\.mjs" :
+                        null
+
+                    // set name, path into array map
+                    context = context.startsWith("\.") ? context.split("\.").pop() : context
+                    return new Map([
+                        [ context, path ]
+                    ])
+                }
+            }
+
+            return [ null, null ]
         })
 
     let mainClass = await Promise.all(
+
         /**
          * @param {Array} o
          */
@@ -61,12 +71,15 @@ import JessieQuery from "./query.mjs";
             // get name, path from array map
             let [ nameClass, sourceClass ] = Array.from(sourceMap.entries())[0]
 
-            o.push((async function() {
+            if (!!nameClass && !!sourceClass) {
 
-                // load module
-                let module = await import(sourceClass)
-                return [ nameClass, module ]
-            })())
+                o.push((async function() {
+
+                    // load module
+                    let module = await import(sourceClass)
+                    return [ nameClass, module ]
+                })())
+            }
 
             return o
         }, [])
@@ -74,17 +87,19 @@ import JessieQuery from "./query.mjs";
 
     function convertArrayToObject(array, o) {
         let obj = {}
-        if (o && typeof o == "object") obj = o
-        return array.reduce(function (o, a) {
-            let [ key, value ] = a
-            Object.defineProperty(o, key, {
-                value: value,
-                configurable: true,
-                enumerable: true,
-                writable: false
-            })
-            return o
-        }, obj)
+        if (o && Object.prototype.isPrototypeOf(o)) obj = o
+        if (array && Array.isArray(array))
+            return array.reduce(function (o, a) {
+                let [ key, value ] = a
+                Object.defineProperty(o, key, {
+                    value: value,
+                    configurable: true,
+                    enumerable: true,
+                    writable: false
+                })
+                return o
+            }, obj)
+        return null
     }
 
     // query from url it self
