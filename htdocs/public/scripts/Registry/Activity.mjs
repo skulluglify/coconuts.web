@@ -1,5 +1,5 @@
 import EyeVisible from "../Login/EyeVisible.mjs";
-import CheckAuto from "./CheckAuto.js";
+import CheckBoxAuto from "./CheckBoxAuto.js";
 
 export default class Activity {
 
@@ -8,6 +8,6 @@ export default class Activity {
     static Main() {
 
         this.jessieQuery.loadModule(EyeVisible)
-        this.jessieQuery.loadModule(CheckAuto)
+        this.jessieQuery.loadModule(CheckBoxAuto)
     }
 }

@@ -185,11 +185,13 @@ div.registry > div.user > div.radio > div.check > input[type="radio"]:checked:af
 
     -webkit-appearance: none;
     appearance: none;
+    cursor: pointer;
 }
 
 div.registry > div.user > div.radio > div.check > label
 {
 
+    cursor: pointer;
     font-size: 0.875em;
     color: var(--var-grey);
 }

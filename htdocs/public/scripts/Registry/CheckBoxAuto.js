@@ -1,4 +1,9 @@
-export default class CheckAuto {
+// <div className="check start row nowrap male">
+//     <input type="radio" name="gender" id="genderMale" checked/>
+//     <label htmlFor="genderMale">male</label>
+// </div>
+
+export default class CheckBoxAuto {
 
     static jessieQuery;
 

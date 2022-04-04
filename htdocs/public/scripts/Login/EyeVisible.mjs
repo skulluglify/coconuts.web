@@ -1,3 +1,15 @@
+// <div className="pass center row nowrap">
+//     <input type="password"
+//            name="password"
+//            id="userPassword"
+//            placeholder="password"
+//            spellCheck="false"/>
+//     <label htmlFor="userPassword"></label>
+//     <div className="eye center">
+//         <i className="material-icons md-24 md-dark visibility_off"></i>
+//     </div>
+// </div>
+
 export default class EyeVisible {
 
     static jessieQuery;
