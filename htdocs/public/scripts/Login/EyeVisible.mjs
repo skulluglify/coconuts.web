@@ -1,19 +1,19 @@
-export default class EyeVisible extends Object {
+export default class EyeVisible {
 
     static jessieQuery;
 
-    constructor() {
+    static Main() {
 
-        super()
+        this.InitEyeVisible()
     }
 
     static InitEyeVisible() {
 
-        let pass = document.querySelectorAll("div.pass")
+        let passNodes = document.querySelectorAll("div.pass")
 
-        if (pass.length > 0) {
+        if (passNodes.length > 0) {
 
-            Array.from(pass).forEach((function (node) {
+            Array.from(passNodes).forEach((function (node) {
 
                 let eye = node.querySelector("div.eye")
                 eye.addEventListener("click", this.eyeOnClickListener.bind(this))

@@ -1,13 +1,8 @@
 import EyeVisible from "./EyeVisible.mjs";
 
-export default class Activity extends EyeVisible {
+export default class Activity {
 
     static jessieQuery;
-
-    constructor() {
-
-        super()
-    }
 
     static Main() {
 
@@ -16,9 +11,9 @@ export default class Activity extends EyeVisible {
         if (!!regisBtn)
             regisBtn.addEventListener("click", function (e) {
 
-                open("registry.html", false)
+                open("registry.html")
             })
 
-        this.InitEyeVisible()
+        this.jessieQuery.loadModule(EyeVisible)
     }
 }

@@ -1,16 +1,13 @@
-import ActivityLogin from "../Login/Activity.mjs"
+import EyeVisible from "../Login/EyeVisible.mjs";
+import CheckAuto from "./CheckAuto.js";
 
-export default class Activity extends ActivityLogin {
+export default class Activity {
 
     static jessieQuery;
 
-    constructor() {
-
-        super()
-    }
-
     static Main() {
 
-        this.InitEyeVisible()
+        this.jessieQuery.loadModule(EyeVisible)
+        this.jessieQuery.loadModule(CheckAuto)
     }
 }

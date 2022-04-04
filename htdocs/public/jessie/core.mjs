@@ -20,7 +20,7 @@ import JessieQuery from "./query.mjs";
         let format = suffix.split("\.").pop()
         if (!formats.includes(format)) {
 
-            throw "Jessie Core not supported!"
+            throw "[JessieCore] Not Supported!"
         }
     } else {
 
@@ -132,7 +132,7 @@ import JessieQuery from "./query.mjs";
 
                                 convertArrayToObject(query, main)
 
-                                // Embed Class Object (JessieQuery as jessieQuery)
+                                // Embedded JessieQuery in Class<Object>
                                 Object.defineProperty(main, "jessieQuery", {
                                     value: new JessieQuery, // Auto Call
                                     configurable: true,
@@ -146,7 +146,7 @@ import JessieQuery from "./query.mjs";
                         }
                     } else {
 
-                        throw`mainClass ${name} not same as file name!`
+                        throw`MainClass ${name} Not Same As File Name!`
                     }
                 }
 
