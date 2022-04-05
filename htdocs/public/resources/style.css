@@ -4,6 +4,14 @@
 @import url("text/text.css");
 @import url("color/color.css");
 
+/* MS Disable Eye in Input Password */
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear
+{
+
+    display: none;
+}
+
 *, *:after, *:before
 {
 

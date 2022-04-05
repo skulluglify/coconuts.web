@@ -44,7 +44,7 @@ import JessieQuery from "./query.mjs";
 
                 let context = "main" in node.dataset ? node.dataset.main : null
 
-                if (!!context) {
+                if (context && context.startsWith("\.")) {
 
                     let path = context && context.endsWith(".Activity") ?
                         rootDir + context.replace(/\./g, "\/") + "\.mjs" :
@@ -134,7 +134,7 @@ import JessieQuery from "./query.mjs";
 
                                 // Embedded JessieQuery in Class<Object>
                                 Object.defineProperty(main, "jessieQuery", {
-                                    value: new JessieQuery, // Auto Call
+                                    value: new JessieQuery(main), // Auto Call
                                     configurable: true,
                                     enumerable: false,
                                     writable: false

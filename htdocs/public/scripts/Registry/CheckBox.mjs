@@ -1,18 +1,24 @@
-// <div className="check start row nowrap male">
-//     <input type="radio" name="gender" id="genderMale" checked/>
-//     <label htmlFor="genderMale">male</label>
+// <div className="radio user-gender start row">
+//     <div className="check start row nowrap male">
+//         <input type="radio" name="gender" id="genderMale" checked/>
+//         <label htmlFor="genderMale">male</label>
+//     </div>
+//     <div className="check start row nowrap female">
+//         <input type="radio" name="gender" id="genderFemale"/>
+//         <label htmlFor="genderFemale">female</label>
+//     </div>
 // </div>
 
-export default class CheckBoxAuto {
+export default class CheckBox {
 
-    static jessieQuery;
+    static jessieQuery; // JessieQuery Module Bindings Allocated Memory
 
     static Main() {
 
-        this.InitCheckAuto()
+        this.InitCheckBox()
     }
 
-    static InitCheckAuto() {
+    static InitCheckBox() {
 
         let checkNodes = document.querySelectorAll("div.check")
 

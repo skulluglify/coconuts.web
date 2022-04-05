@@ -12,7 +12,7 @@
 
 export default class EyeVisible {
 
-    static jessieQuery;
+    static jessieQuery; // JessieQuery Module Bindings Allocated Memory
 
     static Main() {
 
@@ -40,13 +40,13 @@ export default class EyeVisible {
     static eyeOnClickListener(e) {
 
         let target = e && "target" in e && e.target
-        let visibility = "visibility" in target ? target.visibility : false
+        let visible = "visibility" in target ? target.visibility : false
 
         if (target && HTMLElement.prototype.isPrototypeOf(target)) {
 
             let eye = !HTMLDivElement.prototype.isPrototypeOf(target) ? target.parentNode : target
 
-            if (!visibility) {
+            if (!visible) {
 
                 setTimeout((function () {
 

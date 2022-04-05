@@ -69,6 +69,10 @@ div.registry > div.user > div.date-option
 {
 
     padding: 0;
+    border: none;
+    background-color: transparent;
+    /*background-color: var(--var-grey);*/
+    overflow: visible;
 }
 
 div.registry > div.user > div.date-option > div.date-year,
@@ -76,17 +80,133 @@ div.registry > div.user > div.date-option > div.date-mon,
 div.registry > div.user > div.date-option > div.date-day
 {
 
-    width: calc(33% - 4px);
+    display: inline-block;
+    width: calc(33.3% - 4px);
     height: 100%;
     margin: 0 4px 0 0;
-    background-color: greenyellow;
+    border: 1px solid var(--var-grey);
+}
+
+div.registry > div.user > div.date-option .select,
+div.registry > div.user > div.date-option div.option > .select
+{
+
+    display: flex;
+    position: relative;
+    width: 100%;
+    height: 40px; /* decrement from border size */
+    flex-wrap: nowrap;
+    border: none;
+    border-radius: 0;
+    padding: 0 0 0 10px;
+    align-items: center;
+    justify-content: flex-start;
+    background-color: var(--var-light-grey);
+    /*box-shadow: 0 2px 4px black;*/
+    flex-direction: row;
+}
+
+div.registry > div.user > div.date-option .select:hover,
+div.registry > div.user > div.date-option div.option > .select:hover
+{
+
+    border: none;
+    border-radius: 0;
+}
+
+div.registry > div.user > div.date-option div.option > .select:hover
+{
+
+    background-color: var(--var-grey);
+}
+
+div.registry > div.user > div.date-option div.text
+{
+
+    width: 1em;
+    text-align: center;
+    background-color: var(--var-orange);
+}
+
+div.registry > div.user > div.date-option > div.date-year > .select:after,
+div.registry > div.user > div.date-option > div.date-mon > .select:after,
+div.registry > div.user > div.date-option > div.date-day > .select:after
+{
+
+    display: inline-block;
+    position: relative;
+    content: "\e5c5";
+    top: auto;
+    right: 0;
+    bottom: auto;
+    left: auto;
+    color: var(--var-grey);
+    font-size: 1.75em;
+    font-family: 'Material Icons';
+    margin: auto 0 auto auto;
+}
+
+div.registry > div.user > div.date-option > div.date-year > .select:active:after,
+div.registry > div.user > div.date-option > div.date-mon > .select:active:after,
+div.registry > div.user > div.date-option > div.date-day > .select:active:after
+{
+
+    content: "\e5c7";
 }
 
 div.registry > div.user > div.date-option > div.date-day
 {
 
-    width: 33%;
+    /* I dont Know, but it Work's */
+    width: calc(33.3% - 0);
     margin: 0;
+}
+
+div.registry > div.user > div.date-option div.option
+{
+
+    display: block;
+    position: relative;
+    width: calc(100% + 0px); /* I Dont Know, but It Work's */
+    height: fit-content;
+    max-height: 260px;
+    margin: 5px 0 -100% -1px; /* Get Precisely Value */
+    border: 1px solid black;
+    background-color: #0f5132;
+    box-sizing: initial;
+    overflow: visible scroll;
+}
+
+div.registry > div.user > div.date-option div.option > .select
+{
+
+    border-radius: 0;
+}
+
+div.registry > div.user > div.date-option div.option::-webkit-scrollbar
+{
+
+    width: 4px;
+    height: auto;
+    margin: 0 -4px 0 0;
+}
+
+div.registry > div.user > div.date-option div.option::-webkit-scrollbar-thumb
+{
+
+    background-color: var(--var-grey);
+}
+
+div.registry > div.user > div.date-option div.option::-webkit-scrollbar-thumb:hover
+{
+
+    background-color: #505050FF;
+}
+
+div.registry > div.user > div.date-option div.option::-webkit-scrollbar-track
+{
+
+    background-color: rgba(255, 255, 255, 0.6);
 }
 
 div.registry > div.user > div.pass
@@ -132,7 +252,7 @@ div.registry > div.user > div.radio > div.check
 
     cursor: pointer;
     width: calc(50% - 2px); /* 130px */
-    padding: 4px 12px 4px 6px;
+    padding: 4px 12px 4px 10px;
     margin: 0;
 }
 
@@ -173,10 +293,14 @@ div.registry > div.user > div.radio > div.check.female > input[type="radio"]:act
     background-color: #B60CF0FF;
 }
 
-div.registry > div.user > div.radio > div.check > input[type="radio"]:checked
+div.registry > div.user > div.radio > div.check > input[type="radio"]:checked:before
 {
 
-    background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCAyMCAyMCc+PHBhdGggZmlsbD0nbm9uZScgc3Ryb2tlPScjZmZmJyBzdHJva2UtbGluZWNhcD0ncm91bmQnIHN0cm9rZS1saW5lam9pbj0ncm91bmQnIHN0cm9rZS13aWR0aD0nMycgZD0nTTYgMTBsMyAzbDYtNicvPjwvc3ZnPg==");
+    content: '\e5ca';
+    font-size: 1.25em;
+    color: var(--var-white);
+    font-family: 'Material Icons';
+    font-weight: 900;
 }
 
 div.registry > div.user > div.radio > div.check > input[type="radio"]:after,
@@ -241,7 +365,6 @@ div.registry > div.user > div.user-photo
     border: 2px solid white;
     border-radius: 50%;
     margin: 12px;
-    background-color: greenyellow;
     background-image: url("../../resources/dummy.png");
     background-repeat: no-repeat;
     background-position: center;

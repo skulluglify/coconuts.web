@@ -2,18 +2,26 @@ import EyeVisible from "./EyeVisible.mjs";
 
 export default class Activity {
 
-    static jessieQuery;
+    static jessieQuery; // JessieQuery Module Bindings Allocated Memory
 
     static Main() {
 
-        let regisBtn = document.querySelector("button#registry")
+        // Embedded Module Into Self Class
+        this.jessieQuery.Module.Extends(
 
-        if (!!regisBtn)
+            EyeVisible
+        )
+
+        let regisBtn = document.querySelector("button#registry")
+        if (!!regisBtn) {
+            /**
+             * @param {Event} e
+             */
             regisBtn.addEventListener("click", function (e) {
 
                 open("registry.html")
             })
 
-        this.jessieQuery.loadModule(EyeVisible)
+        }
     }
 }
