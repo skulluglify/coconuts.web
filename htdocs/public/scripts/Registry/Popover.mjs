@@ -10,7 +10,7 @@ import Rect, {Cartesian} from "../../jessie/rect.mjs";
 export default class Popover {
 
     // {Element} pop
-    static pop;
+    static pop
     static jessieQuery
 
     static Main() {
@@ -83,13 +83,32 @@ export default class Popover {
 
             this.setPopArrowPosition(pop, 2)
 
-            // Auto Adjustable by Window Resize
-            window.addEventListener("resize", (function () {
+            // Auto Adjustable by Window Resize, Scrolling
+            Array.from(["resize", "scroll"]).map((function (events) {
 
-                let [ pop, popRect ] = this.GetPopover()
-                let targetRect = Rect.getElementRect(target)
+                window.addEventListener(events, (function (e) {
 
-                if (popRect && targetRect) this.setPopoverPosition(pop, this.getPopTopStartRect(popRect, targetRect))
+                    let popRect = Rect.getElementRect(pop)
+                    let targetRect = Rect.getElementRect(target)
+
+                    if (popRect && targetRect) {
+
+                        let rect = this.getPopTopStartRect(popRect, targetRect)
+
+                        if (rect.Y < scrollY) {
+
+                            rect = this.getPopBottomStartRect(popRect, targetRect)
+                            this.setPopArrowPosition(pop, 0)
+
+                        } else {
+
+                            this.setPopArrowPosition(pop, 2)
+                        }
+
+                        this.setPopoverPosition(pop, rect)
+                    }
+
+                }).bind(this))
 
             }).bind(this))
 
@@ -297,14 +316,14 @@ export default class Popover {
 
         if (popRect && targetRect && Rect.prototype.isPrototypeOf(popRect) && Rect.prototype.isPrototypeOf(targetRect)) {
 
-            let popBottomStart = popRect.Corner.TopStart
-            let targetTopStart = targetRect.Corner.BottomStart
+            let popTopStart = popRect.Corner.TopStart
+            let targetBottomStart = targetRect.Corner.BottomStart
 
-            let targetX = targetTopStart.X
-            let targetY = targetTopStart.Y
+            let targetX = targetBottomStart.X
+            let targetY = targetBottomStart.Y
 
-            let popX = popBottomStart.X
-            let popY = popBottomStart.Y
+            let popX = popTopStart.X
+            let popY = popTopStart.Y
 
             let x = targetX - popX
             let y = targetY - popY + 4 // Arrow T 1/3
@@ -344,9 +363,10 @@ export default class Popover {
             } else
             if (context && HTMLElement.prototype.isPrototypeOf(context)) {
 
-                if (content.children.length > 0)
-                    for (let el of content.children)
-                        el.remove()
+                // Maybe First Using :P
+                // if (content.children.length > 0)
+                    // for (let el of content.children)
+                        // el.remove()
 
                 content.appendChild(context)
             }

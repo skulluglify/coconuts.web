@@ -3,10 +3,10 @@ export class Cartesian {
     X
     Y
 
-    constructor(t, l) {
+    constructor(x, y) {
 
-        this.X = t
-        this.Y = l
+        this.X = x
+        this.Y = y
     }
 
     toString() {
@@ -28,6 +28,7 @@ export class Corner {
     BottomStart
     BottomEnd
 
+    // top left width height
     constructor(t, l, w, h) {
 
         this.TopStart = new Cartesian(l, t)
