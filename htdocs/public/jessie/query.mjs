@@ -1,5 +1,7 @@
 export class Bindings {
 
+    moduleName
+
     constructor(moduleName) {
 
         if (moduleName && typeof moduleName == "string")

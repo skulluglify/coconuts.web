@@ -297,8 +297,8 @@ export default class Popover {
 
         if (popRect && targetRect && Rect.prototype.isPrototypeOf(popRect) && Rect.prototype.isPrototypeOf(targetRect)) {
 
-            let popBottomStart = popRect.Corner.BottomStart
-            let targetTopStart = targetRect.Corner.TopStart
+            let popBottomStart = popRect.Corner.TopStart
+            let targetTopStart = targetRect.Corner.BottomStart
 
             let targetX = targetTopStart.X
             let targetY = targetTopStart.Y
@@ -307,7 +307,7 @@ export default class Popover {
             let popY = popBottomStart.Y
 
             let x = targetX - popX
-            let y = targetRect.Height + popRect.Height + targetY - popY + 4 // Arrow T 1/3
+            let y = targetY - popY + 4 // Arrow T 1/3
 
             return new Cartesian(x, y)
         }
