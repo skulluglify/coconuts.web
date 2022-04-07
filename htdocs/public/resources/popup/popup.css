@@ -75,6 +75,7 @@ div.popup
     justify-content: center;
     background-color: rgba(15, 15, 15, 0.6);
     flex-direction: column;
+    z-index: 1;
 }
 
 div.popup > div.content
@@ -139,4 +140,10 @@ div.popup > div.content > div.prompt
     justify-items: center;
     justify-content: center;
     flex-direction: row;
+}
+
+div.popup > div.content > div.prompt > button.cencel
+{
+
+    margin: 0 6px 0 0;
 }

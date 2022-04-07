@@ -1,0 +1,63 @@
+button
+{
+
+    font-size: 1em;
+    border-radius: 0.25em;
+    padding: 0.375em 0.75em;
+    color: var(--var-white);
+    background-color: var(--var-blue);
+    /* outline: var(--var-grey) solid 1px; */
+    border: 1px solid transparent;
+}
+
+button:hover
+{
+
+    cursor: pointer;
+    /* background-image: linear-gradient(0deg, rgba(75, 75, 75, 0.1), rgba(75, 75, 75, 0.1)); */
+    /* outline: var(--var-black) solid 1px; */
+    border: 1px solid var(--var-black);
+}
+
+button:active
+{
+
+    border: 1px solid transparent;
+    outline: none;
+}
+
+.primary
+{
+
+    color: var(--var-white);
+    background-color: var(--var-blue);
+}
+
+.success
+{
+
+    color: var(--var-white);
+    background-color: var(--var-green);
+}
+
+.warning
+{
+
+    color: var(--var-black);
+    background-color: var(--var-orange);
+}
+
+.danger
+{
+
+    color: var(--var-white);
+    background-color: var(--var-red);
+}
+
+button.large
+{
+
+    font-size: 1.25em;
+    border-radius: 0.3em;
+    padding: 0.5em 1em;
+}

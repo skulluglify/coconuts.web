@@ -167,6 +167,14 @@ export default class JessieQuery extends Object {
         return null
     }
 
+    /**
+     * @param {any} module
+     * */
+    isBindings(module) {
+
+        return module && Bindings.prototype.isPrototypeOf(module)
+    }
+
     get Module() {
 
         // Break Point Access, No Conflicts

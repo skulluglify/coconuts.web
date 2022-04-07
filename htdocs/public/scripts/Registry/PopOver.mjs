@@ -7,7 +7,7 @@ import Rect, {Cartesian} from "../../jessie/rect.mjs";
 //     <div className="arrow"></div>
 // </button>
 
-export default class Popover {
+export default class PopOver {
 
     // {Element} pop
     static pop
@@ -15,16 +15,16 @@ export default class Popover {
 
     static Main() {
 
-        this.InitPopover()
+        this.InitPopOver()
     }
 
-    static InitPopover() {
+    static InitPopOver() {
 
-        // Styling Popover
+        // Styling PopOver
         this.jessieQuery.styleInsertRule("button.popover\n" +
             "{\n" +
             "\n" +
-            "    display: none;\n" +
+            "    display: block;\n" +
             "    position: absolute;\n" +
             "    top: 0;\n" +
             "    right: auto;\n" +
@@ -39,6 +39,7 @@ export default class Popover {
             "    border-radius: 0;\n" +
             "    background-color: var(--var-white);\n" +
             "    overflow: visible;\n" +
+            "    opacity: 0;\n" +
             "}")
 
         this.jessieQuery.styleInsertRule("button.popover > div.content\n" +
@@ -70,7 +71,7 @@ export default class Popover {
             "}")
 
         // Initialize
-        let popover = this.GetPopover()
+        let popover = this.GetPopOver()
         let target = document.querySelector("div.user-dob")
 
         if (popover && target && Array.isArray(popover) && HTMLElement.prototype.isPrototypeOf(target)) {
@@ -135,17 +136,17 @@ export default class Popover {
         ]
     }
 
-    static GetPopover() {
+    static GetPopOver() {
 
         let target = document.querySelector("button.popover")
 
         if (target && HTMLElement.prototype.isPrototypeOf(target)) {
 
-            target.style.display = "block"
+            // target.style.opacity = "0"
 
             let rect = Rect.getElementRect(target)
 
-            target.style.display = "none"
+            // target.style.display = "1"
 
             target.addEventListener("focusout", function () {
 
@@ -339,7 +340,8 @@ export default class Popover {
         if (target && cartesian && HTMLElement.prototype.isPrototypeOf(target) && Cartesian.prototype.isPrototypeOf(cartesian)) {
 
             target.style.transform = "translate(" + cartesian.X + "px, " + cartesian.Y + "px )"
-            target.style.display = "block"
+            // target.style.display = "block"
+            target.style.opacity = "1"
 
             // set Auto focus
             if (HTMLButtonElement.prototype.isPrototypeOf(target))
