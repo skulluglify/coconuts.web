@@ -12,7 +12,7 @@
 
 export default class EyeVisible {
 
-    static jessieQuery; // JessieQuery Module Bindings Allocated Memory
+    static jessieQuery // JessieQuery Module Bindings Allocated Memory
 
     static Main() {
 
@@ -20,6 +20,9 @@ export default class EyeVisible {
     }
 
     static InitEyeVisible() {
+
+        this.jessieQuery.styleInsertRule(".material-icons.visibility_off:before { color: var(--var-grey); }")
+        this.jessieQuery.styleInsertRule(".material-icons.visibility.activate:before { color: var(--var-black); }")
 
         let passNodes = document.querySelectorAll("div.pass")
 
@@ -32,9 +35,6 @@ export default class EyeVisible {
                 eye.visibility = false
             }).bind(this))
         }
-
-        this.jessieQuery.styleInsertRule(".material-icons.visibility_off:before { color: var(--var-grey); }")
-        this.jessieQuery.styleInsertRule(".material-icons.visibility.activate:before { color: var(--var-black); }")
     }
 
     static eyeOnClickListener(e) {

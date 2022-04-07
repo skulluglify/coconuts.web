@@ -1,11 +1,13 @@
 import EyeVisible from "../Login/EyeVisible.mjs";
 import CheckBox from "./CheckBox.mjs";
 import DateOption from "./DateOption.mjs";
+import Popover from "./Popover.mjs";
 
 export default class Activity {
 
-    static jessieQuery; // JessieQuery Module Bindings Allocated Memory
-    static DateOption; // DateOption Module Bindings Allocated Memory
+    static jessieQuery // JessieQuery Module Bindings Allocated Memory
+    static DateOption // DateOption Module Bindings Allocated Memory
+    static Popover // Popover Module Bindings Allocated Memory
 
     static Main() {
 
@@ -14,7 +16,8 @@ export default class Activity {
 
             EyeVisible,
             CheckBox,
-            DateOption
+            DateOption,
+            Popover
         )
 
         document.querySelector("div.date-option")
@@ -24,5 +27,7 @@ export default class Activity {
             }).bind(this))
 
         console.log(this.DateOption.getDateValue())
+
+        this.Popover.setPopContent("Date of Your Birthday!")
     }
 }

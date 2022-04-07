@@ -165,7 +165,7 @@ div.registry > div.user > div.date-option > div.date-day
 div.registry > div.user > div.date-option div.option
 {
 
-    display: block;
+    display: none;
     position: relative;
     width: calc(100% + 0px); /* I Dont Know, but It Work's */
     height: fit-content;
@@ -397,6 +397,13 @@ div.registry > div.user > div.description > textarea
 {
 
     width: 100%;
+    margin: 4px 0 4px 0;
     background-color: transparent;
     overflow: hidden;
 }
+
+/* Popover */
+
+/* All rules move into [jessieQuery] -> styleInsertRule */
+
+/* Popover */

@@ -154,10 +154,19 @@ import JessieQuery from "./query.mjs";
             })
 
             // execute all main
-            for (let c of main) {
+            let taskl = main.reduce(function (o, e) {
 
-                if (c && typeof c == "function") c()
-            }
+                if (e && typeof e == "function")
+                    o.push((function Anonymous() {
+
+                        // Isolate, Wrapping, No More
+                        return !e() ? Anonymous : e
+                    })())
+
+                return o
+            }, [])
+
+            // global.taskl = taskl
 
             ready = null // break point
         }

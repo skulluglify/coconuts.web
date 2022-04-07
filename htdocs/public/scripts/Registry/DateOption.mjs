@@ -12,9 +12,9 @@
 
 export default class DateOption {
 
-    static date; // Proprietary Method Class ItSelf
-    static dateDefault; // Proprietary Method Class ItSelf
-    static jessieQuery; // JessieQuery Module Bindings Allocated Memory
+    static date // Proprietary Method Class ItSelf
+    static dateDefault // Proprietary Method Class ItSelf
+    static jessieQuery // JessieQuery Module Bindings Allocated Memory
 
     static Main() {
 

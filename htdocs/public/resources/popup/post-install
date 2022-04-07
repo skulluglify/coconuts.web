@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+cwd=`pwd`
+cd $(dirname $0)
+
+uri="https://www.unpkg.com/bootstrap-icons@latest/icons/"
+
+function download() {
+
+    if [ ! -d resources ]; then
+
+      mkdir resources
+    fi
+
+	url=$uri\/$1\.svg
+	wget -c $url -O resources\/$1\.svg &>/dev/null
+}
+
+while IFS= read -r line; do
+
+  {
+  	echo -en "\x1b[1;33;40m" download $line ... "\x1b[0m\n"
+  	download $line  
+  } &
+
+done <<<$(cat popup.resources)
+
+cd $cwd

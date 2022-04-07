@@ -11,7 +11,7 @@
 
 export default class CheckBox {
 
-    static jessieQuery; // JessieQuery Module Bindings Allocated Memory
+    static jessieQuery // JessieQuery Module Bindings Allocated Memory
 
     static Main() {
 

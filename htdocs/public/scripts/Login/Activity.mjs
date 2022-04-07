@@ -2,7 +2,7 @@ import EyeVisible from "./EyeVisible.mjs";
 
 export default class Activity {
 
-    static jessieQuery; // JessieQuery Module Bindings Allocated Memory
+    static jessieQuery // JessieQuery Module Bindings Allocated Memory
 
     static Main() {
 

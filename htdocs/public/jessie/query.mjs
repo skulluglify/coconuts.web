@@ -1,3 +1,25 @@
+export class Bindings {
+
+    constructor(moduleName) {
+
+        if (moduleName && typeof moduleName == "string")
+            this.moduleName = moduleName
+    }
+
+    toString() {
+
+        if ("moduleName" in this)
+            return "Bindings {" + this.moduleName + "}"
+
+        return "Bindings {Unknown}"
+    }
+
+    toLocaleString() {
+
+        return this.toString()
+    }
+}
+
 export default class JessieQuery extends Object {
 
     cls = null;
@@ -9,6 +31,17 @@ export default class JessieQuery extends Object {
         if (typeof cls == "function")
             this.cls = cls
     }
+
+
+    xQuery(context) {
+
+        if (Window.prototype.isPrototypeOf(context)) {}
+        if (Document.prototype.isPrototypeOf(context)) {}
+        if (Element.prototype.isPrototypeOf(context)) {}
+        if (typeof context == "string" && context.length > 0) {}
+        if (context && Array.isArray(context) && context.length > 0) {}
+    }
+
 
     /**
      * @param {string} rule
@@ -36,7 +69,7 @@ export default class JessieQuery extends Object {
         }
     }
 
-    __addModule__(module) {
+    __Module__(module) {
 
         // If Module Is ES6 (ImportLib), Call Then Try Again
         if (module && Promise.prototype.isPrototypeOf(module)) {
@@ -45,7 +78,7 @@ export default class JessieQuery extends Object {
             module.then((function (module) {
 
                 // Try Again
-                this.__addModule__(module)
+                this.__Module__(module)
 
             }).bind(this)).catch(function (err) {
 
@@ -73,6 +106,22 @@ export default class JessieQuery extends Object {
                 writable: false
             })
 
+            // Get Init Name
+            let initName = null
+            if (module.name.length > 0) {
+
+                let codepoint = module.name.codePointAt(0)
+
+                if (65 <= codepoint && codepoint <= 90)
+                    initName = "Init" + module.name
+                else
+                    throw "[JessieQuery] Module Name Require Capitalize Each Word!"
+            }
+
+            // Check if is Ready Load
+            if (!(initName && initName in module))
+                throw "[JessieQuery] Require " + initName + " for MainInit!"
+
             // get Collection Into Activity
             if ("Collections" in module) {
 
@@ -85,18 +134,24 @@ export default class JessieQuery extends Object {
 
                     if (collections && Array.isArray(collections) && collections.length > 0) {
 
-                        this.cls[module.name] = {} // Empty Bindings
+                        this.cls[module.name] = new Bindings(module.name) // Empty Bindings
                         let bindings = this.cls[module.name]
+
+                        bindings["Init"] = module[initName].bind(module)
 
                         for (let func of collections) {
 
-                            if (typeof func == "function") {
-
-                                if (func.name in module) {
-
-                                    bindings[func.name] = module[func.name].bind(module)
-                                }
-                            }
+                            // Since Module "Activity" disable from ImportLib
+                            // if (!(module.name == "Activity" && func.name == "Main"))
+                            //     throw "[JessieQuery][ImportLib] MainClass from Activity not enable!"
+                            if (func.name == "Main")
+                                throw "[JessieQuery][ImportLib] Couldn't Import MainClass!"
+                            else // Disable MainInit
+                                if (func.name == initName)
+                                    throw "[JessieQuery][ImportLib] MainInit Has Been Imported!"
+                            else // Binding Into Activity
+                                if (typeof func == "function")
+                                    bindings[func.name] = func.bind(module)
                         }
                     }
                 }
@@ -126,7 +181,7 @@ export default class JessieQuery extends Object {
                         // Module If Is Promise (ImportLib)
                         if (typeof module == "function" || Promise.prototype.isPrototypeOf(module)) {
 
-                            this.__addModule__(module)
+                            this.__Module__(module)
                         }
                     }
             }).bind(ThisObject) // More Safety
