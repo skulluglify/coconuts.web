@@ -18,12 +18,14 @@ export default class DateOption {
 
     static Main() {
 
-        this.InitDateOption()
+        // this.InitDateOption()
     }
 
-    static InitDateOption() {
+    /**
+     * @param {Date,null} date*/
+    static InitDateOption(date = null) {
 
-        this.date = new Date
+        this.date = date && Date.prototype.isPrototypeOf(date) ? date : new Date
         this.dateDefault = { // Limit 24 Years Ago From Now
             year: this.date.getFullYear() - 24,
             maxDay: 30, // Not Precisely

@@ -123,6 +123,7 @@ class MySQL implements MySQLStructure
 
         $types = "";
         // check params is not null
+        
         if (count($params) > 0)
         {
 
