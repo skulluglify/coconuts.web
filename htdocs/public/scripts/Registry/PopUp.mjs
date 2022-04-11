@@ -52,12 +52,16 @@ export default class PopUp {
             let callback = "callback" in options ? options.callback : null
 
             let target = document.querySelector("div.popup")
-            let popClassList = [ "pop-success", "pop-warn", "pop-info", "pop-danger", "pop-unknown" ]
 
             // info success | warning | dangerous
             let infoClass
 
             switch (info) {
+
+                case "none":
+
+                    infoClass = "pop-none"
+                    break;
 
                 case "info":
 
@@ -89,29 +93,49 @@ export default class PopUp {
 
                 target.style.display = "flex"
 
+                let span, message
                 let info = target.querySelector("div.info")
                 let content = target.querySelector("div.content")
 
                 if (info && content) {
 
                     // Remove Class
-                    info.classList.remove(...popClassList)
-                    info.classList.add(infoClass)
+                    for (let cls of info.classList)
+                        if (cls.startsWith("pop\-"))
+                            info.classList.remove(cls)
+                        else if (cls.startsWith("animate\_\_"))
+                            info.classList.remove(cls)
 
-                    let message = content.querySelector("div.message")
+                    for (let cls of content.classList)
+                        if (cls.startsWith("animate\_\_"))
+                            content.classList.remove(cls)
+
+                    if (!(Array.from(content.classList).includes("animate__animated")))
+                        content.classList.add("animate__animated", "animate__bounceIn")
+
+                    if (!(Array.from(info.classList).includes("animate__animated")))
+                        info.classList.add(infoClass, "animate__animated", "animate__flipInY")
+
+                    message = content.querySelector("div.message")
                     if (message) {
 
-                        let span = message.querySelector("span")
-                        if (!span) {
+                        if (context) {
 
-                            // Create Span
-                            span = document.createElement("span")
-                            message.appendChild(span)
-                        }
+                            if (typeof context == "string" && context.length > 0) {
 
-                        if (context && typeof context == "string" && context.length > 0) {
+                                span = message.querySelector("span")
+                                if (!span) {
 
-                            span.textContent = context
+                                    // Create Span
+                                    span = document.createElement("span")
+                                    message.appendChild(span)
+                                }
+
+                                span.textContent = context
+                            } else if (HTMLElement.prototype.isPrototypeOf(context)) {
+
+                                message.appendChild(context)
+                            }
                         }
                     }
                 }
@@ -119,13 +143,13 @@ export default class PopUp {
                 let prompt = target.querySelector("div.prompt")
                 if (prompt) {
 
-                    let submit, cencel
+                    let submit, cancel
 
                     switch (type) {
 
                         case "prompt":
 
-                            cencel = this.createButton("cencel")
+                            cancel = this.createButton("cancel")
                             submit = this.createButton("submit")
                             break;
                         case "submit":
@@ -138,39 +162,77 @@ export default class PopUp {
                             break;
                     }
 
-                    if (cencel) {
+                    let contentListener = function __Listener__() {
 
-                        prompt.appendChild(cencel)
-                        cencel.addEventListener("click", function () {
+                        if ("types" in content.dataset)
+                            if (["failure", "success"].includes(content.dataset.types)) {
 
-                            target.style.display = "none"
-                            if (submit) submit.remove()
-                            cencel.remove()
+                                for (let cls of info.classList)
+                                    if (cls.startsWith("pop\-"))
+                                        info.classList.remove(cls)
+                                    else if (cls.startsWith("animate\_\_"))
+                                        info.classList.remove(cls)
 
-                            if (callback && typeof callback == "function") {
+                                for (let cls of content.classList)
+                                    if (cls.startsWith("animate\_\_"))
+                                        content.classList.remove(cls)
 
-                                // Return Event
-                                let event = new Event("failure")
-                                callback(event)
+                                target.style.display = "none"
+
+                                if (cancel) cancel.remove()
+                                if (submit) submit.remove()
+                                if (span) span.remove()
+                                if (message)
+                                    for (let node of message.children)
+                                        node.remove() // remove from message, but current element not deleted
+
+                                if (callback && typeof callback == "function") {
+
+                                    // Return Event
+                                    content.dataset.types = ""
+                                    content.removeEventListener("animationend", __Listener__)
+                                    let event = new Event(content.dataset.types)
+                                    if (contentListener) contentListener = null
+                                    callback(event)
+                                }
                             }
-                        })
+
+                        // Make it Late (Synchronous)
+                        // setTimeout(function () {
+
+                            // enable clicked
+                            if (cancel) cancel.disabled = false
+                            if (submit) submit.disabled = false
+
+                        // }, 1e2)
                     }
+
+                    content.addEventListener("animationend", contentListener) /*options: { once: true }*/
+
+                    let promptEventFn = (types) => () => {
+
+                        for (let cls of content.classList)
+                            if (cls.startsWith("animate\_\_"))
+                                content.classList.remove(cls)
+
+                        content.dataset.types = types
+                        content.classList.add("animate__animated", "animate__bounceOut")
+                    }
+
+                    if (cancel) {
+
+                        // disable clicked
+                        cancel.disabled = true
+                        prompt.appendChild(cancel)
+                        cancel.addEventListener("click", promptEventFn("failure"), { once: true })
+                    }
+
                     if (submit) {
 
+                        // disable clicked
+                        submit.disabled = true
                         prompt.appendChild(submit)
-                        submit.addEventListener("click", function () {
-
-                            target.style.display = "none"
-                            if (cencel) cencel.remove()
-                            submit.remove()
-
-                            if (callback && typeof callback == "function") {
-
-                                // Return Event
-                                let event = new Event("success")
-                                callback(event)
-                            }
-                        })
+                        submit.addEventListener("click", promptEventFn("success"), { once: true })
                     }
                 }
             }
@@ -188,10 +250,10 @@ export default class PopUp {
                     btn.classList.add("submit", "primary")
                     btn.textContent = "Submit"
                     break;
-                case "cencel":
+                case "cancel":
 
-                    btn.classList.add("cencel", "danger")
-                    btn.textContent = "Cencel"
+                    btn.classList.add("cancel", "danger")
+                    btn.textContent = "cancel"
                     break;
             }
 

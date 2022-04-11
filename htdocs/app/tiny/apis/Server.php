@@ -6,6 +6,7 @@ use Exception;
 interface HTTPInfoStructure
 {
     public function getContentLength(): int;
+    public function getContentType(): string | null;
     public function getCookie(): string | null;
     public function getAcceptLanguage(): string | null;
     public function getAcceptEncoding(): string | null;
@@ -95,6 +96,7 @@ class HTTPInfo implements HTTPInfoStructure
 
     // HTTP Info
     private string | null $HTTP_CONTENT_LENGTH;
+    private string | null $HTTP_CONTENT_TYPE;
     private string | null $HTTP_COOKIE;
     private string | null $HTTP_ACCEPT_LANGUAGE;
     private string | null $HTTP_ACCEPT_ENCODING;
@@ -116,6 +118,7 @@ class HTTPInfo implements HTTPInfoStructure
     {
 
         $this->HTTP_CONTENT_LENGTH = c($info, "HTTP_CONTENT_LENGTH");
+        $this->HTTP_CONTENT_TYPE = c($info, "HTTP_CONTENT_TYPE");
         $this->HTTP_COOKIE = c($info, "HTTP_COOKIE");
         $this->HTTP_ACCEPT_LANGUAGE = c($info, "HTTP_ACCEPT_LANGUAGE");
         $this->HTTP_ACCEPT_ENCODING = c($info, "HTTP_ACCEPT_ENCODING");
@@ -141,6 +144,16 @@ class HTTPInfo implements HTTPInfoStructure
             return intval($this->HTTP_CONTENT_LENGTH);
         }
         return 0;
+    }
+
+    public function getContentType(): string | null
+    {
+        if (!empty($this->HTTP_CONTENT_TYPE)) {
+
+            return $this->HTTP_CONTENT_TYPE;
+        }
+
+        return null;
     }
 
     public function getCookie(): string | null
@@ -226,12 +239,15 @@ class HTTPInfo implements HTTPInfoStructure
 
     public function getClientIP(): string | null
     {
+
         if (!empty($this->HTTP_X_FORWARDED_FOR)) {
+        // if (!empty($this->HTTP_X_FORWARDED_FOR)) {
 
             $forwarded = explode(",", $this->HTTP_X_FORWARDED_FOR);
             $result = current($forwarded); // maybe false
             if ($result) return rtrim($result);
         }
+
         // another option
         if (!empty($this->HTTP_CLIENT_IP)) {
 
@@ -355,7 +371,7 @@ class ServerInfo implements ServerInfoStructure
     public function __construct(array $info)
     {
         $this->SERVER_PORT = c($info,"SERVER_PORT");
-        $this->SERVER_ADDRESS = c($info,"SERVER_ADDRESS");
+        $this->SERVER_ADDRESS = c($info,"SERVER_ADDR");
         $this->SERVER_NAME = c($info,"SERVER_NAME");
     }
 
@@ -397,7 +413,7 @@ class RemoteInfo implements RemoteInfoStructure
     public function __construct(array $info)
     {
         $this->REMOTE_PORT = c($info,"REMOTE_PORT");
-        $this->REMOTE_ADDRESS = c($info,"REMOTE_ADDRESS");
+        $this->REMOTE_ADDRESS = c($info,"REMOTE_ADDR");
     }
 
 
@@ -472,30 +488,50 @@ class RequestInfo implements RequestInfoStructure
 class Request implements RequestStructure
 {
 
-    public function __construct()
+    private HTTPInfoStructure $HTTP;
+
+    public function __construct($http)
     {
 
+        $this->HTTP = $http;
         // nothing to do
     }
     public function json() : array | null
     {
 
-        $inputs = file_get_contents("php://input");
+        $data = array();
 
-        if (is_string($inputs)) {
+        // headers Content-Type application/json
+        if (empty($_POST) or empty($_FILES)) {
 
-            try {
+            $content_type = $this->HTTP->getContentType();
 
-                // JSON_OBJECT_AS_ARRAY set by associative
-                $data = json_decode($inputs, associative: true, flags: JSON_BIGINT_AS_STRING);
+            if ($content_type and is_string($content_type) and $content_type == "application/json") {
 
-                if (!empty($data)) return $data;
+                $inputs = file_get_contents("php://input");
 
-            } catch (Exception) {
+                if ($inputs and is_string($inputs) and strlen($inputs) > 1) { // [], {}
 
-                return null;
+                    try {
+
+                        // Body
+                        // JSON_OBJECT_AS_ARRAY set by associative
+                        $data = json_decode($inputs, associative: true, flags: JSON_BIGINT_AS_STRING);
+
+                        if (!empty($data)) return $data;
+
+                    } catch (Exception) {
+
+                        return null;
+                    }
+                }
             }
         }
+
+        // catch _FILES nad _POST
+        if (!empty($_FILES)) $data = array_merge(array(), $_FILES); // copy
+        if (!empty($_POST)) $data = array_merge($data, $_POST);
+        if (!empty($data)) return $data;
 
         return null;
     }
@@ -505,9 +541,12 @@ class Request implements RequestStructure
 class Response implements ResponseStructure
 {
 
-    public function __construct()
+    private HTTPInfoStructure $HTTP; // never used anywhere
+
+    public function __construct($http)
     {
 
+        $this->HTTP = $http;
         // nothing to do
     }
 
@@ -567,12 +606,13 @@ class Server implements ServerStructure
     public function getClientIP(): string
     {
         $client_ip = $this->HTTP->getClientIP();
+        $remote_address = $this->Remote->getAddress();
+
         if (!empty($client_ip)) {
 
             return $client_ip;
         }
 
-        $remote_address = $this->Remote->getAddress();
         if (!empty($remote_address)) {
 
             return $remote_address;
@@ -605,8 +645,8 @@ class Server implements ServerStructure
         // lebih baik pakai equals operator untuk production build
         if (str_ends_with($uri, $origin))
         {
-            $req = new Request();
-            $res = new Response();
+            $req = new Request($this->HTTP);
+            $res = new Response($this->HTTP);
             if (is_callable($callback)) {
 
                 $res->header("HTTP/2.0 200 OK");

@@ -1,6 +1,11 @@
 <?php namespace controllers;
 
 
+session_start();
+if (empty($_SESSION["blocked"])) $_SESSION["blocked"] = false;
+if (empty($_SESSION["try_login"])) $_SESSION["try_login"] = 0;
+
+
 use models\Banned;
 use models\Session;
 use models\User;
@@ -63,6 +68,7 @@ class Login extends Controller implements ControllerStructure
 
                 // get commands key
                 $login = c($data, "login");
+                $try_login_session_limit = 3;
 
                 if (!empty($login)) {
 
@@ -75,6 +81,13 @@ class Login extends Controller implements ControllerStructure
                     $attach = true;
                     while ($attach)
                     {
+
+                        $blocked = $_SESSION["blocked"];
+                        if (is_bool($blocked) and $blocked) {
+
+                            $res->render($this->trace("You are blocked, due to abnormal traffic activity!", mode: MessageType::FAILURE)); // yes u got ban, ha ha ha
+                            break;
+                        }
 
                         // get try login
                         $user_id = -1;
@@ -94,9 +107,111 @@ class Login extends Controller implements ControllerStructure
                             ));
                         }
 
-                        if ($user_id < 0) {
+                        $ip = $this->server->getClientIP();
+                        $userAgent = $this->server->HTTP->getUserAgent();
 
-                            $res->render($this->trace("var user_name, user_email not found!", mode: MessageType::FAILURE));
+                        if (is_null($user_id) or $user_id < 0) {
+
+                            // Make it Limit
+                            // Supaya Tidak terjadi Brute force
+                            $try_login_session = $_SESSION["try_login"];
+
+                            // Not Good idea
+                            $session_try_login = $this->session->select(array(
+                                "user_ip" => $ip,
+                                "user_agent" => $userAgent,
+                            ), "try_login", 1);
+
+                            if (!is_null($session_try_login)) {
+
+                                $try_login_session = intval($session_try_login[0]["try_login"]);
+
+                                // banned
+                                $bans = $this->banned->select(array(
+                                    "user_ip" => $ip,
+                                    "user_agent" => $userAgent
+                                ), ["level", "time"], 1);
+
+                                if (!empty($bans)) {
+
+                                    $level = c($bans, 0, "level");
+                                    $timestamp = c($bans, 0, "time");
+                                    // get level time
+                                    if (!is_null($level) and !is_null($timestamp)) {
+
+                                        if (!is_int($level)) $level = intval($level);
+                                        if (!is_int($timestamp)) $timestamp = strtotime($timestamp);
+
+                                        if (0 <= $level) {
+
+                                            $start = (new Date())->getTimestamp();
+                                            $end = Date::enhance_time_ms($this->level[$level], $timestamp);
+
+                                            if ($start < $end) {
+
+                                                $res->render($this->trace("You are blocked, due to abnormal traffic activity!", mode: MessageType::FAILURE)); // yes u got ban, ha ha ha
+                                                break;
+                                            }
+                                        }
+                                    }
+                                }
+
+                                if ($try_login_session_limit <= $try_login_session) {
+
+                                    if (!empty($bans)) {
+
+                                        $this->banned->update(array(
+                                            "level" => 0 <= $level ? $level + 1 : 0,
+                                            "time" => Date::enhance_time(0, (new Date())->getTimestamp())
+                                        ), array(
+                                            "user_ip" => $ip,
+                                            "user_agent" => $userAgent
+                                        ));
+
+                                    } else {
+
+                                        $this->banned->insert(array(
+                                            "user_ip" => $ip,
+                                            "user_agent" => $userAgent,
+                                            "level" => 0
+                                        ));
+                                    }
+
+                                    $res->render($this->trace("You are blocked, for exceeding the login limit!", mode: MessageType::FAILURE));
+                                    break;
+                                }
+
+                                $this->session->update(array(
+                                    "user_ip" => $ip,
+                                    "user_agent" => $userAgent,
+                                    "try_login" => 1 + $try_login_session,
+                                    "token" => "" // delete token
+                                ), array(
+                                    "user_ip" => $ip,
+                                    "user_agent" => $userAgent,
+                                ));
+
+                            } else {
+
+                                $this->session->insert(array(
+                                    "user_ip" => $ip,
+                                    "user_agent" => $userAgent,
+                                    "try_login" => 1,
+                                    "token" => "" // delete token
+                                ));
+                            }
+                            // Not Good idea
+
+                            if (is_int($try_login)) {
+
+                                if ($try_login_session_limit <= $try_login_session) $_SESSION["blocked"] = true;
+                                $_SESSION["try_login"] += 1;
+                            } else {
+
+                                $_SESSION["try_login"] = 1;
+                            }
+
+                            $res->render($this->trace("var user_uniq, user_email not found!", mode: MessageType::FAILURE));
                             break;
                         }
 
@@ -120,7 +235,6 @@ class Login extends Controller implements ControllerStructure
                                 $try_login = $v;
                             }
                         }
-
                         // collect ban data
                         $banned_dt = $this->banned->select(array(
                             "user_id" => $user_id
@@ -128,11 +242,8 @@ class Login extends Controller implements ControllerStructure
 
                         if (!empty($banned_dt)) {
 
-                            // $ip = c($banned_dt, 0, "user_ip");
-                            // $agent = c($banned_dt, 0, "user_agent");
                             $level = c($banned_dt, 0, "level");
                             $timestamp = c($banned_dt, 0, "time");
-
                             // get level time
                             if (!is_null($level) and !is_null($timestamp)) {
 
@@ -148,12 +259,6 @@ class Login extends Controller implements ControllerStructure
 
                                         $res->render($this->trace("You are blocked, due to abnormal traffic activity!", mode: MessageType::FAILURE)); // yes u got ban, ha ha ha
                                         break;
-
-                                        // } else {
-
-                                        // can log in
-                                        // if failed again, ban level has been increase
-
                                     }
                                 }
                             } else {
@@ -163,9 +268,7 @@ class Login extends Controller implements ControllerStructure
                             }
                         }
 
-                        // 2 <= 3 times
-                        // set ban if try_login equals great then 3
-                        if (3 <= $try_login) {
+                        if ($try_login_session_limit <= $try_login) {
 
                             if (!empty($banned_dt)) {
 
@@ -195,7 +298,6 @@ class Login extends Controller implements ControllerStructure
                             $res->render($this->trace("You are blocked, for exceeding the login limit!", mode: MessageType::FAILURE));
                             break;
                         }
-
                         // check pass
                         $pass = null;
 
@@ -213,7 +315,7 @@ class Login extends Controller implements ControllerStructure
 
                             $token = Session::createToken(!empty($user_uniq) ? $user_uniq : "unknown");
 
-                            $res->render($this->trace("success login", array(
+                            $res->render($this->trace("success login!", array(
                                 "token" => $token
                             )));
 
@@ -255,13 +357,39 @@ class Login extends Controller implements ControllerStructure
 
                             } else {
 
-                                $this->session->insert(array(
-                                    "user_id" => $user_id,
-                                    "user_ip" => $this->server->getClientIP(),
-                                    "user_agent" => $this->server->HTTP->getUserAgent(),
-                                    "try_login" => 1,
-                                    "token" => "" // delete token
-                                ));
+                                $ip = $this->server->getClientIP();
+                                $userAgent = $this->server->HTTP->getUserAgent();
+
+                                $session_try_login = $this->session->select(array(
+                                    "user_ip" => $ip,
+                                    "user_agent" => $userAgent,
+                                    "token" => "",
+                                ), "try_login", 1);
+
+                                if (!is_null($session_try_login)) {
+
+                                    $this->session->update(array(
+                                        "user_id" => $user_id,
+                                        "user_ip" => $ip,
+                                        "user_agent" => $userAgent,
+                                        "try_login" => 1 + intval($session_try_login),
+                                        "token" => "" // delete token
+                                    ), array(
+                                        "user_ip" => $ip,
+                                        "user_agent" => $userAgent,
+                                        "token" => "",
+                                    ));
+
+                                } else {
+
+                                    $this->session->insert(array(
+                                        "user_id" => $user_id,
+                                        "user_ip" => $ip,
+                                        "user_agent" => $userAgent,
+                                        "try_login" => 1,
+                                        "token" => "" // delete token
+                                    ));
+                                }
                             }
 
                             $res->render($this->trace("failed login!", mode: MessageType::FAILURE));
@@ -275,3 +403,5 @@ class Login extends Controller implements ControllerStructure
         });
     }
 }
+
+session_commit();

@@ -1,0 +1,19 @@
+... Login.php ...
+var user_uniq, user_email not found!
+var user_pass cannot be empty!
+You are blocked, due to abnormal traffic activity!
+Something went wrong on the server!
+You are blocked, for exceeding the login limit!
+success login!
+failed login!
+... Registry.php ...
+var user_name cannot be empty!
+var user_uniq cannot be empty!
+var user_dob cannot be empty!
+var user_gender cannot be empty!
+var user_email cannot be empty!
+var user_pass cannot be empty!
+var user_uniq already used by another user!
+var user_email already used by another user!
+success insert table!
+failed insert table!

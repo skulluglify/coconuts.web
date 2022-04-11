@@ -1,6 +1,7 @@
 /**
  * Create By Ahmad Asy SyafiQ
  * Load main Class Look like Java
+ * I Hate My Code
  */
 import JessieQuery from "./query.mjs";
 

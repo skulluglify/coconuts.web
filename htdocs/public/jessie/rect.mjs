@@ -1,3 +1,9 @@
+/**
+ * Rect Abstraction
+ * References Method Name Like C#
+ * Try some Fun
+ * */
+
 export class Cartesian {
 
     X

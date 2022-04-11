@@ -1,3 +1,7 @@
+/**
+ * Sorry, My Code Like Spaghetti
+ * */
+
 export class Bindings {
 
     moduleName
@@ -124,6 +128,13 @@ export default class JessieQuery extends Object {
             if (!(initName && initName in module))
                 throw "[JessieQuery] Require " + initName + " for MainInit!"
 
+            // set Bindings
+            this.cls[module.name] = new Bindings(module.name) // Empty Bindings
+            let bindings = this.cls[module.name]
+
+            // set Init in Bindings
+            bindings["Init"] = module[initName].bind(module)
+
             // get Collection Into Activity
             if ("Collections" in module) {
 
@@ -136,11 +147,6 @@ export default class JessieQuery extends Object {
 
                     if (collections && Array.isArray(collections) && collections.length > 0) {
 
-                        this.cls[module.name] = new Bindings(module.name) // Empty Bindings
-                        let bindings = this.cls[module.name]
-
-                        bindings["Init"] = module[initName].bind(module)
-
                         for (let func of collections) {
 
                             // Since Module "Activity" disable from ImportLib
@@ -152,8 +158,26 @@ export default class JessieQuery extends Object {
                                 if (func.name == initName)
                                     throw "[JessieQuery][ImportLib] MainInit Has Been Imported!"
                             else // Binding Into Activity
-                                if (typeof func == "function")
-                                    bindings[func.name] = func.bind(module)
+                            if (typeof func == "function") {
+
+                                // Make it Friendly Method
+                                // If Not have same func name
+                                if (!func.name in Object.getOwnPropertyNames(this.cls))
+                                    Object.defineProperty(this.cls, func.name, {
+                                        value: func.bind(module),
+                                        configurable: true,
+                                        enumerable: false,
+                                        writable: false
+                                    })
+
+                                // Make Own Bindings
+                                Object.defineProperty(bindings, func.name, {
+                                    value: func.bind(module),
+                                    configurable: true,
+                                    enumerable: false,
+                                    writable: false
+                                })
+                            }
                         }
                     }
                 }

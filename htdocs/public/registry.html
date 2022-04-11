@@ -11,107 +11,115 @@
   <title>Registry</title>
 </head>
 <body>
-<div class="container center column">
+  <div class="container center column">
 
-  <div class="registry evenly row cyan">
+    <div class="registry evenly row cyan">
 
-    <div class="user center column nowrap private">
+      <div class="user center column nowrap private">
 
-      <input type="text" id="userName" placeholder="username" spellcheck="false" autofocus  />
-      <label for="userName"></label>
-      <div class="user-real-name start row">
-        <input type="text" name="firstname" id="firstName" placeholder="first name" spellcheck="false"  />
-        <label for="firstName"></label>
-        <input type="text" name="lastname" id="lastName" placeholder="last name" spellcheck="false"   />
-        <label for="lastName"></label>
-      </div>
-      <div class="pass center row nowrap">
-        <input type="password"
-               name="password"
-               id="userPassword"
-               placeholder="password"
-               spellcheck="false"
-               />
-        <label for="userPassword"></label>
-        <div class="eye center">
-          <i class="material-icons md-24 md-dark visibility_off"></i>
+        <input type="text" id="userName" placeholder="username" spellcheck="false" autofocus  />
+        <label for="userName"></label>
+        <div class="user-real-name start row">
+          <input type="text" name="firstname" id="firstName" placeholder="first name" spellcheck="false"  />
+          <label for="firstName"></label>
+          <input type="text" name="lastname" id="lastName" placeholder="last name" spellcheck="false"   />
+          <label for="lastName"></label>
+        </div>
+        <div class="pass center row nowrap">
+          <input type="password"
+                 name="password"
+                 id="userPassword"
+                 placeholder="password"
+                 spellcheck="false"
+                 />
+          <label for="userPassword"></label>
+          <div class="eye center">
+            <i class="material-icons md-24 md-dark visibility_off"></i>
+          </div>
+        </div>
+        <div class="pass center row nowrap">
+          <input type="password"
+                 name="password"
+                 id="userConfirmPassword"
+                 placeholder="confirm password"
+                 spellcheck="false"
+                 />
+          <label for="userConfirmPassword"></label>
+          <div class="eye center">
+            <i class="material-icons md-24 md-dark visibility_off"></i>
+          </div>
+        </div>
+        <div class="user-dob between row date-option">
+          <div class="date-year start row">
+            <button class="select"></button>
+            <div class="option"></div>
+          </div>
+          <div class="date-mon">
+            <button class="select"></button>
+            <div class="option"></div>
+          </div>
+          <div class="date-day">
+            <button class="select"></button>
+            <div class="option"></div>
+          </div>
+        </div>
+        <div class="radio user-gender start row">
+          <div class="check start row nowrap male">
+            <input type="radio" name="gender" id="genderMale" checked />
+            <label for="genderMale">male</label>
+          </div>
+          <div class="check start row nowrap female">
+            <input type="radio" name="gender" id="genderFemale" />
+            <label for="genderFemale">female</label>
+          </div>
+        </div>
+        <input type="email" name="email" id="userEmail" placeholder="email" spellcheck="false" />
+        <label for="userEmail"></label>
+        <input type="tel" name="phone" id="userPhoneNum" placeholder="phone number" spellcheck="false" />
+        <label for="userPhoneNum"></label>
+        <div class="address">
+          <textarea name="address" id="userAddress" cols="16" rows="10" placeholder="address" spellcheck="false" ></textarea>
+          <label for="userAddress"></label>
         </div>
       </div>
-      <div class="pass center row nowrap">
-        <input type="password"
-               name="password"
-               id="userConfirmPassword"
-               placeholder="confirm password"
-               spellcheck="false"
-               />
-        <label for="userConfirmPassword"></label>
-        <div class="eye center">
-          <i class="material-icons md-24 md-dark visibility_off"></i>
+      <div class="user center column-start nowrap public">
+        <div class="user-photo">
+          <div class="image"></div>
         </div>
-      </div>
-      <div class="user-dob between row date-option">
-        <div class="date-year start row">
-          <button class="select"></button>
-          <div class="option"></div>
+        <div class="description">
+          <textarea name="description" id="userDescription" cols="16" rows="10" placeholder="description" spellcheck="false" ></textarea>
+          <label for="userDescription"></label>
         </div>
-        <div class="date-mon">
-          <button class="select"></button>
-          <div class="option"></div>
+        <div class="submit end row nowrap">
+          <button id="registry">Registry</button>
         </div>
-        <div class="date-day">
-          <button class="select"></button>
-          <div class="option"></div>
-        </div>
-      </div>
-      <div class="radio user-gender start row">
-        <div class="check start row nowrap male">
-          <input type="radio" name="gender" id="genderMale" checked />
-          <label for="genderMale">male</label>
-        </div>
-        <div class="check start row nowrap female">
-          <input type="radio" name="gender" id="genderFemale" />
-          <label for="genderFemale">female</label>
-        </div>
-      </div>
-      <input type="email" name="email" id="userEmail" placeholder="email" spellcheck="false" />
-      <label for="userEmail"></label>
-      <input type="tel" name="phone" id="userPhoneNum" placeholder="phone number" spellcheck="false" />
-      <label for="userPhoneNum"></label>
-      <div class="address">
-        <textarea name="address" id="userAddress" cols="16" rows="10" placeholder="address" spellcheck="false" ></textarea>
-        <label for="userAddress"></label>
       </div>
     </div>
-    <div class="user center column-start nowrap public">
-      <div class="user-photo">
-        <div class="image"></div>
-      </div>
-      <div class="description">
-        <textarea name="description" id="userDescription" cols="16" rows="10" placeholder="description" spellcheck="false" ></textarea>
-        <label for="userDescription"></label>
-      </div>
-      <div class="submit end row nowrap">
-        <button id="registry">Registry</button>
-      </div>
+  </div>
+  <!-- Popup Fixed -->
+  <div class="popup">
+    <div class="content">
+      <div class="info pop pop-info"></div>
+      <div class="message"></div>
+      <div class="prompt"></div>
     </div>
   </div>
-</div>
-<!-- Popup Fixed -->
-<div class="popup">
-  <div class="content">
-    <div class="info pop pop-info"></div>
-    <div class="message"></div>
-    <div class="prompt"></div>
+  <!-- Popup Fixed -->
+  <!-- PopOver -->
+  <button class="popover" autofocus>
+    <div class="content">
+      <span>Hello, World!</span>
+    </div>
+    <div class="arrow"></div>
+  </button>
+  <!-- PopOver -->
+  <!-- Img_Uploader -->
+  <div id="Img_Uploader">
+    <label for="upload" class="center column nowrap">
+      <canvas id="preview" width="180px" height="180px"></canvas>
+      <input type="file" name="photo" id="upload" multiple accept="image/*">
+    </label>
   </div>
-</div>
-<!-- Popup Fixed -->
-<!-- PopOver -->
-<button class="popover" autofocus>
-  <div class="content">
-    <span>Hello, World!</span>
-  </div>
-  <div class="arrow"></div>
-</button>
-<!-- PopOver -->
+  <!-- Img_Uploader -->
 </body>
 </html>

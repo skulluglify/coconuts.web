@@ -1,64 +1,73 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=Edge" />
-    <link rel="shortcut icon" href="resources/favicon.ico" type="image/x-icon">
-    <link rel="stylesheet" href="scripts/Login/style.css" />
-    <script async src="jessie/core.mjs" data-main=".scripts.Login.Activity" type="module"></script>
-    <title>Login</title>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=Edge" />
+  <link rel="shortcut icon" href="resources/favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="scripts/Login/style.css" />
+  <script async src="jessie/core.mjs" data-main=".scripts.Login.Activity" type="module"></script>
+  <title>Login</title>
 </head>
 <body>
-    <div class="container center">
-        <div class="login center nowrap">
-            <div class="logo"></div>
-            <div class="form center nowrap">
-                <div class="input center row nowrap">
-                    <div class="icon center nowrap">
-                        <i class="material-icons md-24 md-dark person"></i>
-                    </div>
-                    <input type="text"
-                           autofocus
-                           name="username"
-                           id="userNameOrEmail"
-                           placeholder="username / email"
-                           spellcheck="false" />
-                    <label for="userNameOrEmail"></label>
-                </div>
-                <div class="input center row nowrap">
-                    <div class="icon center nowrap">
-                        <i class="material-icons md-18 md-dark lock_open"></i>
-                    </div>
-                    <div class="pass center row nowrap">
-                        <input type="password"
-                               name="password"
-                               id="userPassword"
-                               placeholder="password"
-                               spellcheck="false"/>
-                        <label for="userPassword"></label>
-                        <div class="eye center">
-                            <i class="material-icons md-24 md-dark visibility_off"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="forgot end row nowrap">
-                <a href="#">forgot password ?</a>
-            </div>
-            <div class="submit center nowrap">
-                <button class="large" id="login">Log In</button>
-            </div>
-            <hr/>
-            <div class="submit create-account center nowrap">
-                <button class="success" id="registry">Create New Account</button>
-            </div>
+  <div class="container center">
+    <div class="login center nowrap">
+      <div class="logo"></div>
+      <div class="form center nowrap">
+        <div class="input center row nowrap">
+          <div class="icon center nowrap">
+            <i class="material-icons md-24 md-dark person"></i>
+          </div>
+          <input type="text"
+               autofocus
+               name="username"
+               id="userNameOrEmail"
+               placeholder="username / email"
+               spellcheck="false" />
+          <label for="userNameOrEmail"></label>
         </div>
-        <div class="consider center text-center">
-            <span>By registering to this website, you accept our <a href="#">Terms of use</a> and our
-                <a href="#">Privacy policy</a>.</span>
+        <div class="input center row nowrap">
+          <div class="icon center nowrap">
+            <i class="material-icons md-18 md-dark lock_open"></i>
+          </div>
+          <div class="pass center row nowrap">
+            <input type="password"
+                 name="password"
+                 id="userPassword"
+                 placeholder="password"
+                 spellcheck="false"/>
+            <label for="userPassword"></label>
+            <div class="eye center">
+              <i class="material-icons md-24 md-dark visibility_off"></i>
+            </div>
+          </div>
         </div>
+      </div>
+      <div class="forgot end row nowrap">
+        <a href="#">forgot password ?</a>
+      </div>
+      <div class="submit center nowrap">
+        <button class="large" id="login">Log In</button>
+      </div>
+      <hr/>
+      <div class="submit create-account center nowrap">
+        <button class="success" id="registry">Create New Account</button>
+      </div>
     </div>
+    <div class="consider center text-center">
+      <span>By registering to this website, you accept our <a href="#">Terms of use</a> and our
+        <a href="#">Privacy policy</a>.</span>
+    </div>
+  </div>
+  <!-- Popup Fixed -->
+  <div class="popup">
+    <div class="content">
+      <div class="info pop pop-info"></div>
+      <div class="message"></div>
+      <div class="prompt"></div>
+    </div>
+  </div>
+  <!-- Popup Fixed -->
 </body>
 </html>

@@ -2,6 +2,7 @@
 
 use controllers\Login;
 use controllers\Registry;
+use controllers\Upload;
 use Exception;
 use tiny\MySQL;
 use tiny\Server;
@@ -40,6 +41,9 @@ class Activity
 
             $regis = new Registry($conn, $server);
             if ($regis->lock()) break;
+
+            $upload = new Upload($conn, $server);
+            if ($upload->lock()) break;
 
             $attach = false;
         }

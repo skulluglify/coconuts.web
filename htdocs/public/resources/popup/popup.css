@@ -14,6 +14,12 @@
 
 /* Pop Resources */
 
+.pop-none
+{
+
+    display: none;
+}
+
 .pop.pop-info
 {
 
@@ -159,7 +165,7 @@ div.popup > div.content > div.prompt
     flex-direction: row;
 }
 
-div.popup > div.content > div.prompt > button.cencel
+div.popup > div.content > div.prompt > button.cancel
 {
 
     margin: 0 6px 0 0;

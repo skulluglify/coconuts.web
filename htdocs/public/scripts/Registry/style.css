@@ -51,8 +51,8 @@ div.registry > div.user input[type="tel"]
     width: 100%;
     max-width: 320px;
     height: 42px;
-    padding: 4px 12px 4px 10px;
     margin: 0 0 4px 0;
+    padding: 4px 12px 4px 10px;
     border: 1px solid var(--var-grey);
     border-radius: 4px;
     background-color: var(--var-light-grey);
@@ -359,6 +359,8 @@ div.registry > div.user > div.description
 div.registry > div.user > div.user-photo
 {
 
+    /*user-select: none;*/
+    /*-webkit-user-drag: none;*/
     cursor: pointer;
     width: 180px;
     height: 180px;
@@ -388,8 +390,16 @@ div.registry > div.user > div.user-photo:after
     font-size: 24px;
     font-family: "Material Icons";
     text-align: center;
+    transform: translateY(100%);
+    transition: all .2s ease-in;
     color: var(--var-white);
     background-color: rgba(15, 15, 15, 0.4);
+}
+
+div.registry > div.user > div.user-photo:hover:after
+{
+
+    transform: translateY(0px);
 }
 
 div.registry > div.user > div.address > textarea,
@@ -407,3 +417,67 @@ div.registry > div.user > div.description > textarea
 /* All rules move into [jessieQuery] -> styleInsertRule */
 
 /* PopOver */
+
+/* Img_Uploader */
+
+#Img_Uploader
+{
+
+    display: flex;
+    width: 100%;
+    height: fit-content;
+    flex-wrap: nowrap;
+    align-items: center;
+    align-content: center;
+    justify-items: center;
+    justify-content: flex-start;
+    flex-direction: column;
+}
+
+#Img_Uploader > label > input[type="file"]#upload,
+#Img_Uploader > label > input[type="file"]#upload::-webkit-file-upload-button
+{
+    visibility: hidden;
+}
+
+/*#Img_Uploader > label > input[type="file"]#upload:before*/
+#Img_Uploader > label:after
+{
+    content: "--- click or drop in here ---";
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+    display: inline-block;
+    color: var(--var-grey);
+    margin: 0 0 12px 0;
+    white-space: nowrap;
+}
+
+/*#Img_Uploader > label > input[type="file"]#upload*/
+#Img_Uploader > label
+{
+    width: 100%;
+    max-width: 320px;
+    /*min-height: 42px;*/
+    flex-wrap: nowrap;
+    margin: 6px 0 4px 0;
+    padding: 4px 12px 4px 10px;
+    color: transparent;
+    border: 1px solid var(--var-grey);
+    border-radius: 12px;
+    background-color: var(--var-light-grey);
+}
+
+#Img_Uploader > label > canvas#preview
+{
+
+    width: attr(width px);
+    height: attr(height px);
+    margin: 16px 0 12px 0;
+    border-radius: 50%;
+    border: 1px solid var(--var-grey);
+    /*background-color: #0a53be;*/
+    background-color: var(--var-light-grey);
+}
+
+/* Img_Uploader */

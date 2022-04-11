@@ -1,15 +1,19 @@
 import EyeVisible from "../Login/EyeVisible.mjs";
-import CheckBox from "./CheckBox.mjs";
 import DateOption from "./DateOption.mjs";
+import ImageUploader from "./ImageUploader.mjs";
+import CheckBox from "./CheckBox.mjs";
 import PopOver from "./PopOver.mjs";
-import PopUp from "./PopUp.mjs";
+import Utilities from "./Utilities.mjs";
 
 export default class Activity {
 
     static jessieQuery // JessieQuery Module Bindings Allocated Memory
     static DateOption // DateOption Module Bindings Allocated Memory
+    static Utilities // DateOption Module Bindings Allocated Memory
+    static ImageUploader // ImageUploader Module Bindings Allocated Memory
+    // static CheckBox // ImageUploader Module Bindings Allocated Memory
     static PopOver // PopOver Module Bindings Allocated Memory
-    static PopUp // PopUp Module Bindings Allocated Memory
+    static userPhoto // make new Allocated Memory
 
     static Main() {
 
@@ -17,17 +21,19 @@ export default class Activity {
         this.jessieQuery.Module.Extends(
 
             EyeVisible,
-            CheckBox,
+            Utilities,
             DateOption,
-            PopOver,
-            PopUp
+            ImageUploader,
+            CheckBox,
+            PopOver
         )
 
         let dateHasInitial = false
 
-        let emailValidator = new RegExp(/^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/i)
+        this.PopOver.setPopContent("Your Birthday!")
 
         let userName = document.querySelector("input#userName")
+        let userPhoto = document.querySelector("div.user-photo")
         let firstName = document.querySelector("input#firstName")
         let lastName = document.querySelector("input#lastName")
         let userPassword = document.querySelector("input#userPassword")
@@ -40,6 +46,7 @@ export default class Activity {
         let userDescription = document.querySelector("textarea#userDescription")
 
         if (userName &&
+            userPhoto &&
             firstName &&
             lastName &&
             userPassword &&
@@ -67,14 +74,23 @@ export default class Activity {
 
                 let el = keyElements[key]
 
-                if (el) {
+                let context = localStorage.getItem(key)
 
-                    let context = localStorage.getItem(key)
-                    if (context && context.length > 0) el.value = context
-                } else if (key === "user_name") {
+                if (context && typeof context == "string" && context.length > 0) {
 
-                    let context = localStorage.getItem(key)
-                    if (context && context.length > 0) {
+                    // Auto fill Cache
+                    if (el) el.value = context
+                    else if (key === "user_photo") {
+
+                        if (context.startsWith("data:image\/")) {
+                            Object.assign(userPhoto.style, {
+
+                                backgroundImage: "url(\"" + context + "\")"
+                            })
+                            this.userPhoto = this.Utilities.convertDataURLToBlob(context)
+                        }
+                    }
+                    else if (key === "user_name") {
 
                         let contexts = context.split(",")
 
@@ -87,26 +103,19 @@ export default class Activity {
 
                             firstName.value = contexts.shift()
                         }
-                    }
-                } else if (key === "user_dob") {
 
-                    let context = localStorage.getItem(key)
-
-                    if (context && context.length > 0) {
+                    } else if (key === "user_dob") {
 
                         let date = new Date(context)
                         this.DateOption.Init(date)
                         dateHasInitial = true
-                    }
 
-                } else if (key === "user_gender") {
+                    } else if (key === "user_gender") {
 
-                    let context = localStorage.getItem(key)
-
-                    if (context && context.length > 0) {
 
                         genderMale.checked = context === "male" && context !== "female"
                         genderFemale.checked = !genderMale.checked
+
                     }
                 }
             }
@@ -132,49 +141,49 @@ export default class Activity {
 
                         if (userName.value.length === 0) {
 
-                            await this.Alert("dangerous", "Username must be filled!")
+                            await this.Utilities.Alert("dangerous", "User name must be filled!")
                             break
                         }
 
                         if (firstName.value.length === 0) {
 
-                            await this.Alert("dangerous", "First name must be filled!")
+                            await this.Utilities.Alert("dangerous", "First name must be filled!")
                             break
                         }
 
                         if (lastName.value.length === 0) {
 
-                            await this.Alert("dangerous", "Last name must be filled!")
+                            await this.Utilities.Alert("dangerous", "Last name must be filled!")
                             break
                         }
 
                         if (userPassword.value.length === 0) {
 
-                            await this.Alert("dangerous", "Password must be filled!")
+                            await this.Utilities.Alert("dangerous", "Password must be filled!")
                             break
                         }
 
                         if (userPassword.value !== userConfirmPassword.value) {
 
-                            await this.Alert("dangerous", "Password not same as confirm!")
+                            await this.Utilities.Alert("dangerous", "Password not same as confirm!")
                             break
                         }
 
                         if (userAge < 18) {
 
-                            await this.Alert("dangerous", "Restrict age below 18 years!")
+                            await this.Utilities.Alert("dangerous", "Restrict age below 18 years!")
                             break
                         }
 
                         if (userEmail.value.length === 0) {
 
-                            await this.Alert("dangerous", "Email must be filled!")
+                            await this.Utilities.Alert("dangerous", "Email must be filled!")
                             break
                         }
 
-                        if (!emailValidator.test(userEmail.value)) {
+                        if (!this.Utilities.isEmail(userEmail.value)) {
 
-                            await this.Alert("dangerous", "Email can't validate!")
+                            await this.Utilities.Alert("dangerous", "Email can't validate!")
                             break
                         }
 
@@ -198,77 +207,114 @@ export default class Activity {
                             "user_description": userDescription.value.trim() || null
                         }
 
-                        let response = await this.send(data)
+                        let [ response ] = await this.Utilities.SendRequest({
 
-                        if (response.status === 200 && response.statusText === "OK") {
+                            // Rules [In My Php Code]
+                            registry: data
+                        })
 
-                            let results = await response.json()
+                        if (response) {
 
-                            if ("error" in results) {
+                            if (response.status === 200 && response.statusText === "OK") {
 
-                                if ("message" in results.error) {
+                                let results = await response.json()
 
-                                    switch (results.error.message) {
+                                // var user_name cannot be empty!
+                                // var user_uniq cannot be empty!
+                                // var user_dob cannot be empty!
+                                // var user_gender cannot be empty!
+                                // var user_email cannot be empty!
+                                // var user_pass cannot be empty!
+                                // var user_uniq already used by another user!
+                                // var user_email already used by another user!
+                                // success insert table!
+                                // failed insert table!
 
-                                        case "var user_name cannot be empty!":
+                                if ("error" in results) {
 
-                                            await this.Alert("dangerous", "Real name must be filled!")
-                                            break
-                                        case "var user_uniq cannot be empty!":
+                                    if ("message" in results.error) {
 
-                                            await this.Alert("dangerous", "User name must be filled!")
-                                            break
-                                        case "var user_dob cannot be empty!":
+                                        switch (results.error.message) {
 
-                                            await this.Alert("dangerous", "Date of birthday must be filled!")
-                                            break
-                                        case "var user_gender cannot be empty!":
+                                            case "var user_name cannot be empty!":
 
-                                            await this.Alert("dangerous", "User Gender must be filled!")
-                                            break
-                                        case "var user_email cannot be empty!":
+                                                await this.Utilities.Alert("dangerous", "Real name must be filled!")
+                                                break
+                                            case "var user_uniq cannot be empty!":
 
-                                            await this.Alert("dangerous", "User email must be filled!")
-                                            break
-                                        case "var user_pass cannot be empty!":
+                                                await this.Utilities.Alert("dangerous", "User name must be filled!")
+                                                break
+                                            case "var user_dob cannot be empty!":
 
-                                            await this.Alert("dangerous", "User password must be filled!")
-                                            break
-                                        case "var user_uniq already used by another user!":
+                                                await this.Utilities.Alert("dangerous", "Date of birthday must be filled!")
+                                                break
+                                            case "var user_gender cannot be empty!":
 
-                                            await this.Alert("dangerous", "User name already used by another user!")
-                                            break
-                                        case "var user_email already used by another user!":
+                                                await this.Utilities.Alert("dangerous", "User Gender must be filled!")
+                                                break
+                                            case "var user_email cannot be empty!":
 
-                                            await this.Alert("dangerous", "User email already used by another user!")
-                                            break
-                                        case "failed insert table!":
+                                                await this.Utilities.Alert("dangerous", "User email must be filled!")
+                                                break
+                                            case "var user_pass cannot be empty!":
 
-                                            await this.Alert("dangerous", "Server problem!")
-                                            break
-                                        default:
+                                                await this.Utilities.Alert("dangerous", "User password must be filled!")
+                                                break
+                                            case "var user_uniq already used by another user!":
 
-                                            await this.Alert("dangerous", "Unknown reason! try next time :)")
-                                            break
+                                                await this.Utilities.Alert("dangerous", "User name already used by another user!")
+                                                break
+                                            case "var user_email already used by another user!":
+
+                                                await this.Utilities.Alert("dangerous", "User email already used by another user!")
+                                                break
+                                            case "failed insert table!":
+
+                                                await this.Utilities.Alert("dangerous", "Server problem!")
+                                                break
+                                            default:
+
+                                                await this.Utilities.Alert("dangerous", "Unknown reason! try next time :)")
+                                                break
+                                        }
                                     }
-                                }
-                            } else
-                            if ("success" in results) {
+                                } else
+                                if ("success" in results) {
 
-                                if ("message" in results.success) {
+                                    if ("message" in results.success) {
 
-                                    switch (results.success.message) {
+                                        switch (results.success.message) {
 
-                                        case "success insert table!":
+                                            case "success insert table!":
 
-                                            let token = "token" in results ? results.token : "<unknown>"
-                                            await this.Alert("success", "Congratulations you have registered!")
-                                            await this.Alert("warning", "Your Token: " + token)
-                                            break
-                                        default:
+                                                let token = "token" in results ? results.token : "<unknown/>"
+                                                await this.Utilities.Alert("success", "Congratulations you have registered!")
+                                                await this.Utilities.Alert("warning", "Your Token: " + token)
 
-                                            await this.Alert("warning", "Unknown reason! but you are already signed")
-                                            break
+                                                // Send User Photo
+                                                let file = this.userPhoto
+
+                                                if (file && Blob.prototype.isPrototypeOf(file)) {
+
+                                                    let formData = new FormData
+                                                    formData.append("user_photo", file)
+                                                    formData.append("user_token", token)
+                                                    let [ response ] = await this.Utilities.SendRequest({
+                                                        upload: formData
+                                                    })
+
+                                                    if (response) {
+                                                        let unsafe = await response.text()
+                                                        console.log(unsafe)
+                                                    }
+                                                }
+
+                                                break
+                                            default:
+
+                                                await this.Utilities.Alert("warning", "Unknown reason! but you are already signed")
+                                                break
+                                        }
                                     }
                                 }
                             }
@@ -286,62 +332,37 @@ export default class Activity {
 
                 }).bind(this))
 
-        }
-    }
+            let imgUploader = document.querySelector("#Img_Uploader")
 
-    /**
-     * @param {string} info
-     * @param {string} message
-     * @param {string} type
-     * @param {function} callback
-     * */
-    static async Alert(info, message, type= "submit") {
+            if (imgUploader) {
 
-        return new Promise((function (resolve, reject) {
+                let imgUploaderClone = this.Utilities.cloneElement(imgUploader)
+                imgUploader.remove()
 
-            try {
+                userPhoto.addEventListener("click", (async function () {
 
-                this.PopUp.createPopUp({
+                    await this.ImageUploader.show()
 
-                    info: info,
-                    message: message,
-                    type: type,
-                    callback: resolve
-                })
+                    let dataURL = this.ImageUploader.getAsDataURL()
+                    let file = this.ImageUploader.getAsFile()
 
-            } catch (e) {
+                    if (file) this.userPhoto = file
 
-                reject(e)
+                    if (dataURL) {
+
+                        Object.assign(userPhoto.style, {
+
+                            backgroundImage: "url(\"" + dataURL + "\")"
+                        })
+
+                        // store cache
+                        localStorage.setItem("user_photo", dataURL)
+                    }
+
+                }).bind(this))
+
+                this.ImageUploader.Init(imgUploaderClone)
             }
-
-        }).bind(this))
-    }
-
-    /**
-     * @param {Object} data*/
-    static async send(data) {
-
-        if (!(typeof data == "object" && !Array.isArray(data))) return new Promise(function (resolve, reject) {
-
-            reject(null)
-        })
-
-        return fetch(location.origin + "/public/v1/registry", {
-
-            method: "POST",
-            mode: "cors",
-            cache: "no-cache",
-            credentials: "same-origin",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            redirect: "follow",
-            referrerPolicy: "origin",
-            body: JSON.stringify({
-
-                // Root (Rules in My php script)
-                registry: data
-            })
-        })
+        }
     }
 }
