@@ -79,8 +79,8 @@ div.form > div.input > input[type="text"],
 div.form > div.input > div.pass
 {
 
-    width: 100%;
-    max-width: 260px;
+    width: 260px;
+    /* max-width: 260px; */
     height: 42px;
     margin: 0 12px 0 0;
     border: 1px solid var(--var-grey);

@@ -14,7 +14,6 @@ class Upload extends Controller implements ControllerStructure
 {
 
     protected MySQL $connect;
-    protected array $level;
 
     // tables
     protected User $user;

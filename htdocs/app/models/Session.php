@@ -6,7 +6,6 @@ use tiny\DataModel;
 use tiny\DataModelStructure;
 use tiny\Date;
 use tiny\MySQL;
-use tiny\StringMap;
 
 
 class Session extends DataModel implements DataModelStructure

@@ -1,6 +1,0 @@
-DirectoryIndex origin/index.php
-DirectorySlash on
-IndexIgnore all
-
-Order deny,allow
-Allow from all

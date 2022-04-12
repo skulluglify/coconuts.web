@@ -3,7 +3,7 @@
 
 use Exception;
 
-interface HTTPInfoStructure
+interface HTTPCollectionStructure
 {
     public function getContentLength(): int;
     public function getContentType(): string | null;
@@ -25,21 +25,21 @@ interface HTTPInfoStructure
 }
 
 
-interface ContentInfoStructure
+interface ContentCollectionStructure
 {
     public function getType(): string | null;
     public function getLength(): int; // default 0
 }
 
 
-interface URLInfoStructure
+interface URLCollectionStructure
 {
     public function getQuery(): string | null;
     public function getURI(): string;
 }
 
 
-interface ResponseInfoStructure
+interface ResponseCollectionStructure
 {
     public function getRedirectStatus(): int;
     public function getServerProtocol(): string;
@@ -47,7 +47,7 @@ interface ResponseInfoStructure
 }
 
 
-interface ServerInfoStructure
+interface ServerCollectionStructure
 {
     public function getPort(): int;
     public function getAddress(): string;
@@ -55,14 +55,14 @@ interface ServerInfoStructure
 }
 
 
-interface RemoteInfoStructure
+interface RemoteCollectionStructure
 {
     public function getPort(): int;
     public function getAddress(): string;
 }
 
 
-interface RequestInfoStructure
+interface RequestCollectionStructure
 {
     public function getURI(): string;
     public function getMethod(): string;
@@ -91,10 +91,10 @@ interface ServerStructure
 }
 
 
-class HTTPInfo implements HTTPInfoStructure
+class HTTPCollections implements HTTPCollectionStructure
 {
 
-    // HTTP Info
+    // HTTP Collections
     private string | null $HTTP_CONTENT_LENGTH;
     private string | null $HTTP_CONTENT_TYPE;
     private string | null $HTTP_COOKIE;
@@ -114,27 +114,27 @@ class HTTPInfo implements HTTPInfoStructure
     private string | null $HTTP_CLIENT_IP;
     private string | null $HTTP_X_FORWARDED_FOR;
 
-    public function __construct(array $info)
+    public function __construct(array $Collections)
     {
 
-        $this->HTTP_CONTENT_LENGTH = c($info, "HTTP_CONTENT_LENGTH");
-        $this->HTTP_CONTENT_TYPE = c($info, "HTTP_CONTENT_TYPE");
-        $this->HTTP_COOKIE = c($info, "HTTP_COOKIE");
-        $this->HTTP_ACCEPT_LANGUAGE = c($info, "HTTP_ACCEPT_LANGUAGE");
-        $this->HTTP_ACCEPT_ENCODING = c($info, "HTTP_ACCEPT_ENCODING");
-        $this->HTTP_REFERER = c($info, "HTTP_REFERER");
-        $this->HTTP_SEC_FETCH_DEST = c($info, "HTTP_SEC_FETCH_DEST");
-        $this->HTTP_SEC_FETCH_USER = c($info, "HTTP_SEC_FETCH_USER");
-        $this->HTTP_SEC_FETCH_MODE = c($info, "HTTP_SEC_FETCH_MODE");
-        $this->HTTP_SEC_FETCH_SITE = c($info, "HTTP_SEC_FETCH_SITE");
-        $this->HTTP_USER_AGENT = c($info, "HTTP_USER_AGENT");
-        $this->HTTP_UPGRADE_INSECURE_REQUESTS = c($info, "HTTP_UPGRADE_INSECURE_REQUESTS");
-        $this->HTTP_CACHE_CONTROL = c($info, "HTTP_CACHE_CONTROL");
-        $this->HTTP_SEC_CH_UA_PLATFORM = c($info, "HTTP_SEC_CH_UA_PLATFORM");
-        $this->HTTP_SEC_CH_UA_MOBILE = c($info, "HTTP_SEC_CH_UA_MOBILE");
-        $this->HTTP_HOST = c($info, "HTTP_HOST");
-        $this->HTTP_CLIENT_IP = c($info, "HTTP_CLIENT_IP");
-        $this->HTTP_X_FORWARDED_FOR = c($info, "HTTP_X_FORWARDED_FOR");
+        $this->HTTP_CONTENT_LENGTH = c($Collections, "HTTP_CONTENT_LENGTH");
+        $this->HTTP_CONTENT_TYPE = c($Collections, "HTTP_CONTENT_TYPE");
+        $this->HTTP_COOKIE = c($Collections, "HTTP_COOKIE");
+        $this->HTTP_ACCEPT_LANGUAGE = c($Collections, "HTTP_ACCEPT_LANGUAGE");
+        $this->HTTP_ACCEPT_ENCODING = c($Collections, "HTTP_ACCEPT_ENCODING");
+        $this->HTTP_REFERER = c($Collections, "HTTP_REFERER");
+        $this->HTTP_SEC_FETCH_DEST = c($Collections, "HTTP_SEC_FETCH_DEST");
+        $this->HTTP_SEC_FETCH_USER = c($Collections, "HTTP_SEC_FETCH_USER");
+        $this->HTTP_SEC_FETCH_MODE = c($Collections, "HTTP_SEC_FETCH_MODE");
+        $this->HTTP_SEC_FETCH_SITE = c($Collections, "HTTP_SEC_FETCH_SITE");
+        $this->HTTP_USER_AGENT = c($Collections, "HTTP_USER_AGENT");
+        $this->HTTP_UPGRADE_INSECURE_REQUESTS = c($Collections, "HTTP_UPGRADE_INSECURE_REQUESTS");
+        $this->HTTP_CACHE_CONTROL = c($Collections, "HTTP_CACHE_CONTROL");
+        $this->HTTP_SEC_CH_UA_PLATFORM = c($Collections, "HTTP_SEC_CH_UA_PLATFORM");
+        $this->HTTP_SEC_CH_UA_MOBILE = c($Collections, "HTTP_SEC_CH_UA_MOBILE");
+        $this->HTTP_HOST = c($Collections, "HTTP_HOST");
+        $this->HTTP_CLIENT_IP = c($Collections, "HTTP_CLIENT_IP");
+        $this->HTTP_X_FORWARDED_FOR = c($Collections, "HTTP_X_FORWARDED_FOR");
     }
 
     public function getContentLength(): int
@@ -259,18 +259,18 @@ class HTTPInfo implements HTTPInfoStructure
 }
 
 
-class ContentInfo implements ContentInfoStructure
+class ContentCollections implements ContentCollectionStructure
 {
 
-    // Content Info
+    // Content Collections
     private string | null $CONTENT_TYPE;
     private string | null $CONTENT_LENGTH;
 
-    public function __construct(array $info)
+    public function __construct(array $Collections)
     {
 
-        $this->CONTENT_TYPE = c($info, "CONTENT_TYPE");
-        $this->CONTENT_LENGTH = c($info, "CONTENT_LENGTH");
+        $this->CONTENT_TYPE = c($Collections, "CONTENT_TYPE");
+        $this->CONTENT_LENGTH = c($Collections, "CONTENT_LENGTH");
     }
 
     public function getType(): string | null
@@ -289,17 +289,17 @@ class ContentInfo implements ContentInfoStructure
 }
 
 
-class URLInfo implements URLInfoStructure
+class URLCollections implements URLCollectionStructure
 {
-    // URL Info
+    // URL Collections
     private string | null $QUERY_STRING;
     private string | null $DOCUMENT_URI;
 
-    public function __construct(array $info)
+    public function __construct(array $Collections)
     {
 
-        $this->QUERY_STRING = c($info,"QUERY_STRING");
-        $this->DOCUMENT_URI = c($info,"DOCUMENT_URI");
+        $this->QUERY_STRING = c($Collections,"QUERY_STRING");
+        $this->DOCUMENT_URI = c($Collections,"DOCUMENT_URI");
     }
 
     public function getQuery(): string | null
@@ -318,18 +318,18 @@ class URLInfo implements URLInfoStructure
 }
 
 
-class ResponseInfo implements ResponseInfoStructure
+class ResponseCollections implements ResponseCollectionStructure
 {
-    // Response Info
+    // Response Collections
     private string | null $REDIRECT_STATUS;
     private string | null $GATEWAY_INTERFACE;
     private string | null $SERVER_PROTOCOL;
 
-    public function __construct(array $info)
+    public function __construct(array $Collections)
     {
-        $this->REDIRECT_STATUS = c($info,"REDIRECT_STATUS");
-        $this->GATEWAY_INTERFACE = c($info,"GATEWAY_INTERFACE");
-        $this->SERVER_PROTOCOL = c($info,"SERVER_PROTOCOL");
+        $this->REDIRECT_STATUS = c($Collections,"REDIRECT_STATUS");
+        $this->GATEWAY_INTERFACE = c($Collections,"GATEWAY_INTERFACE");
+        $this->SERVER_PROTOCOL = c($Collections,"SERVER_PROTOCOL");
     }
 
     public function getRedirectStatus(): int
@@ -361,18 +361,18 @@ class ResponseInfo implements ResponseInfoStructure
 }
 
 
-class ServerInfo implements ServerInfoStructure
+class ServerCollections implements ServerCollectionStructure
 {
-    // Server Info
+    // Server Collections
     private string | null $SERVER_PORT;
     private string | null $SERVER_ADDRESS;
     private string | null $SERVER_NAME;
 
-    public function __construct(array $info)
+    public function __construct(array $Collections)
     {
-        $this->SERVER_PORT = c($info,"SERVER_PORT");
-        $this->SERVER_ADDRESS = c($info,"SERVER_ADDR");
-        $this->SERVER_NAME = c($info,"SERVER_NAME");
+        $this->SERVER_PORT = c($Collections,"SERVER_PORT");
+        $this->SERVER_ADDRESS = c($Collections,"SERVER_ADDR");
+        $this->SERVER_NAME = c($Collections,"SERVER_NAME");
     }
 
     public function getPort(): int
@@ -404,16 +404,16 @@ class ServerInfo implements ServerInfoStructure
 }
 
 
-class RemoteInfo implements RemoteInfoStructure
+class RemoteCollections implements RemoteCollectionStructure
 {
-    // Remote Info
+    // Remote Collections
     private string | null $REMOTE_PORT;
     private string | null $REMOTE_ADDRESS;
 
-    public function __construct(array $info)
+    public function __construct(array $Collections)
     {
-        $this->REMOTE_PORT = c($info,"REMOTE_PORT");
-        $this->REMOTE_ADDRESS = c($info,"REMOTE_ADDR");
+        $this->REMOTE_PORT = c($Collections,"REMOTE_PORT");
+        $this->REMOTE_ADDRESS = c($Collections,"REMOTE_ADDR");
     }
 
 
@@ -437,18 +437,18 @@ class RemoteInfo implements RemoteInfoStructure
 }
 
 
-class RequestInfo implements RequestInfoStructure
+class RequestCollections implements RequestCollectionStructure
 {
-    // Request Info
+    // Request Collections
     private string | null $REQUEST_METHOD;
     private string | null $REQUEST_URI;
     private string | int | null $REQUEST_TIME;
 
-    public function __construct(array $info)
+    public function __construct(array $Collections)
     {
-        $this->REQUEST_METHOD = c($info,"REQUEST_METHOD");
-        $this->REQUEST_URI = c($info,"REQUEST_URI");
-        $this->REQUEST_TIME = c($info,"REQUEST_TIME");
+        $this->REQUEST_METHOD = c($Collections,"REQUEST_METHOD");
+        $this->REQUEST_URI = c($Collections,"REQUEST_URI");
+        $this->REQUEST_TIME = c($Collections,"REQUEST_TIME");
     }
 
     public function getURI(): string
@@ -488,12 +488,12 @@ class RequestInfo implements RequestInfoStructure
 class Request implements RequestStructure
 {
 
-    private HTTPInfoStructure $HTTP;
+    // private HTTPCollectionStructure $HTTP;
 
-    public function __construct($http)
+    public function __construct(/* $http */)
     {
 
-        $this->HTTP = $http;
+        // $this->HTTP = $http;
         // nothing to do
     }
     public function json() : array | null
@@ -504,26 +504,24 @@ class Request implements RequestStructure
         // headers Content-Type application/json
         if (empty($_POST) or empty($_FILES)) {
 
-            $content_type = $this->HTTP->getContentType();
+            // using content-type, sometimes is empty string
+            // want filtering is application/json, but failure using xampp
 
-            if ($content_type and is_string($content_type) and $content_type == "application/json") {
+            $inputs = file_get_contents("php://input");
 
-                $inputs = file_get_contents("php://input");
+            if ($inputs and is_string($inputs) and strlen($inputs) > 1) { // [], {}
 
-                if ($inputs and is_string($inputs) and strlen($inputs) > 1) { // [], {}
+                try {
 
-                    try {
+                    // Body
+                    // JSON_OBJECT_AS_ARRAY set by associative
+                    $data = json_decode($inputs, associative: true, flags: JSON_BIGINT_AS_STRING);
 
-                        // Body
-                        // JSON_OBJECT_AS_ARRAY set by associative
-                        $data = json_decode($inputs, associative: true, flags: JSON_BIGINT_AS_STRING);
+                    if (!empty($data)) return $data;
 
-                        if (!empty($data)) return $data;
+                } catch (Exception) {
 
-                    } catch (Exception) {
-
-                        return null;
-                    }
+                    return null;
                 }
             }
         }
@@ -541,12 +539,12 @@ class Request implements RequestStructure
 class Response implements ResponseStructure
 {
 
-    private HTTPInfoStructure $HTTP; // never used anywhere
+    // private HTTPCollectionStructure $HTTP; // never used anywhere
 
-    public function __construct($http)
+    public function __construct(/* $http */)
     {
 
-        $this->HTTP = $http;
+        // $this->HTTP = $http;
         // nothing to do
     }
 
@@ -573,28 +571,28 @@ class Server implements ServerStructure
     // GET POST PUT DELETE PATCH
     protected string $prefix;
 
-    public HTTPInfoStructure $HTTP;
-    public ContentInfoStructure $Content;
-    public URLInfoStructure $URL;
-    public ResponseInfoStructure $Response;
-    public ServerInfoStructure $Server;
-    public RemoteInfoStructure $Remote;
-    public RequestInfoStructure $Request;
+    public HTTPCollectionStructure $HTTP;
+    public ContentCollectionStructure $Content;
+    public URLCollectionStructure $URL;
+    public ResponseCollectionStructure $Response;
+    public ServerCollectionStructure $Server;
+    public RemoteCollectionStructure $Remote;
+    public RequestCollectionStructure $Request;
 
     public function __construct()
     {
-        $info = $_SERVER;
+        $Collections = $_SERVER;
         $this->prefix = "";
 
-        if (!empty($info)) {
+        if (!empty($Collections)) {
 
-            $this->HTTP = new HTTPInfo($info);
-            $this->Content = new ContentInfo($info);
-            $this->URL = new URLInfo($info);
-            $this->Response = new ResponseInfo($info);
-            $this->Server = new ServerInfo($info);
-            $this->Remote = new RemoteInfo($info);
-            $this->Request = new RequestInfo($info);
+            $this->HTTP = new HTTPCollections($Collections);
+            $this->Content = new ContentCollections($Collections);
+            $this->URL = new URLCollections($Collections);
+            $this->Response = new ResponseCollections($Collections);
+            $this->Server = new ServerCollections($Collections);
+            $this->Remote = new RemoteCollections($Collections);
+            $this->Request = new RequestCollections($Collections);
         }
 
         // set default headers
@@ -645,8 +643,10 @@ class Server implements ServerStructure
         // lebih baik pakai equals operator untuk production build
         if (str_ends_with($uri, $origin))
         {
-            $req = new Request($this->HTTP);
-            $res = new Response($this->HTTP);
+
+            $req = new Request(/* $this->HTTP */);
+            $res = new Response(/* $this->HTTP */);
+            
             if (is_callable($callback)) {
 
                 $res->header("HTTP/2.0 200 OK");

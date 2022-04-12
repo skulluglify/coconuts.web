@@ -1,0 +1,44 @@
+@import url("../../resources/style.css");
+
+div.container
+{
+    width: 100vw;
+    height: 100vh;
+}
+
+div.content
+{
+    width: 100%;
+    max-width: 320px;
+    height: fit-content;
+    border-radius: 16px;
+    border: 1px solid var(--var-black);
+    background-color: yellowgreen;
+    overflow: hidden;
+}
+
+div.content > div.user-photo
+{
+    width: 180px;
+    height: 180px;
+    margin: 12px;
+    border-radius: 50%;
+    border: 1px solid var(--var-white);
+    background-color: yellowgreen;
+}
+
+div.content > div.user-description
+{
+    min-width: 320px;
+    width: fit-content;
+    min-height: 320px;
+    height: fit-content;
+    background-color: skyblue;
+}
+
+div.content > div.user-description > span
+{
+    font-size: 1em;
+    font-weight: bold;
+    color: var(--var-black);
+}
