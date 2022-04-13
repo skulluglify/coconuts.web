@@ -28,15 +28,15 @@ class Banned extends DataModel implements DataModelStructure
 
     public function create(): bool
     {
-        $contexts = $this->getContextVar($this->vars);
+        $context = $this->getContextVar($this->vars);
 
         $check = $this->connect->eval("
             CREATE TABLE IF NOT EXISTS `$this->name`(
-                $contexts[0],
+                $context[0],
                 INDEX `x_user_id`(`user_id`),
-                FOREIGN KEY(`user_id`) REFERENCES `users`(`id`) ON UPDATE RESTRICT ON DELETE CASCADE,
+                FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON UPDATE RESTRICT ON DELETE CASCADE,
                 time TIMESTAMP DEFAULT UTC_TIMESTAMP,
-                PRIMARY KEY(`id`)
+                PRIMARY KEY (`id`)
             )
         ");
 

@@ -4,7 +4,6 @@
 use JetBrains\PhpStorm\Pure;
 use tiny\DataModel;
 use tiny\DataModelStructure;
-use tiny\Date;
 use tiny\MySQL;
 
 
@@ -30,15 +29,15 @@ class Session extends DataModel implements DataModelStructure
 
     public function create(): bool
     {
-        $contexts = $this->getContextVar($this->vars);
+        $context = $this->getContextVar($this->vars);
 
         $check = $this->connect->eval("
             CREATE TABLE IF NOT EXISTS `$this->name`(
-                $contexts[0],
+                $context[0],
                 INDEX `x_user_id`(`user_id`),
-                FOREIGN KEY(`user_id`) REFERENCES `users`(`id`) ON UPDATE RESTRICT ON DELETE CASCADE,
+                FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON UPDATE RESTRICT ON DELETE CASCADE,
                 time TIMESTAMP DEFAULT UTC_TIMESTAMP,
-                PRIMARY KEY(`id`)
+                PRIMARY KEY (`id`)
             )
         ");
 
@@ -67,14 +66,5 @@ class Session extends DataModel implements DataModelStructure
     {
 
         return $this->selectRows($wheres, $tables, $size);
-    }
-
-    // utilities
-    public static function createToken(string $labels = "", string $abbr = "UTC"): string
-    {
-
-        $timestamp = (new Date(abbr: $abbr))->getTimestamp();
-        $key = hash("sha3-256", $labels.$timestamp);
-        return hash_hmac("sha3-256", $labels."|".str_shuffle($key)."|".$timestamp, $key);
     }
 }

@@ -10,7 +10,8 @@ use models\Banned;
 use models\Session;
 use models\User;
 use tiny\Controller;
-use tiny\ControllerStructure;
+use tiny\ControllerBind;
+use tiny\ControllerBindStructure;
 use tiny\Date;
 use tiny\MessageType;
 use tiny\MySQL;
@@ -18,32 +19,32 @@ use tiny\Request;
 use tiny\Response;
 use tiny\Server;
 use function tiny\c;
+use function tiny\createToken;
 
 
-class Login extends Controller implements ControllerStructure
+class Login extends ControllerBind implements ControllerBindStructure
 {
 
     protected MySQL $connect;
-    protected array $level;
 
     // tables
     protected User $user;
     protected Session $session;
     protected Banned $banned;
 
-    // server
-    protected Server $server;
-
-    // running
-    protected bool $wait = false;
-
-    public function __construct(MySQL $conn, Server $server, array $levels)
+    public function __construct(MySQL $conn, Server $server)
     {
 
         parent::__construct($server);
         $this->connect = $conn;
-        $this->level = $levels;
-        $this->init();
+    }
+
+    public static function bind(MySQL $conn, Server $server, array $level = array()): mixed
+    {
+        $bind = new self($conn, $server);
+        $bind->setLevel($level);
+        $bind->init();
+        return $bind;
     }
 
     protected function init(): void
@@ -58,21 +59,23 @@ class Login extends Controller implements ControllerStructure
         $this->session->create();
         $this->banned->create();
 
+        if (empty($this->level)) die("level not setup!");
+
         $this->server->route("login", function (Request $req, Response $res) {
+
+            $this->wait = true;
 
             $data = $req->json();
             $res->header("Content-Type: application/json");
 
             // check data json
-            if (is_array($data)) {
+            if (!empty($data)) {
 
                 // get commands key
                 $login = c($data, "login");
                 $try_login_session_limit = 3;
 
                 if (!empty($login)) {
-
-                    $this->wait = true;
 
                     $user_uniq = c($login, "user_uniq");
                     $user_email = c($login, "user_email");
@@ -313,7 +316,9 @@ class Login extends Controller implements ControllerStructure
 
                         if ($user_pass == $pass) {
 
-                            $token = Session::createToken(!empty($user_uniq) ? $user_uniq : "unknown");
+                            // if same
+                            // TODO: will loop until token have unique from other
+                            $token = createToken(!empty($user_uniq) ? $user_uniq : "unknown");
 
                             $res->render($this->trace("success login!", array(
                                 "token" => $token

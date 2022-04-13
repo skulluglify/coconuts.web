@@ -1,6 +1,4 @@
-<?php
-
-namespace tiny;
+<?php namespace tiny;
 
 
 use JetBrains\PhpStorm\Pure;

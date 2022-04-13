@@ -34,13 +34,13 @@ class User extends DataModel implements DataModelStructure
 
     public function create(): bool
     {
-        $contexts = $this->getContextVar($this->vars);
+        $context = $this->getContextVar($this->vars);
 
         $check = $this->connect->eval("
             CREATE TABLE IF NOT EXISTS `$this->name`(
-                $contexts[0],
+                $context[0],
                 time TIMESTAMP DEFAULT UTC_TIMESTAMP,
-                PRIMARY KEY(`id`)
+                PRIMARY KEY (`id`)
             )
         ");
 

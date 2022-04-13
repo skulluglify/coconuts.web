@@ -11,6 +11,7 @@ use tiny\Request;
 use tiny\Response;
 use tiny\Server;
 use function tiny\c;
+use function tiny\createToken;
 
 class Registry extends Controller implements ControllerStructure
 {
@@ -20,12 +21,6 @@ class Registry extends Controller implements ControllerStructure
     // tables
     protected User $user;
     protected Session $session;
-
-    // server
-    protected Server $server;
-
-    // running
-    protected bool $wait = false;
 
     // multiply generic params, levels
     public function __construct(MySQL $conn, Server $server)
@@ -48,18 +43,18 @@ class Registry extends Controller implements ControllerStructure
 
         $this->server->route("registry", function (Request $req, Response $res) {
 
+            $this->wait = true;
+
             $data = $req->json();
             $res->header("Content-Type: application/json");
 
             // check data json
-            if (is_array($data)) {
+            if (!empty($data)) {
 
                 // get commands key
                 $regis = c($data, "registry");
 
                 if (!empty($regis)) {
-
-                    $this->wait = true;
 
                     $user_photo = c($regis, "user_photo");
                     $user_name = c($regis, "user_name");
@@ -148,7 +143,8 @@ class Registry extends Controller implements ControllerStructure
                             "user_description" => $user_description
                         ))) {
 
-                            $token = Session::createToken($user_name);
+                            // TODO: will loop until token have unique from other
+                            $token = createToken($user_name);
 
                             $res->render($this->trace("success insert table!", array(
                                 "token" => $token

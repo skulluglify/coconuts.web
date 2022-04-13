@@ -18,6 +18,7 @@ abstract class Controller implements ControllerStructure
 {
 
     protected Server $server;
+    protected array $level;
     protected bool $wait;
 
     public function __construct(Server $server)
@@ -28,6 +29,16 @@ abstract class Controller implements ControllerStructure
     }
 
     protected abstract function init(): void;
+
+    // only using ControllerBind
+    // public static abstract function bind(MySQL $conn, Server $server, array $level = array()): mixed;
+
+
+    protected function setLevel(array $level): void
+    {
+
+        $this->level = $level;
+    }
 
     protected function trace(string $msg, array | null $assign = null, MessageType $mode = MessageType::SUCCESS): array
     {

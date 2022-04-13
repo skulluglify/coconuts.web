@@ -1,7 +1,6 @@
 <?php
 
 // if failed
-header("HTTP/2.0 401 Unauthorized");
 
 require_once join("/", array(__DIR__, "../../app/init.php"));
 

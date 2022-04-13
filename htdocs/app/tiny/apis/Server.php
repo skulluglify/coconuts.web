@@ -488,14 +488,14 @@ class RequestCollections implements RequestCollectionStructure
 class Request implements RequestStructure
 {
 
-    // private HTTPCollectionStructure $HTTP;
+    private RequestCollections $requestCollections;
 
-    public function __construct(/* $http */)
+    public function __construct(RequestCollections $requestCollections)
     {
 
-        // $this->HTTP = $http;
-        // nothing to do
+        $this->requestCollections = $requestCollections;
     }
+
     public function json() : array | null
     {
 
@@ -529,6 +529,12 @@ class Request implements RequestStructure
         // catch _FILES nad _POST
         if (!empty($_FILES)) $data = array_merge(array(), $_FILES); // copy
         if (!empty($_POST)) $data = array_merge($data, $_POST);
+
+        // URI SEARCH (deprecated)
+        // $search = $this->requestCollections->getURI();
+        // if (!empty($search)) $data = uri_search_de($search);
+        if (!empty($_GET)) $data = array_merge($data, $_GET);
+
         if (!empty($data)) return $data;
 
         return null;
@@ -539,13 +545,12 @@ class Request implements RequestStructure
 class Response implements ResponseStructure
 {
 
-    // private HTTPCollectionStructure $HTTP; // never used anywhere
+    private RequestCollections $requestCollections; // unused
 
-    public function __construct(/* $http */)
+    public function __construct(RequestCollections $requestCollections)
     {
 
-        // $this->HTTP = $http;
-        // nothing to do
+        $this->requestCollections = $requestCollections;
     }
 
     public function header(string $headers) : void
@@ -557,6 +562,7 @@ class Response implements ResponseStructure
 
     public function render(mixed $content) : void
     {
+
         if (is_array($content)) echo json_encode($content);
         else if (is_string($content)) echo $content;
         else if (is_int($content)) echo $content;
@@ -636,6 +642,7 @@ class Server implements ServerStructure
 
         if (!str_starts_with($origin, "/")) $origin = "/".$origin;
         if (str_ends_with($uri, "/")) $uri = substr($uri, 0, strlen($uri) - 1);
+        if (str_contains($uri, "?")) $uri = substr($uri, 0, strpos($uri, "?"));
 
         // tidak bagus, tapi apa daya untuk tugas akhir
         // takut nya directory app diletakan di sub directory
@@ -644,8 +651,8 @@ class Server implements ServerStructure
         if (str_ends_with($uri, $origin))
         {
 
-            $req = new Request(/* $this->HTTP */);
-            $res = new Response(/* $this->HTTP */);
+            $req = new Request($this->Request);
+            $res = new Response($this->Request);
             
             if (is_callable($callback)) {
 

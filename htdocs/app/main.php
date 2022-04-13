@@ -1,11 +1,14 @@
 <?php namespace app;
 
+use controllers\Identify;
+use controllers\Image;
 use controllers\Login;
 use controllers\Registry;
 use controllers\Upload;
 use Exception;
 use tiny\MySQL;
 use tiny\Server;
+
 
 class Activity
 {
@@ -34,16 +37,20 @@ class Activity
         $attach = true;
         while ($attach) {
 
+            $bind = Login::bind($conn, $server, $this->level);
+            if ($bind->lock()) break;
 
-            // priority
-            $login = new Login($conn, $server, $this->level);
-            if ($login->lock()) break;
+            $bind = new Registry($conn, $server);
+            if ($bind->lock()) break;
 
-            $regis = new Registry($conn, $server);
-            if ($regis->lock()) break;
+            $bind = new Upload($conn, $server);
+            if ($bind->lock()) break;
 
-            $upload = new Upload($conn, $server);
-            if ($upload->lock()) break;
+            $bind = new Image($conn, $server);
+            if ($bind->lock()) break;
+
+            $bind = new Identify($conn, $server);
+            if ($bind->lock()) break;
 
             $attach = false;
         }
