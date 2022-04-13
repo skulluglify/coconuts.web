@@ -9,11 +9,11 @@ div.container
 div.content
 {
     width: 100%;
-    max-width: 320px;
+    max-width: 420px;
     height: fit-content;
     border-radius: 16px;
     border: 1px solid var(--var-black);
-    background-color: yellowgreen;
+    background-color: var(--var-green);
     overflow: hidden;
 }
 
@@ -25,15 +25,62 @@ div.content > div.user-photo
     border-radius: 50%;
     border: 1px solid var(--var-white);
     background-color: yellowgreen;
+    background-image: url("../../resources/dummy.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
 }
 
 div.content > div.user-description
 {
     min-width: 320px;
-    width: fit-content;
+    width: 100%;
     min-height: 320px;
     height: fit-content;
-    background-color: skyblue;
+    background-color: var(--var-cyan);
+}
+
+div.content > div.user-description > table
+{
+
+    width: calc(100% - 24px);
+    height: fit-content;
+    margin: 0 12px 0 12px;
+    border-collapse: separate;
+    border-spacing: unset;
+}
+
+div.content > div.user-description > table > tbody
+{}
+
+div.content > div.user-description > table > tbody > tr,
+div.content > div.user-description > table > tbody > tr > td
+{
+
+    border-bottom: 1px solid var(--var-blue);
+}
+
+div.content > div.user-description > table > tbody > tr > td:first-child
+{
+
+    width: 120px;
+    height: 34px;
+    text-align: start;
+    font-weight: bold;
+    padding: 4px 6px 4px 12px;
+}
+
+div.content > div.user-description > table > tbody > tr > td:last-child
+{
+
+    padding: 4px 12px 4px 6px;
+    border-left: 1px solid var(--var-blue);
+}
+
+div.content > div.user-description > table > tbody > tr:last-child > td
+{
+
+    border-bottom: none;
 }
 
 div.content > div.user-description > span

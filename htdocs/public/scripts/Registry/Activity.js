@@ -289,7 +289,9 @@ export default class Activity {
 
                                                 let token = "token" in results ? results.token : "<unknown/>"
                                                 await this.Utilities.Alert("success", "Congratulations you have registered!")
-                                                await this.Utilities.Alert("warning", "Your Token: " + token)
+
+                                                // saved token
+                                                localStorage.setItem("token", token)
 
                                                 // Send User Photo
                                                 let file = this.userPhoto
@@ -304,10 +306,21 @@ export default class Activity {
                                                     })
 
                                                     if (response) {
-                                                        let unsafe = await response.text()
-                                                        console.log(unsafe)
+                                                        let data = await response.json()
+
+                                                        if ("success" in data) {
+
+                                                            await this.Utilities.Alert("success", "User photo has been saved!")
+
+                                                        } else if ("error" in data) {
+
+                                                            await this.Utilities.Alert("dangerous", "User photo failed to save!")
+                                                        }
                                                     }
                                                 }
+
+                                                await this.Utilities.Alert("warning", "Your Token: " + token)
+                                                location.href = location.origin + "/public/identify.html"
 
                                                 break
                                             default:

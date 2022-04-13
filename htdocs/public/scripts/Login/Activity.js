@@ -128,7 +128,13 @@ export default class Activity {
 
                                             let token = "token" in results ? results.token : "<unknown/>"
                                             await this.Utilities.Alert("success", "Congratulations you have signed!")
+
+                                            // saved token
+                                            localStorage.setItem("token", token)
+
                                             await this.Utilities.Alert("warning", "Your Token: " + token)
+                                            location.href = location.origin + "/public/identify.html"
+
                                             break
                                         default:
 
@@ -161,7 +167,8 @@ export default class Activity {
              */
             regisBtn.addEventListener("click", function (e) {
 
-                open("registry.html")
+                // open("registry.html")
+                location.href = location.origin + "/public/registry.html"
             })
 
         }

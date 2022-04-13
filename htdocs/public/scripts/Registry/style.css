@@ -13,6 +13,7 @@ div.registry
 
     width: 100%;
     max-width: 668px;
+    border: 1px solid var(--var-black);
     padding: 12px 8px 12px 8px;
 }
 
