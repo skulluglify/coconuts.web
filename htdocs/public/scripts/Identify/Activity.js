@@ -56,13 +56,29 @@ export default class Activity {
                         if ("user_name" === key) value = value.replace(",", " ")
 
                         let tr = document.createElement("tr")
-                        let keyTd = document.createElement("td")
-                        let valueTd = document.createElement("td")
+                        let tdKey = document.createElement("td")
+                        let tdValue = document.createElement("td")
+                        let divKey = document.createElement("div")
+                        let divValue = document.createElement("div")
 
-                        keyTd.textContent = key.substring(5)
-                        valueTd.textContent = value
+                        key = key.substring(5)
 
-                        tr.append(keyTd, valueTd)
+                        if (key === "uniq") key = "user name"
+                        if (key === "name") key = "full name"
+                        if (key === "dob") key = "date of birth"
+                        if (key === "location") key = "address"
+
+                        divKey.textContent = key
+                        divValue.textContent = value
+
+                        key = key.replace(/ /g, "-")
+
+                        divKey.classList.add(key)
+                        divValue.classList.add(key)
+
+                        tdKey.appendChild(divKey)
+                        tdValue.appendChild(divValue)
+                        tr.append(tdKey, tdValue)
 
                         tbody.appendChild(tr)
                     }

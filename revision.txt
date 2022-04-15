@@ -1,0 +1,13 @@
+user_id + user_uniq + time + time_zone + token
+
+browser_fp [FINGERPRINT]
+
+PHP_EOL  [END_OF_LINE]
+
+grimlock.sfs
+.tinyscript
+
+tiny_get_item
+tiny_date_fix
+tiny_enchange_time
+tiny_valid_email
