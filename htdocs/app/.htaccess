@@ -1,7 +1,8 @@
+DirectoryIndex None
 DirectorySlash Off
-IndexIgnore all
+IndexIgnore All
 
-Order deny,allow
-Deny from all
+Order Deny,Allow
+Deny from All
 
 Options -Indexes

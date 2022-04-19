@@ -34,18 +34,20 @@ class Image extends Controller implements ControllerStructure
 
                 $src = c($data, "src");
                 $scale = c($data, "scale");
+                $is_win = str_starts_with(strtoupper(PHP_OS), 'WIN');
 
                 $attach = true;
                 while ($attach) {
 
                     if (!empty($src)) {
 
+                        // normalize the path
                         $src = str_replace("\/", "/", $src);
+                        
+                        if ($is_win) $src = str_replace("/", "\\", $src); 
 
-                        $path = join("/", [
-                            "../../storage",
-                            $src
-                        ]);
+                        if ($is_win) $path = "..\\..\\storage\\".$src;
+                        else $path = "../../storage/".$src;
 
                         $path = p($path);
 

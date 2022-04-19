@@ -115,6 +115,8 @@ class Identify extends Controller implements ControllerStructure
 
                                     if (!empty($user)) {
 
+                                        $user["user_photo"] = str_replace("\\","/",$user["user_photo"]);
+
                                         $res->render($user);
                                     }
                                 }

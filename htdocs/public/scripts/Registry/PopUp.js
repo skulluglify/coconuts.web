@@ -93,11 +93,16 @@ export default class PopUp {
 
                 target.style.display = "flex"
 
-                let span, message
-                let info = target.querySelector("div.info")
+                let span
                 let content = target.querySelector("div.content")
+                let info = target.querySelector("div.info")
+                let message = content.querySelector("div.message")
+                let prompt = target.querySelector("div.prompt")
 
-                if (info && content) {
+                if (info &&
+                    content &&
+                    message &&
+                    prompt) {
 
                     // Remove Class
                     for (let cls of info.classList)
@@ -110,37 +115,39 @@ export default class PopUp {
                         if (cls.startsWith("animate\_\_"))
                             content.classList.remove(cls)
 
+                    // Remove Children from Element
+                    for (let node of info.children)
+                        if (node instanceof Element) node.remove()
+
+                    for (let node of prompt.children)
+                        if (node instanceof Element) node.remove()
+
                     if (!(Array.from(content.classList).includes("animate__animated")))
                         content.classList.add("animate__animated", "animate__bounceIn")
 
                     if (!(Array.from(info.classList).includes("animate__animated")))
                         info.classList.add(infoClass, "animate__animated", "animate__flipInY")
 
-                    message = content.querySelector("div.message")
-                    if (message) {
+                    if (context) {
 
-                        if (context) {
+                        if (typeof context == "string" && context.length > 0) {
 
-                            if (typeof context == "string" && context.length > 0) {
+                            span = message.querySelector("span")
+                            if (!span) {
 
-                                span = message.querySelector("span")
-                                if (!span) {
-
-                                    // Create Span
-                                    span = document.createElement("span")
-                                    message.appendChild(span)
-                                }
-
-                                span.textContent = context
-                            } else if (HTMLElement.prototype.isPrototypeOf(context)) {
-
-                                message.appendChild(context)
+                                // Create Span
+                                span = document.createElement("span")
+                                message.appendChild(span)
                             }
+
+                            span.textContent = context
+                        } else if (HTMLElement.prototype.isPrototypeOf(context)) {
+
+                            message.appendChild(context)
                         }
                     }
                 }
 
-                let prompt = target.querySelector("div.prompt")
                 if (prompt) {
 
                     let submit, cancel
@@ -250,6 +257,7 @@ export default class PopUp {
 
                     btn.classList.add("submit", "primary")
                     btn.textContent = "Submit"
+                    btn.autofocus = true
                     break;
                 case "cancel":
 

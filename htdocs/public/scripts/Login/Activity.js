@@ -17,12 +17,33 @@ export default class Activity {
 
         let userNameOrEmail = document.querySelector("div.input input#userNameOrEmail")
         let userPassword = document.querySelector("div.input input#userPassword")
-
-        // Login
         let loginBtn = document.querySelector("div.submit button#login")
+
         if (userNameOrEmail &&
             userPassword &&
             loginBtn) {
+
+
+            let shortLogin = function __Listener__ (e) {
+
+                if (!e.altKey && !e.ctrlKey && e.key === "Enter") {
+
+                    e.preventDefault();
+                    e.stopPropagation();
+                    userPassword.removeEventListener("keydown", __Listener__);
+                    if (shortLogin) shortLogin = null
+                    loginBtn.click();
+                }
+            }
+
+            userPassword.addEventListener("keydown", shortLogin)
+
+            let token = localStorage.getItem("token")
+            if (token && typeof token == "string" && token.length == 64) {
+
+                location.href = location.origin + "/public/identify.html"
+
+            }
 
             let context = localStorage.getItem("user_uniq")
             if (context && typeof context == "string" && context.length > 0) {

@@ -106,3 +106,12 @@ div.content > div.user-description > span
     font-weight: bold;
     color: var(--var-black);
 }
+
+div.container > div.prompt > button.logout
+{
+
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    /* border: 2px solid var(--var-white); */
+}

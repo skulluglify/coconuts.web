@@ -1,0 +1,60 @@
+Dibuat oleh Ahmad Asy Syafiq
+
+Email saya
+<skulluglify@gmail.com/>
+<skulluglify@outlook.com/>
+<skulluglify@mail.ru/>
+
+disini saya membuat dua buah library, untuk mendukung projekt saya
+
+tiny, jessie
+
+tiny ialah library php bertype wrapper abstraction, 
+dengan maksud hanya mengelompokan built in php function jadi sebuah class,
+dan mempersingkat beberapa menjadi bagian method class tersebut
+contoh
+
+mysql_connect
+prepare
+mysql_stmt
+mysql_stmt::bind_params
+mysql_result
+
+menjadi
+
+MySQL
+MySQL::eval
+MySQL::result
+
+dan sebagainya, diharapkan mempermudah saya untuk mengembangkan projekt kedepannya
+
+jessie ialah library javascript bertype loader, dan wrapper. 
+dengan maksud mengubah gaya scripting menjadi seperti program java
+ter inspirasi oleh java, dengan mendeklarasi class dan method Main. 
+
+export default class Activity {
+
+    static Main() {
+
+        ...
+
+dan juga pemanggilan script activity dengan gaya berikut:
+
+<script src="jessie/core.js" data-main=".scripts.MAIN.Activity"></script>
+
+tidak hanya itu saja, jessie ini akan terus dikembangkan menjadi sebuah web component. 
+jessie disini hanya sebuah ide atau gagasan kecil dari saya, jessie prototype sudah pernah dibuat 
+dan sudah ada di github saya pada laman https://skulluglify.github.io
+
+projekt ini akan terus dikembangkan, dan diharapkan akan menjadi produk saya di dunia
+informatikan, jika ingin melihat design database, login system bisa menjumpai gambar pada laman berikut:
+
+https://github.com/skulluglify/coconuts.web/blob/master/session_login.png
+https://github.com/skulluglify/coconuts.web/blob/master/database.png
+
+untuk TUGAS AKHIR, saya hanya akan mencapai list dan delisted tabel pertemanan (`friends` table)
+dikarenakan banyaknya TUGAS AKHIR untuk sesi bulan depan, ada PBO membuat projekt aplikasi, 
+BD database, dan lain lain
+
+saya minta maaf sebesar besarnya, ada tutur kata yang tidak mengenakan didalam hati, atas
+nama saya sendiri, sekian dan terimah kasih.

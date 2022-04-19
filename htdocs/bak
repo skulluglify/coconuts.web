@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-zip -r0qy9o htdocs.zip `ls | grep -Eiv 'origin|storage|htdocs.zip'`
+zip -r0qy9o htdocs.zip `ls -A | grep -Eiv 'origin|storage|htdocs.zip'`

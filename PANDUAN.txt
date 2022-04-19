@@ -1,0 +1,25 @@
+projekt ini membutuhkan Xampp sebagai jembatan Apache dan MySQL
+
+membutuhkan gd extension, ini bisa dilakukan dengan merubah 
+pada apache config dibagian php.ini dan menghapus titik koma pada
+
+;extension=gd // menjadi
+extension=gd
+
+membutuhkan MySQL server, projekt ini telah mencapai pembuatan table
+database, maka diharapkan telah menghidupkan MySQL server dengan syarat
+
+tersedia nya `test` table, `test` table telah tersedia secara bersamaan saat
+installasi program MySQL pada Xampp
+
+tersedia nya user, password untuk koneksi ke MySQL, default projekt ini memakai
+user yang ada secara umum, yaitu:
+
+user = root
+password = 
+
+port MySQL server yang dibutuhkan untuk projekt ini memakai port default, yaitu:
+
+port = 3306
+
+sekian terimah kasih atas perhatiannya, semoga lancar sampai akhir.

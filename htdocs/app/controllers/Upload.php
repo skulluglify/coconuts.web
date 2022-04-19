@@ -84,6 +84,8 @@ class Upload extends Controller implements ControllerStructure
                                     $error = c($user_photo, "error");
                                     $size = c($user_photo, "size");
 
+                                    $is_win = str_starts_with(strtoupper(PHP_OS), 'WIN');
+
                                     if (!empty($name) and
                                         !empty($path) and
                                         !empty($mime) and
@@ -100,7 +102,9 @@ class Upload extends Controller implements ControllerStructure
 
                                                 // now will work
                                                 // $distance = realpath("../../storage/users/photos");
-                                                $distance = p("../../storage/users/photos");
+
+                                                if ($is_win) $distance = p("..\\..\\storage\\users\\photos");
+                                                else $distance = p("../../storage/users/photos");
 
                                                 if (!is_dir($distance)) mkdir($distance, recursive: true);
 
@@ -118,7 +122,8 @@ class Upload extends Controller implements ControllerStructure
                                                         $key = hash_hmac("sha3-256", $token.$pub, Date::enhance_time(0, $timestamp));
                                                         $path = base64_safe_en(hex2bin($key)).".".$ext;
 
-                                                        $distance = $distance."/".$path;
+                                                        if ($is_win) $distance = $distance."\\".$path;
+                                                        else $distance = $distance."/".$path;
 
                                                         if (!file_exists($distance)) {
 
@@ -128,7 +133,7 @@ class Upload extends Controller implements ControllerStructure
 
                                                                 // store name link into user table
                                                                 $check = $this->user->update(array(
-                                                                    "user_photo" => "users/photos/".$path
+                                                                    "user_photo" => $is_win ? "users\\photos\\".$path : "users/photos/".$path
                                                                 ), array(
                                                                     "id" => $user_id
                                                                 ));
